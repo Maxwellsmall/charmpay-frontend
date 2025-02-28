@@ -1,5 +1,7 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { Fontisto } from "@expo/vector-icons";
+import { router, useRouter } from "expo-router";
+import { Route } from "expo-router/build/Route";
 
 export default function Index() {
   return (
@@ -8,7 +10,10 @@ export default function Index() {
         <TouchableOpacity className="bg-blue-900  w-80 p-3 rounded-lg">
           <Text className="text-white text-center font-semibold">LOGIN</Text>
         </TouchableOpacity>
-        <TouchableOpacity className="bg-[#F5F5F5] mt-4 w-80 p-3 rounded-lg">
+        <TouchableOpacity
+          className="bg-[#F5F5F5] mt-4 w-80 p-3 rounded-lg"
+          onPress={() => router.navigate("./auth/signup")}
+        >
           <Text className="text-black text-center font-semibold">SIGNUP</Text>
         </TouchableOpacity>
       </View>
