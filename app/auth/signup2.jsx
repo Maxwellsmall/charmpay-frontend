@@ -8,16 +8,16 @@ export default function page() {
       <View>
         <TextInput
           className="h-10 px-4 placeholderTextColor-[#F5F5F5] bg-[#F5F5F5] w-80 rounded-md"
-          placeholder="Email address"
+          placeholder="First name"
         />
         <TextInput
           className="h-10 px-5 bg-[#F5F5F5] mt-5  w-80 rounded-md"
-          placeholder="Last name"
+          placeholder="phone number"
         />
       </View>
       <TouchableOpacity
         className="bg-blue-900 mt-96  w-80 p-3 rounded-lg"
-        onPress={() => router.navigate("/auth/signup2")}
+        onPress={() => router.navigate("/auth/passcode")}
       >
         <Text className="text-white text-center font-semibold">NEXT</Text>
       </TouchableOpacity>

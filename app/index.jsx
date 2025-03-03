@@ -7,7 +7,7 @@ export default function Index() {
   return (
     <View className="flex-1 justify-center items-center bg-white">
       <View>
-        <TouchableOpacity className="bg-blue-900  w-80 p-3 rounded-lg">
+        <TouchableOpacity className="bg-blue-900 mt-4 w-80 p-3 rounded-lg">
           <Text className="text-white text-center font-semibold">LOGIN</Text>
         </TouchableOpacity>
         <TouchableOpacity

@@ -5,7 +5,6 @@ import {
   StyleSheet,
   rootStyle,
   TouchableOpacity,
-  TextInput,
 } from "react-native";
 import {
   CodeField,
@@ -14,7 +13,8 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
 import { router } from "expo-router";
-const CELL_COUNT = 6; // Number of digits in the passcode
+
+const CELL_COUNT = 4; // Number of digits in the passcode
 
 const PasscodeScreen = ({ navigation }) => {
   const [value, setValue] = useState("");
@@ -23,15 +23,15 @@ const PasscodeScreen = ({ navigation }) => {
     value,
     setValue,
   });
+
   return (
     <View className="flex-1 justify-center items-center bg-white">
       <View>
-        <Text className="font-bold p-10 text-left text-[#3A259C]">Login</Text>
-        <TextInput
-          className="h-10 px-4 placeholderTextColor-[#F5F5F5] bg-[#F5F5F5] w-80 rounded-md"
-          placeholder="Email address"
-        />
+        <Text className="text-blue-900 mr-20 font-bold p-5">
+          Create a transaction pin
+        </Text>
       </View>
+      {/* Passcode Input */}
       <CodeField
         ref={ref}
         {...props}
@@ -53,11 +53,20 @@ const PasscodeScreen = ({ navigation }) => {
           </View>
         )}
       />
+
+      <View className="grid">
+        <Text className="text-[#3A259C]">
+          This is the pin you will use in making transaction
+        </Text>
+        <Text className="text-[#3A259C]">from your Charmpay account</Text>
+      </View>
+
+      {/* Next Button */}
       <TouchableOpacity
         className="bg-blue-900 mt-96  w-80 p-3 rounded-lg"
-        onPress={() => router.navigate("dashboard")}
+        onPress={() => router.navigate("/auth/verify")}
       >
-        <Text className="text-white text-center font-semibold">NXT</Text>
+        <Text className="text-white text-center font-semibold">NEXT</Text>
       </TouchableOpacity>
     </View>
   );
@@ -66,9 +75,9 @@ const PasscodeScreen = ({ navigation }) => {
 export default PasscodeScreen;
 const styles = StyleSheet.create({
   codeFieldRoot: {
-    width: "90%",
+    width: "60%",
     alignSelf: "center",
-    marginTop: 40,
+    marginBottom: 20,
   },
   cell: {
     width: 50,

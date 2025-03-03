@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 import "../global.css";
 import { StatusBar } from "react-native";
 import { View, Image, Text, TouchableOpacity } from "react-native";
@@ -25,7 +25,7 @@ export default function RootLayout() {
               </View>
             ),
           }}
-        
+        />
         <Stack.Screen
           name="auth/signup"
           options={{
@@ -33,8 +33,108 @@ export default function RootLayout() {
             headerShadowVisible: false,
             headerLeft: () => (
               <View className="flex-row justify-center items-center">
-                <TouchableOpacity className="bg-black rounded-lg">
+                <TouchableOpacity>
                   <Ionicons name="arrow-back" size={24} color="blue" />
+                </TouchableOpacity>
+                <Text className="font-bold ms-[10px] text-[#A8A8A8]">BACK</Text>
+              </View>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="auth/signup2"
+          options={{
+            headerTitle: "",
+            headerShadowVisible: false,
+            headerLeft: () => (
+              <View className="flex-row justify-center items-center">
+                <TouchableOpacity className="bg-[#F5F5F5] p-2 rounded-sm">
+                  <Ionicons name="arrow-back" size={24} color="blue" />
+                </TouchableOpacity>
+                <Text className="font-bold ms-[10px] text-[#A8A8A8]">BACK</Text>
+              </View>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="auth/passcode"
+          options={{
+            headerTitle: "",
+            headerShadowVisible: false,
+            headerLeft: () => (
+              <View className="flex-row justify-center items-center">
+                <TouchableOpacity className="bg-[#F5F5F5] p-2 rounded-sm">
+                  <Ionicons name="arrow-back" size={24} color="blue" />
+                </TouchableOpacity>
+                <Text className="font-bold ms-[10px] text-[#A8A8A8]">BACK</Text>
+              </View>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="auth/passcode2"
+          options={{
+            headerTitle: "",
+            headerShadowVisible: false,
+            headerLeft: () => (
+              <View className="flex-row justify-center items-center">
+                <TouchableOpacity
+                  className="bg-[#F5F5F5] p-2 rounded-sm"
+                  onPress={() => router.back()}
+                >
+                  <Ionicons name="arrow-back" size={24} color="blue" />
+                </TouchableOpacity>
+                <Text className="font-bold ms-[10px] text-[#A8A8A8]">BACK</Text>
+              </View>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="auth/verify"
+          options={{
+            headerTitle: "",
+            headerShadowVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="auth/verify2"
+          options={{
+            headerTitle: "",
+            headerShadowVisible: false,
+            headerLeft: () => (
+              <View className="flex-row justify-center items-center">
+                <TouchableOpacity className="bg-[#F5F5F5] p-2 rounded-sm">
+                  <Ionicons name="arrow-back" size={24} color="blue" />
+                </TouchableOpacity>
+                <Text className="font-bold ms-[10px] text-[#A8A8A8]">BACK</Text>
+              </View>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="auth/login"
+          options={{
+            headerTitle: "",
+            headerShadowVisible: false,
+            headerLeft: () => (
+              <View className="flex-row justify-center items-center">
+                <TouchableOpacity className="bg-[#F5F5F5] p-2 rounded-sm">
+                  <Ionicons name="arrow-back" size={24} color="blue" />
+                </TouchableOpacity>
+                <Text className="font-bold ms-[10px] text-[#A8A8A8]">BACK</Text>
+              </View>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="dashboard"
+          options={{
+            headerTitle: "",
+            headerShadowVisible: false,
+            headerLeft: () => (
+              <View className="flex-row justify-center items-center">
+                <TouchableOpacity className="bg-[#F5F5F5] p-2 rounded-sm">
+                  <Ionicons name="user" size={24} color="blue" />
                 </TouchableOpacity>
                 <Text className="font-bold ms-[10px] text-[#A8A8A8]">BACK</Text>
               </View>
@@ -45,4 +145,3 @@ export default function RootLayout() {
     </>
   );
 }
-9;
