@@ -14,7 +14,7 @@ export default function Index() {
       <View>
         <TouchableOpacity
           className="bg-blue-900   w-80 p-3 rounded-lg"
-          onPress={() => router.navigate("/auth/verify2")}
+          onPress={() => router.navigate("/auth/login/")}
         >
           <Text className="text-white text-center font-semibold">NEXT</Text>
         </TouchableOpacity>

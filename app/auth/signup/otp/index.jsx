@@ -14,7 +14,7 @@ import {
 } from "react-native-confirmation-code-field";
 import { router } from "expo-router";
 
-const CELL_COUNT = 4; // Number of digits in the passcode
+const CELL_COUNT = 6; // Number of digits in the passcode
 
 const PasscodeScreen = ({ navigation }) => {
   const [value, setValue] = useState("");
@@ -26,10 +26,17 @@ const PasscodeScreen = ({ navigation }) => {
 
   return (
     <View className="flex-1 justify-center items-center bg-white">
-      <View>
-        <Text className="text-blue-900 mr-20 font-bold p-5">
-          Create a transaction pin
+      <View className="">
+        <Text className="text-blue-900  font-semibold  p-2">
+          Create a Passcode
         </Text>
+
+        <View className="grid">
+          <Text className="text-[#3A259C]">
+            This is the code you will use in logging into your
+          </Text>
+          <Text className="text-[#3A259C]">account</Text>
+        </View>
       </View>
       {/* Passcode Input */}
       <CodeField
@@ -54,17 +61,36 @@ const PasscodeScreen = ({ navigation }) => {
         )}
       />
 
-      <View className="grid">
-        <Text className="text-[#3A259C]">
-          This is the pin you will use in making transaction
-        </Text>
-        <Text className="text-[#3A259C]">from your Charmpay account</Text>
+      {/* Confirm Section */}
+      <View>
+        <Text className="text-blue-900 mr-60 p-6 font-bold">Confirm</Text>
       </View>
+      <CodeField
+        ref={ref}
+        {...props}
+        value={value}
+        onChangeText={setValue}
+        cellCount={CELL_COUNT}
+        rootStyle={styles.codeFieldRoot}
+        keyboardType="number-pad"
+        textContentType="oneTimeCode"
+        renderCell={({ index, symbol, isFocused }) => (
+          <View
+            key={index}
+            style={[styles.cell, isFocused && styles.focusCell]}
+            onLayout={getCellOnLayoutHandler(index)}
+          >
+            <Text style={styles.cellText}>
+              {symbol || (isFocused ? <Cursor /> : null)}
+            </Text>
+          </View>
+        )}
+      />
 
       {/* Next Button */}
       <TouchableOpacity
         className="bg-blue-900 mt-96  w-80 p-3 rounded-lg"
-        onPress={() => router.navigate("/auth/verify")}
+        onPress={() => router.navigate("/auth/signup/otp/passcode")}
       >
         <Text className="text-white text-center font-semibold">NEXT</Text>
       </TouchableOpacity>
@@ -75,7 +101,7 @@ const PasscodeScreen = ({ navigation }) => {
 export default PasscodeScreen;
 const styles = StyleSheet.create({
   codeFieldRoot: {
-    width: "60%",
+    width: "90%",
     alignSelf: "center",
     marginBottom: 20,
   },
