@@ -27,103 +27,46 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="auth/signup"
+          name="auth/signup/index"
           options={{
             headerTitle: "",
             headerShadowVisible: false,
-            headerLeft: () => (
-              <View className="flex-row justify-center items-center">
-                <TouchableOpacity>
-                  <Ionicons name="arrow-back" size={24} color="blue" />
-                </TouchableOpacity>
-                <Text className="font-bold ms-[10px] text-[#A8A8A8]">BACK</Text>
-              </View>
-            ),
           }}
         />
+
         <Stack.Screen
-          name="auth/signup2"
-          options={{
-            headerTitle: "",
-            headerShadowVisible: false,
-            headerLeft: () => (
-              <View className="flex-row justify-center items-center">
-                <TouchableOpacity className="bg-[#F5F5F5] p-2 rounded-sm">
-                  <Ionicons name="arrow-back" size={24} color="blue" />
-                </TouchableOpacity>
-                <Text className="font-bold ms-[10px] text-[#A8A8A8]">BACK</Text>
-              </View>
-            ),
-          }}
-        />
-        <Stack.Screen
-          name="auth/passcode"
-          options={{
-            headerTitle: "",
-            headerShadowVisible: false,
-            headerLeft: () => (
-              <View className="flex-row justify-center items-center">
-                <TouchableOpacity className="bg-[#F5F5F5] p-2 rounded-sm">
-                  <Ionicons name="arrow-back" size={24} color="blue" />
-                </TouchableOpacity>
-                <Text className="font-bold ms-[10px] text-[#A8A8A8]">BACK</Text>
-              </View>
-            ),
-          }}
-        />
-        <Stack.Screen
-          name="auth/passcode2"
-          options={{
-            headerTitle: "",
-            headerShadowVisible: false,
-            headerLeft: () => (
-              <View className="flex-row justify-center items-center">
-                <TouchableOpacity
-                  className="bg-[#F5F5F5] p-2 rounded-sm"
-                  onPress={() => router.back()}
-                >
-                  <Ionicons name="arrow-back" size={24} color="blue" />
-                </TouchableOpacity>
-                <Text className="font-bold ms-[10px] text-[#A8A8A8]">BACK</Text>
-              </View>
-            ),
-          }}
-        />
-        <Stack.Screen
-          name="auth/verify"
+          name="auth/signup/otp/index"
           options={{
             headerTitle: "",
             headerShadowVisible: false,
           }}
         />
         <Stack.Screen
-          name="auth/verify2"
+          name="/auth/signup/otp/passcode"
           options={{
             headerTitle: "",
             headerShadowVisible: false,
-            headerLeft: () => (
-              <View className="flex-row justify-center items-center">
-                <TouchableOpacity className="bg-[#F5F5F5] p-2 rounded-sm">
-                  <Ionicons name="arrow-back" size={24} color="blue" />
-                </TouchableOpacity>
-                <Text className="font-bold ms-[10px] text-[#A8A8A8]">BACK</Text>
-              </View>
-            ),
           }}
         />
         <Stack.Screen
-          name="auth/login"
+          name="auth/signup/verify/index"
           options={{
             headerTitle: "",
             headerShadowVisible: false,
-            headerLeft: () => (
-              <View className="flex-row justify-center items-center">
-                <TouchableOpacity className="bg-[#F5F5F5] p-2 rounded-sm">
-                  <Ionicons name="arrow-back" size={24} color="blue" />
-                </TouchableOpacity>
-                <Text className="font-bold ms-[10px] text-[#A8A8A8]">BACK</Text>
-              </View>
-            ),
+          }}
+        />
+        <Stack.Screen
+          name="auth/signup/verify/success"
+          options={{
+            headerTitle: "",
+            headerShadowVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="auth/login/index"
+          options={{
+            headerTitle: "",
+            headerShadowVisible: false,
           }}
         />
         <Stack.Screen

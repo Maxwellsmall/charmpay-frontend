@@ -12,7 +12,7 @@ export default function Index() {
         </TouchableOpacity>
         <TouchableOpacity
           className="bg-[#F5F5F5] mt-4 w-80 p-3 rounded-lg"
-          onPress={() => router.navigate("./auth/signup")}
+          onPress={() => router.navigate("./auth/signup/")}
         >
           <Text className="text-black text-center font-semibold">SIGNUP</Text>
         </TouchableOpacity>

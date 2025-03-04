@@ -63,7 +63,7 @@ const PasscodeScreen = ({ navigation }) => {
       {/* Next Button */}
       <TouchableOpacity
         className="bg-blue-900 mt-96  w-80 p-3 rounded-lg"
-        onPress={() => router.navigate("/auth/login")}
+        onPress={() => router.navigate("/auth/signup/verify/success")}
       >
         <Text className="text-white text-center font-semibold">NEXT</Text>
       </TouchableOpacity>
