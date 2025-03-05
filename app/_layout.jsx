@@ -42,7 +42,7 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="/auth/signup/otp/passcode"
+          name="auth/signup/otp/passcode"
           options={{
             headerTitle: "",
             headerShadowVisible: false,
