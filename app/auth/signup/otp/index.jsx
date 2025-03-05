@@ -18,11 +18,16 @@ const CELL_COUNT = 6; // Number of digits in the passcode
 
 const Page = ({ navigation }) => {
   const [value, setValue] = useState("");
+  const [confirmValue, setConfirmValue] = useState("");
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
+  // const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+  //   value,
+  //   setValue,
+  // });
+  // const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+  //   confirmValue,
+  //   setConfirmValue,
+  // });
 
   return (
     <View className="flex-1 justify-center items-center bg-white">
@@ -40,21 +45,19 @@ const Page = ({ navigation }) => {
       {/* Passcode Input */}
       <CodeField
         ref={ref}
-        {...props}
         value={value}
         onChangeText={setValue}
         cellCount={CELL_COUNT}
         rootStyle={styles.codeFieldRoot}
         keyboardType="number-pad"
-        textContentType="oneTimeCode"
+        textContentType="password"
         renderCell={({ index, symbol, isFocused }) => (
           <View
             key={index}
             style={[styles.cell, isFocused && styles.focusCell]}
-            onLayout={getCellOnLayoutHandler(index)}
           >
             <Text style={styles.cellText}>
-              {symbol || (isFocused ? <Cursor /> : null)}
+              {symbol ? "●" : isFocused ? <Cursor /> : null}
             </Text>
           </View>
         )}
@@ -68,21 +71,19 @@ const Page = ({ navigation }) => {
       </View>
       <CodeField
         ref={ref}
-        {...props}
-        value={value}
-        onChangeText={setValue}
+        value={confirmValue}
+        onChangeText={setConfirmValue}
         cellCount={CELL_COUNT}
         rootStyle={styles.codeFieldRoot}
         keyboardType="number-pad"
-        textContentType="oneTimeCode"
+        textContentType="password"
         renderCell={({ index, symbol, isFocused }) => (
           <View
             key={index}
             style={[styles.cell, isFocused && styles.focusCell]}
-            onLayout={getCellOnLayoutHandler(index)}
           >
             <Text style={styles.cellText}>
-              {symbol || (isFocused ? <Cursor /> : null)}
+              {symbol ? "●" : isFocused ? <Cursor /> : null}
             </Text>
           </View>
         )}
@@ -90,7 +91,7 @@ const Page = ({ navigation }) => {
 
       {/* Next Button */}
       <TouchableOpacity
-        className="bg-blue-900 mt-96  w-80 p-3 rounded-lg"
+        className="bg-blue-900 absolute bottom-3  w-80 p-3 rounded-lg"
         onPress={() => router.navigate("/auth/signup/otp/passcode")}
       >
         <Text className="text-white text-center font-semibold">NEXT</Text>

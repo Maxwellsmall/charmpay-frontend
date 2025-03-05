@@ -14,9 +14,9 @@ import {
 } from "react-native-confirmation-code-field";
 import { router } from "expo-router";
 
-const CELL_COUNT = 4; // Number of digits in the passcode
+const CELL_COUNT = 4;
 
-const PasscodeScreen = ({ navigation }) => {
+const Page = ({ navigation }) => {
   const [value, setValue] = useState("");
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -27,11 +27,10 @@ const PasscodeScreen = ({ navigation }) => {
   return (
     <View className="flex-1 justify-center items-center bg-white">
       <View>
-        <Text className="text-blue-900 mr-20 font-bold p-5">
+        <Text className="text-blue-900 mr-20 font-[600] text-[20px] p-5">
           Create a transaction pin
         </Text>
       </View>
-      {/* Passcode Input */}
       <CodeField
         ref={ref}
         {...props}
@@ -55,16 +54,16 @@ const PasscodeScreen = ({ navigation }) => {
       />
 
       <View className="grid">
-        <Text className="text-[#3A259C]">
-          This is the pin you will use in making transaction
+        <Text className="text-[#3A259C] w-80">
+          This is the pin you will use in making transaction from your Charmpay
+          account
         </Text>
-        <Text className="text-[#3A259C]">from your Charmpay account</Text>
       </View>
 
       {/* Next Button */}
       <TouchableOpacity
-        className="bg-blue-900 mt-96  w-80 p-3 rounded-lg"
-        onPress={() => router.navigate("/auth/signup/verify/")}
+        className="bg-blue-900 absolute bottom-3 w-80 p-3 rounded-lg"
+        onPress={() => router.navigate("/auth/signup/verify/success")}
       >
         <Text className="text-white text-center font-semibold">NEXT</Text>
       </TouchableOpacity>
@@ -72,10 +71,10 @@ const PasscodeScreen = ({ navigation }) => {
   );
 };
 
-export default PasscodeScreen;
+export default Page;
 const styles = StyleSheet.create({
   codeFieldRoot: {
-    width: "60%",
+    width: "70%",
     alignSelf: "center",
     marginBottom: 20,
   },

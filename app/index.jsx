@@ -3,7 +3,7 @@ import { Fontisto } from "@expo/vector-icons";
 import { router, useRouter } from "expo-router";
 import { Route } from "expo-router/build/Route";
 
-export default function Index() {
+export default function Page() {
   return (
     <View className="flex-1 justify-center items-center bg-white">
       <View>

@@ -25,20 +25,20 @@ export default function Page() {
       >
         <View className="w-full items-center">
           <TextInput
-            className="mb-3 px-4 bg-[#F5F5F5] w-[370px] h-[50px] rounded-md"
+            className="mb-3 px-4 bg-[#F5F5F5] w-96 h-[50px] rounded-md"
             placeholder="First Name"
           />
           <TextInput
-            className="mb-3 px-5 bg-[#F5F5F5] w-[370px] h-[50px] rounded-md"
+            className="mb-3 px-5 bg-[#F5F5F5] w-96 h-[50px] rounded-md"
             placeholder="Last Name"
           />
           <TextInput
-            className="mb-3 px-5 bg-[#F5F5F5] w-[370px] h-[50px] rounded-md"
+            className="mb-3 px-5 bg-[#F5F5F5] w-96 h-[50px] rounded-md"
             placeholder="Email"
           />
 
           {/* Phone Number Input with Country Picker */}
-          <View className="flex-row items-center bg-[#F5F5F5] w-[370px] h-[50px] rounded-md px-3">
+          <View className="flex-row items-center bg-[#F5F5F5] w-96 h-[50px] rounded-md px-3">
             {/* Country Picker */}
             <CountryPicker
               withFilter
@@ -53,22 +53,22 @@ export default function Page() {
             />
             <Text className="ml-2 text-lg">+{callingCode}</Text>
 
-            {/* Phone Number Input */}
             <TextInput
               keyboardType="number-pad"
               className="flex-1 ml-3"
               placeholder="Enter phone number"
               value={phoneNumber}
               onChangeText={setPhoneNumber}
+              maxLength={13}
+              minLength={7}
             />
           </View>
         </View>
       </ScrollView>
 
-      {/* Fixed Button at Bottom */}
       <View className="p-4 bg-white">
         <TouchableOpacity
-          className="bg-blue-900 w-[370px] p-5 rounded-lg self-center"
+          className="bg-blue-900 w-80 p-3 rounded-lg self-center"
           onPress={() => router.navigate("/auth/signup/otp/")}
         >
           <Text className="text-white text-center font-semibold">NEXT</Text>
