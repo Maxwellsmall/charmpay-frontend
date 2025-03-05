@@ -1,35 +1,79 @@
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import React, { useState } from "react";
 import { router } from "expo-router";
+import CountryPicker from "react-native-country-picker-modal";
 
-export default function page() {
+export default function Page() {
+  const [countryCode, setCountryCode] = useState("NG"); // Default Nigeria
+  const [callingCode, setCallingCode] = useState("234"); // Default country code
+  const [phoneNumber, setPhoneNumber] = useState("");
+
   return (
-    <View className="flex-1 justify-center items-center bg-white">
-      <View>
-        <TextInput
-          className="h-10 px-4 placeholderTextColor-[#F5F5F5] bg-[#F5F5F5] w-80 rounded-md"
-          placeholder="First Name"
-        />
-        <TextInput
-          className="h-10 px-5 bg-[#F5F5F5] mt-5  w-80 rounded-md"
-          placeholder="Last name"
-        />
-        <TextInput
-          className="h-10 px-5 bg-[#F5F5F5] mt-5  w-80 rounded-md"
-          placeholder="Email"
-        />
-        <TextInput
-          keyboardType="number-pad"
-          className="h-10 px-5 bg-[#F5F5F5] mt-5  w-80 rounded-md"
-          placeholder="Number"
-        />
-      </View>
-      <TouchableOpacity
-        className="bg-blue-900 mt-96  w-80 p-3 rounded-lg"
-        onPress={() => router.navigate("/auth/signup/otp/")}
+    <View className="flex-1 bg-white">
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
-        <Text className="text-white text-center font-semibold">NEXT</Text>
-      </TouchableOpacity>
+        <View className="w-full items-center">
+          <TextInput
+            className="mb-3 px-4 bg-[#F5F5F5] w-[370px] h-[50px] rounded-md"
+            placeholder="First Name"
+          />
+          <TextInput
+            className="mb-3 px-5 bg-[#F5F5F5] w-[370px] h-[50px] rounded-md"
+            placeholder="Last Name"
+          />
+          <TextInput
+            className="mb-3 px-5 bg-[#F5F5F5] w-[370px] h-[50px] rounded-md"
+            placeholder="Email"
+          />
+
+          {/* Phone Number Input with Country Picker */}
+          <View className="flex-row items-center bg-[#F5F5F5] w-[370px] h-[50px] rounded-md px-3">
+            {/* Country Picker */}
+            <CountryPicker
+              withFilter
+              withFlag
+              withCallingCode
+              withAlphaFilter
+              countryCode={countryCode}
+              onSelect={(country) => {
+                setCountryCode(country.cca2);
+                setCallingCode(country.callingCode[0]);
+              }}
+            />
+            <Text className="ml-2 text-lg">+{callingCode}</Text>
+
+            {/* Phone Number Input */}
+            <TextInput
+              keyboardType="number-pad"
+              className="flex-1 ml-3"
+              placeholder="Enter phone number"
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+            />
+          </View>
+        </View>
+      </ScrollView>
+
+      {/* Fixed Button at Bottom */}
+      <View className="p-4 bg-white">
+        <TouchableOpacity
+          className="bg-blue-900 w-[370px] p-5 rounded-lg self-center"
+          onPress={() => router.navigate("/auth/signup/otp/")}
+        >
+          <Text className="text-white text-center font-semibold">NEXT</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
