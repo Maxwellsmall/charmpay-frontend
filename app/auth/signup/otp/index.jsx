@@ -16,7 +16,7 @@ import { router } from "expo-router";
 
 const CELL_COUNT = 6; // Number of digits in the passcode
 
-const PasscodeScreen = ({ navigation }) => {
+const Page = ({ navigation }) => {
   const [value, setValue] = useState("");
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -27,15 +27,14 @@ const PasscodeScreen = ({ navigation }) => {
   return (
     <View className="flex-1 justify-center items-center bg-white">
       <View className="">
-        <Text className="text-blue-900  font-semibold  p-2">
+        <Text className="text-blue-900 text-start w-80 mr-10 mb-3 font-bold text-20">
           Create a Passcode
         </Text>
 
         <View className="grid">
-          <Text className="text-[#3A259C]">
-            This is the code you will use in logging into your
+          <Text className="text-[#3A259C] mb-3">
+            This is the code you will use in logging into your account
           </Text>
-          <Text className="text-[#3A259C]">account</Text>
         </View>
       </View>
       {/* Passcode Input */}
@@ -63,7 +62,9 @@ const PasscodeScreen = ({ navigation }) => {
 
       {/* Confirm Section */}
       <View>
-        <Text className="text-blue-900 mr-60 p-6 font-bold">Confirm</Text>
+        <Text className="text-blue-900 p-6 font-bold text-start w-96">
+          Confirm
+        </Text>
       </View>
       <CodeField
         ref={ref}
@@ -98,10 +99,10 @@ const PasscodeScreen = ({ navigation }) => {
   );
 };
 
-export default PasscodeScreen;
+export default Page;
 const styles = StyleSheet.create({
   codeFieldRoot: {
-    width: "90%",
+    width: "80%",
     alignSelf: "center",
     marginBottom: 20,
   },
