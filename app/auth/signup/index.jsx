@@ -59,6 +59,8 @@ export default function Page() {
               placeholder="Enter phone number"
               value={phoneNumber}
               onChangeText={setPhoneNumber}
+              maxLength={13}
+              minLength={7}
             />
           </View>
         </View>
