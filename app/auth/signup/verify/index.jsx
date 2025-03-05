@@ -16,7 +16,7 @@ import { router } from "expo-router";
 
 const CELL_COUNT = 4; // Number of digits in the passcode
 
-const PasscodeScreen = ({ navigation }) => {
+const Page = ({ navigation }) => {
   const [value, setValue] = useState("");
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -25,7 +25,7 @@ const PasscodeScreen = ({ navigation }) => {
   });
 
   return (
-    <View className="flex-1 justify-center items-center bg-white">
+    <View className="flex-1 justify-start items-center bg-white">
       <View>
         <Text className="text-blue-900 mr-20 font-bold p-5">
           Verify your account
@@ -60,10 +60,9 @@ const PasscodeScreen = ({ navigation }) => {
         )}
       />
 
-      {/* Next Button */}
       <TouchableOpacity
-        className="bg-blue-900 mt-96  w-80 p-3 rounded-lg"
-        onPress={() => router.navigate("/auth/signup/verify/success")}
+        className="bg-blue-900 w-80 p-3 rounded-lg absolute bottom-3"
+        onPress={() => router.navigate("/auth/login/")}
       >
         <Text className="text-white text-center font-semibold">NEXT</Text>
       </TouchableOpacity>
@@ -71,7 +70,7 @@ const PasscodeScreen = ({ navigation }) => {
   );
 };
 
-export default PasscodeScreen;
+export default Page;
 const styles = StyleSheet.create({
   codeFieldRoot: {
     width: "60%",

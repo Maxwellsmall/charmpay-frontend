@@ -16,7 +16,7 @@ import {
 import { router } from "expo-router";
 const CELL_COUNT = 6; // Number of digits in the passcode
 
-const PasscodeScreen = ({ navigation }) => {
+const Page = ({ navigation }) => {
   const [value, setValue] = useState("");
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -24,11 +24,13 @@ const PasscodeScreen = ({ navigation }) => {
     setValue,
   });
   return (
-    <View className="flex-1 justify-center items-center bg-white">
+    <View className="flex-1 justify-start pt-10 items-center bg-white">
       <View>
-        <Text className="font-bold p-10 text-left text-[#3A259C]">Login</Text>
+        <Text className="w-[90%] font-bold mb-5 text-left text-[29px] text-[#3A259C]">
+          Login
+        </Text>
         <TextInput
-          className="h-10 px-4 placeholderTextColor-[#F5F5F5] bg-[#F5F5F5] w-80 rounded-md"
+          className="px-4 pt-4 placeholderTextColor-[#F5F5F5] bg-[#F5F5F5] w-80 rounded-md"
           placeholder="Email address"
         />
       </View>
@@ -54,16 +56,16 @@ const PasscodeScreen = ({ navigation }) => {
         )}
       />
       <TouchableOpacity
-        className="bg-blue-900 mt-96  w-80 p-3 rounded-lg"
+        className="bg-blue-900 absolute bottom-3 w-80 p-3 rounded-lg"
         onPress={() => router.navigate("dashboard")}
       >
-        <Text className="text-white text-center font-semibold">NXT</Text>
+        <Text className="text-white text-center font-semibold">NEXT</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default PasscodeScreen;
+export default Page;
 const styles = StyleSheet.create({
   codeFieldRoot: {
     width: "90%",
