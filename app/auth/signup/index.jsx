@@ -8,11 +8,20 @@ import {
 import React, { useState } from "react";
 import { router } from "expo-router";
 import CountryPicker from "react-native-country-picker-modal";
+import useApi from "@/app/hooks/useApi";
 
 export default function Page() {
+  const { storeData } = useApi;
   const [countryCode, setCountryCode] = useState("NG"); // Default Nigeria
   const [callingCode, setCallingCode] = useState("234"); // Default country code
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setlastName] = useState("");
+  const [email, setEmail] = useState("");
+
+  const handleStore = () => {
+    storeData(firstName, lastName, phoneNumber, countryCode, email);
+  };
 
   return (
     <View className="flex-1 bg-white">
@@ -27,14 +36,17 @@ export default function Page() {
           <TextInput
             className="mb-3 px-4 bg-[#F5F5F5] w-96 h-[50px] rounded-md"
             placeholder="First Name"
+            onChangeText={(text) => setFirstName(text)}
           />
           <TextInput
             className="mb-3 px-5 bg-[#F5F5F5] w-96 h-[50px] rounded-md"
             placeholder="Last Name"
+            onChangeText={(text) => setlastName(text)}
           />
           <TextInput
             className="mb-3 px-5 bg-[#F5F5F5] w-96 h-[50px] rounded-md"
             placeholder="Email"
+            onChangeText={(text) => setEmail(text)}
           />
 
           {/* Phone Number Input with Country Picker */}
@@ -69,7 +81,7 @@ export default function Page() {
       <View className="p-4 bg-white">
         <TouchableOpacity
           className="bg-blue-900 w-80 p-3 rounded-lg self-center"
-          onPress={() => router.navigate("/auth/signup/otp/")}
+          onPress={handleStore}
         >
           <Text className="text-white text-center font-semibold">NEXT</Text>
         </TouchableOpacity>
