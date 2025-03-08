@@ -30,7 +30,7 @@ const Page = ({ navigation }) => {
           Login
         </Text>
         <TextInput
-          className="px-4 pt-4 placeholderTextColor-[#F5F5F5] bg-[#F5F5F5] w-80 rounded-md"
+          className="px-4 pt-4 placeholderTextColor-[#F5F5F5] bg-[#F5F5F5] w-96 rounded-md"
           placeholder="Email address"
         />
       </View>
@@ -56,8 +56,8 @@ const Page = ({ navigation }) => {
         )}
       />
       <TouchableOpacity
-        className="bg-blue-900 absolute bottom-3 w-80 p-3 rounded-lg"
-        onPress={() => router.navigate("dashboard")}
+        className="bg-blue-900 absolute bottom-3 w-96 p-3 rounded-lg"
+        onPress={() => router.navigate("dashboard/")}
       >
         <Text className="text-white text-center font-semibold">NEXT</Text>
       </TouchableOpacity>

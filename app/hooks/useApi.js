@@ -13,44 +13,43 @@ const validatePhoneNumber = (phoneNumber) => {
   return phoneRegex.test(phoneNumber);
 };
 
-const signup = async (
-  firstname,
-  lastname,
-  phoneNumber,
-  passcode,
-  transactionPin,
-  countryCode,
-  email
-) => {
+const signup = async (transactionPin, setLoading) => {
   try {
+    router.navigate("/auth/signup/verify/success");
+    setLoading(true);
+    if (!transactionPin) {
+      Alert.alert("", "Create a transaction pin before submission");
+      return;
+    }
+    const storedData = await AsyncStorage.getItem("credentials");
+    const credentials = JSON.parse(storedData);
+
+    credentials.transactionPin = transactionPin;
+    console.log(credentials);
     const response = await axios.post(
       "https://charmpay-backend.vercel.app/api/auth/signup",
-      {
-        firstname,
-        lastname,
-        phoneNumber,
-        passcode,
-        transactionPin,
-        countryCode,
-        email,
-      }
+      credentials
     );
     console.log(response.data);
+    Alert.alert("", "Created a bonified account successfully");
+    router.navigate("/auth/signup/verify/success");
     return response.data;
   } catch (error) {
     console.log(error);
+  } finally {
+    setLoading(false);
   }
 };
 
 const storeData = async (
-  firstname,
-  lastname,
+  firstName,
+  lastName,
   phoneNumber,
   countryCode,
   email
 ) => {
   try {
-    if (!firstname || !lastname || !phoneNumber || !countryCode || !email) {
+    if (!firstName || !lastName || !phoneNumber || !countryCode || !email) {
       Alert.alert("", "please fill up form before submission");
       return;
     }
@@ -65,8 +64,8 @@ const storeData = async (
     await AsyncStorage.setItem(
       "credentials",
       JSON.stringify({
-        firstname,
-        lastname,
+        firstName,
+        lastName,
         phoneNumber,
         countryCode,
         email,
@@ -83,4 +82,26 @@ const storeData = async (
   }
 };
 
-export default { signup, storeData };
+const updateStorage = async (passcode, confirmPasscode) => {
+  try {
+    if (!passcode || !confirmPasscode) {
+      Alert.alert("", "Please insert passcode before submission");
+      return;
+    }
+    if (passcode !== confirmPasscode) {
+      Alert.alert("", "The passcodes does not match");
+      return;
+    }
+    const data = await AsyncStorage.getItem("credentials");
+    const credentials = JSON.parse(data);
+
+    credentials.passCode = passcode;
+    await AsyncStorage.setItem("credentials", JSON.stringify(credentials));
+
+    router.navigate("/auth/signup/otp/passcode");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export default { signup, storeData, updateStorage };

@@ -1,10 +1,11 @@
- import React, { useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   rootStyle,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import {
   CodeField,
@@ -13,11 +14,14 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
 import { router } from "expo-router";
+import useApi from "@/app/hooks/useApi";
 
 const CELL_COUNT = 4;
 
 const Page = ({ navigation }) => {
+  const { signup } = useApi;
   const [value, setValue] = useState("");
+  const [loading, setLoading] = useState(false);
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -62,9 +66,10 @@ const Page = ({ navigation }) => {
 
       {/* Next Button */}
       <TouchableOpacity
-        className="bg-blue-900 absolute bottom-3 w-80 p-3 rounded-lg"
-        onPress={() => router.navigate("/auth/signup/verify/success")}
+        className="bg-blue-900 absolute bottom-3 w-96 flex-row justify-around p-3 rounded-lg"
+        onPress={() => signup(value, setLoading)}
       >
+        {loading && <ActivityIndicator size={25} color={"white"} />}
         <Text className="text-white text-center font-semibold">NEXT</Text>
       </TouchableOpacity>
     </View>
