@@ -2,7 +2,7 @@ import { router, Stack } from "expo-router";
 import "../global.css";
 import { StatusBar } from "react-native";
 import { View, Image, Text, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 
 export default function RootLayout() {
   return (
@@ -70,16 +70,29 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="dashboard"
+          name="dashboard/index"
           options={{
             headerTitle: "",
             headerShadowVisible: false,
+            headerStyle: { backgroundColor: "white" },
             headerLeft: () => (
               <View className="flex-row justify-center items-center">
-                <TouchableOpacity className="bg-[#F5F5F5] p-2 rounded-sm">
-                  <Ionicons name="user" size={24} color="blue" />
+                <TouchableOpacity className=" p-2 rounded-sm">
+                  <Image
+                    source={require("../assets/images/OIP.png")}
+                    className="w-14 rounded-full"
+                  />
                 </TouchableOpacity>
-                <Text className="font-bold ms-[10px] text-[#A8A8A8]">BACK</Text>
+                <Text className="font-bold ms-[10px] text-BLACK">
+                  HI, IBEH PROMISE
+                </Text>
+              </View>
+            ),
+            headerRight: () => (
+              <View className="flex-row justify-center items-center">
+                <TouchableOpacity>
+                  <FontAwesome name="bell-o" size={24} />
+                </TouchableOpacity>
               </View>
             ),
           }}

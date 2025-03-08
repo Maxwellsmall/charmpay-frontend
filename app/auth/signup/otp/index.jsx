@@ -13,10 +13,12 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
 import { router } from "expo-router";
+import useApi from "@/app/hooks/useApi";
 
 const CELL_COUNT = 6; // Number of digits in the passcode
 
 const Page = ({ navigation }) => {
+  const { updateStorage } = useApi;
   const [value, setValue] = useState("");
   const [confirmValue, setConfirmValue] = useState("");
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
@@ -91,8 +93,8 @@ const Page = ({ navigation }) => {
 
       {/* Next Button */}
       <TouchableOpacity
-        className="bg-blue-900 absolute bottom-3  w-80 p-3 rounded-lg"
-        onPress={() => router.navigate("/auth/signup/otp/passcode")}
+        className="bg-blue-900 absolute bottom-3  w-96 p-3 rounded-lg"
+        onPress={() => updateStorage(value, confirmValue)}
       >
         <Text className="text-white text-center font-semibold">NEXT</Text>
       </TouchableOpacity>
