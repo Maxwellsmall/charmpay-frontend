@@ -57,7 +57,7 @@ const Page = ({ navigation }) => {
       />
       <TouchableOpacity
         className="bg-blue-900 absolute bottom-3 w-96 p-3 rounded-lg"
-        onPress={() => router.navigate("dashboard/")}
+        onPress={() => router.navigate("/dashboard/settings")}
       >
         <Text className="text-white text-center font-semibold">NEXT</Text>
       </TouchableOpacity>
