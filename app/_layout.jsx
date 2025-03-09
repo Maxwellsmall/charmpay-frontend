@@ -97,6 +97,22 @@ export default function RootLayout() {
             ),
           }}
         />
+        <Stack.Screen
+          name="dashboard/settings/index"
+          options={{
+            headerTitle: "",
+            headerShadowVisible: false,
+            headerStyle: { backgroundColor: "white" },
+            headerLeft: () => (
+              <View className="flex-row justify-center items-center">
+                <TouchableOpacity>
+                  <Ionicons name="chevron-back" />
+                </TouchableOpacity>
+                <Text className="font-bold ms-[10px] text-BLACK">Settings</Text>
+              </View>
+            ),
+          }}
+        />
       </Stack>
     </>
   );
