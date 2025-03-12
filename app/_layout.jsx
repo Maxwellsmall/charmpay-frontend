@@ -105,7 +105,9 @@ export default function RootLayout() {
             headerStyle: { backgroundColor: "white" },
             headerLeft: () => (
               <View className="flex-row justify-center items-center">
-                <Ionicons name="arrow-back" />
+                <TouchableOpacity>
+                  <Ionicons name="chevron-back" />
+                </TouchableOpacity>
                 <Text className="font-bold ms-[10px] text-BLACK">Settings</Text>
               </View>
             ),

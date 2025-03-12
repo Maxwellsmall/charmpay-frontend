@@ -81,7 +81,7 @@ export default function Page() {
       <View className="p-4 bg-white">
         <TouchableOpacity
           className="bg-blue-900 w-96 p-3 rounded-lg self-center"
-          onPress={() => router.navigate("/dashboard/settings/limit")}
+          onPress={handleStore}
         >
           <Text className="text-white text-center font-semibold">NEXT</Text>
         </TouchableOpacity>
