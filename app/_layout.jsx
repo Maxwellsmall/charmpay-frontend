@@ -98,7 +98,7 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="dashboard/settings/index"
+          name="settings/index"
           options={{
             headerTitle: "",
             headerShadowVisible: false,
@@ -133,7 +133,7 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="dashboard/settings/settings"
+          name="settings/settings"
           options={{
             headerTitle: "",
             headerShadowVisible: false,
@@ -161,7 +161,7 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="dashboard/profile/index"
+          name="auth/transaction/index"
           options={{
             headerTitle: "",
             headerShadowVisible: false,
@@ -173,7 +173,7 @@ export default function RootLayout() {
                 </TouchableOpacity>
 
                 <Text className="font-bold ms-[10px] text-BLACK">
-                  Account Limit
+                  Transaction History
                 </Text>
               </View>
             ),

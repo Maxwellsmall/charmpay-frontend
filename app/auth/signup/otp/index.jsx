@@ -101,7 +101,8 @@ const Page = ({ navigation }) => {
       {/* Next Button */}
       <TouchableOpacity
         className="bg-blue-900 absolute bottom-3 w-96 p-3 rounded-lg"
-        onPress={updateStorage}
+        // onPress={updateStorage}
+        onPress={() => router.navigate("auth/transaction/index")}
       >
         <Text className="text-white text-center font-semibold">NEXT</Text>
       </TouchableOpacity>

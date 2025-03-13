@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 export default function Page() {
   return (
@@ -40,7 +41,7 @@ export default function Page() {
               </TouchableOpacity>
             </View>
           </View>
-          <View className="mt-5 w-96 p-2">
+          <View className="mt-5 w-96 p-4">
             <View className="flex flex-col gap-8">
               <View className="flex-row">
                 <View className="flex-row items-center">
@@ -49,10 +50,11 @@ export default function Page() {
                     Transaction History
                   </Text>
                 </View>
-                <View className="ml-[170px]">
+                <View className="ml-[150px]">
                   <TouchableOpacity
                     // onPress={() => navigation.navigate("LoginSettings")}
                     className="flex-row items-center"
+                    onPress={() => router.navigate("/transaction/index")}
                   >
                     <Ionicons name="chevron-forward" size={20} color="black" />
                   </TouchableOpacity>
@@ -63,7 +65,7 @@ export default function Page() {
                   <Ionicons name="speedometer-outline" size={20} />
                   <Text className="text-black text-lg">Account Limits</Text>
                 </View>
-                <View className="ml-[200px]">
+                <View className="ml-[180px]">
                   <TouchableOpacity
                     // onPress={() => navigation.navigate("LoginSettings")}
                     className="flex-row items-center"
@@ -79,7 +81,7 @@ export default function Page() {
                     Customer Care Service
                   </Text>
                 </View>
-                <View className="ml-44">
+                <View className="ml-[133px]">
                   <TouchableOpacity
                     // onPress={() => navigation.navigate("LoginSettings")}
                     className="flex-row items-center"
@@ -93,7 +95,7 @@ export default function Page() {
                   <Ionicons name="reorder-three-outline" size={20} />
                   <Text className="text-black text-lg">Invitation</Text>
                 </View>
-                <View className="ml-[235px]">
+                <View className="ml-[215px]">
                   <TouchableOpacity
                     // onPress={() => navigation.navigate("LoginSettings")}
                     className="flex-row items-center"
@@ -107,7 +109,7 @@ export default function Page() {
                   <Ionicons name="star-outline" size={20} />
                   <Text className="text-black text-lg">Rate Us</Text>
                 </View>
-                <View className="ml-[243px]">
+                <View className="ml-[225px]">
                   <TouchableOpacity
                     // onPress={() => navigation.navigate("LoginSettings")}
                     className="flex-row items-center"
@@ -121,7 +123,7 @@ export default function Page() {
                   <Ionicons name="pencil" size={20} />
                   <Text className="text-black text-lg">Edit Your Profile</Text>
                 </View>
-                <View className="ml-56">
+                <View className="ml-[175px]">
                   <TouchableOpacity
                     // onPress={() => navigation.navigate("LoginSettings")}
                     className="flex-row items-center"
@@ -135,7 +137,7 @@ export default function Page() {
                   <Ionicons name="speedometer-outline" size={20} />
                   <Text className="text-black text-lg">Account Limits</Text>
                 </View>
-                <View className="ml-56">
+                <View className="ml-[180px]">
                   <TouchableOpacity
                     // onPress={() => navigation.navigate("LoginSettings")}
                     className="flex-row items-center"
@@ -151,7 +153,7 @@ export default function Page() {
                     Customer Care Services
                   </Text>
                 </View>
-                <View className="ml-40">
+                <View className="ml-[125px]">
                   <TouchableOpacity
                     // onPress={() => navigation.navigate("LoginSettings")}
                     className="flex-row items-center"
