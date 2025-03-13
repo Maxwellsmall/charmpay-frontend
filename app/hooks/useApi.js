@@ -50,7 +50,7 @@ const storeData = async (
 ) => {
   try {
     if (!firstName || !lastName || !phoneNumber || !countryCode || !email) {
-      Alert.alert("", "please fill up form before submission");
+      Alert.alert("", "Please fill up form before submission");
       return;
     }
     if (!validateEmail(email)) {
