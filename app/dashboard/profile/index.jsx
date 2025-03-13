@@ -1,16 +1,16 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
-import imagePicker from "expo-image-picker";
+import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 
 export default function Page() {
-  const [image, setImage] = "";
+  const [image, setImage] = useState("");
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
+      mediaTypes: ["images"],
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
@@ -25,16 +25,30 @@ export default function Page() {
     <View className="p-16 items-center flex-1 bg-[#F2F2F2]">
       <View className="justify-center items-center">
         <View>
-          <TouchableOpacity onPress={pickImage}>
-            <Text>Pick an image from camera roll</Text>
-            {image && <Image source={{ uri: image }} />}
-          </TouchableOpacity>
+          <View>
+            {image ? (
+              <Image
+                source={{ uri: image }}
+                width={200}
+                height={200}
+                className="w-[200px] h-[200px] rounded-full border-[2px] border-blue-700"
+              />
+            ) : (
+              <View className="w-[200px] h-[200px] rounded-full border-[2px] border-blue-700"></View>
+            )}
+            <TouchableOpacity
+              onPress={pickImage}
+              className="absolute bottom-5 right-3 bg-[white] p-[8px] rounded-full"
+            >
+              <Ionicons name="camera" size={24} />
+            </TouchableOpacity>
+          </View>
         </View>
-        <View className="bg-white mt-20 w-96 p-14 rounded-xl elevation-lg shadow-slate-950">
-          <View className="flex flex-col gap-4">
-            <View className="flex-row">
-              <Text className="text-lg text-black">Full name</Text>
-              <View className="ml-20">
+        <View className="bg-white mt-10 w-96 p-[20px] rounded-xl elevation-lg shadow-slate-950">
+          <View className="flex">
+            <View className="flex-row mb-[20px]">
+              <Text className="text-lg text-black font-bold">Full name</Text>
+              <View className="ml-auto">
                 <TouchableOpacity
                   // onPress={() => navigation.navigate("LoginSettings")}
                   className="flex-row items-center"
@@ -44,9 +58,11 @@ export default function Page() {
                 </TouchableOpacity>
               </View>
             </View>
-            <View className="flex-row">
-              <Text className="text-black text-lg">Mobile Number</Text>
-              <View className="ml-14">
+            <View className="flex-row mb-[20px]">
+              <Text className="text-black text-lg font-bold">
+                Mobile Number
+              </Text>
+              <View className="ml-auto">
                 <TouchableOpacity
                   // onPress={() => navigation.navigate("LoginSettings")}
                   className="flex-row items-center"
@@ -56,9 +72,9 @@ export default function Page() {
                 </TouchableOpacity>
               </View>
             </View>
-            <View className="flex-row">
-              <Text className="text-black text-lg">Email</Text>
-              <View className="ml-28">
+            <View className="flex-row mb-[20px]">
+              <Text className="text-black text-lg font-bold">Email</Text>
+              <View className="ml-auto">
                 <TouchableOpacity
                   // onPress={() => navigation.navigate("LoginSettings")}
                   className="flex-row items-center"
@@ -68,16 +84,18 @@ export default function Page() {
                 </TouchableOpacity>
               </View>
             </View>
-            <View className="flex-row">
-              <Text className="text-black text-lg">Date of Birth</Text>
-              <View className="ml-36">
+            <View className="flex-row mb-[20px]">
+              <Text className="text-black text-lg font-bold">
+                Date of Birth
+              </Text>
+              <View className="ml-auto">
                 <Text>**_**_14</Text>
               </View>
             </View>
 
             <View className="flex-row">
-              <Text className="text-black text-lg">Nick Name</Text>
-              <View className="ml-28">
+              <Text className="text-black text-lg font-bold">Nick Name</Text>
+              <View className="ml-auto">
                 <TouchableOpacity
                   // onPress={() => navigation.navigate("LoginSettings")}
                   className="flex-row items-center"
