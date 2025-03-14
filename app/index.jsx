@@ -1,13 +1,15 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { Fontisto } from "@expo/vector-icons";
 import { router, useRouter } from "expo-router";
-import { Route } from "expo-router/build/Route";
 
 export default function Page() {
   return (
     <View className="flex-1 justify-center items-center bg-white">
       <View>
-        <TouchableOpacity className="bg-blue-900 mt-4 w-80 p-3 rounded-lg">
+        <TouchableOpacity
+          className="bg-blue-900 mt-4 w-80 p-3 rounded-lg"
+          onPress={() => router.navigate("./auth/login/")}
+        >
           <Text className="text-white text-center font-semibold">LOGIN</Text>
         </TouchableOpacity>
         <TouchableOpacity
