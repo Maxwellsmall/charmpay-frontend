@@ -66,11 +66,11 @@ const Page = ({ navigation }) => {
 
       {/* Next Button */}
       <TouchableOpacity
-        className="bg-blue-900 absolute bottom-3 w-96 flex-row justify-around p-3 rounded-lg"
+        className="bg-blue-900 absolute bottom-3 w-96 flex-row justify-center p-3 rounded-lg"
         onPress={() => signup(value, setLoading)}
       >
         {loading && <ActivityIndicator size={25} color={"white"} />}
-        <Text className="text-white text-center font-semibold">NEXT</Text>
+        <Text className="text-white text-center font-semibold ml-3">NEXT</Text>
       </TouchableOpacity>
     </View>
   );

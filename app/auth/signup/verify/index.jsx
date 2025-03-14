@@ -5,6 +5,7 @@ import {
   StyleSheet,
   rootStyle,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import {
   CodeField,
@@ -13,11 +14,14 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
 import { router } from "expo-router";
+import useApi from "@/app/hooks/useApi";
 
 const CELL_COUNT = 4; // Number of digits in the passcode
 
 const Page = ({ navigation }) => {
+  const { verify, requestOtp } = useApi;
   const [value, setValue] = useState("");
+  const [loading, setLoading] = useState(false);
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -59,11 +63,17 @@ const Page = ({ navigation }) => {
           </View>
         )}
       />
-
       <TouchableOpacity
-        className="bg-blue-900 w-80 p-3 rounded-lg absolute bottom-3"
-        onPress={() => router.navigate("/auth/login/")}
+        className="p-3 rounded-lg flex-row justify-center items-center"
+        onPress={() => requestOtp(setLoading)}
       >
+        <Text className="text-black text-right font-semibold">Resend Otp</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        className="bg-blue-900 w-96 p-3 rounded-lg absolute bottom-5 flex-row justify-center items-center"
+        onPress={() => verify(value, setLoading)}
+      >
+        {loading && <ActivityIndicator size={24} color={"white"} />}
         <Text className="text-white text-center font-semibold">NEXT</Text>
       </TouchableOpacity>
     </View>
