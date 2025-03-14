@@ -87,6 +87,88 @@ export default function Layout() {
           name="auth/login/index"
           options={{ headerTitle: "", headerShadowVisible: false }}
         />
+        <Stack.Screen
+          name="settings/index"
+          options={{
+            headerTitle: "",
+            headerShadowVisible: false,
+            headerStyle: { backgroundColor: "white" },
+            headerLeft: () => (
+              <View className="flex-row justify-center items-center">
+                <TouchableOpacity>
+                  <Ionicons name="chevron-back" />
+                </TouchableOpacity>
+                <Text className="font-bold ms-[10px] text-BLACK">Settings</Text>
+              </View>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="dashboard/profile/index"
+          options={{
+            headerTitle: "",
+            headerShadowVisible: false,
+            headerStyle: { backgroundColor: "white" },
+            headerLeft: () => (
+              <View className="flex-row justify-center items-center">
+                <TouchableOpacity>
+                  <Ionicons name="arrow-back" size={24} />
+                </TouchableOpacity>
+
+                <Text className="font-bold ms-[10px] text-BLACK">
+                  Edit profile
+                </Text>
+              </View>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="settings/settings"
+          options={{
+            headerTitle: "",
+            headerShadowVisible: false,
+            headerStyle: { backgroundColor: "white" },
+            headerLeft: () => (
+              <View className="flex-row justify-center items-center">
+                <TouchableOpacity className=" p-2 rounded-sm">
+                  <Image
+                    source={require("../assets/images/OIP.png")}
+                    className="w-14 rounded-full"
+                  />
+                </TouchableOpacity>
+                <Text className="font-bold ms-[10px] text-BLACK">
+                  HI, IBEH PROMISE
+                </Text>
+              </View>
+            ),
+            headerRight: () => (
+              <View className="flex-row justify-center items-center">
+                <TouchableOpacity>
+                  <Ionicons name="settings-outline" size={24} />
+                </TouchableOpacity>
+              </View>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="auth/transaction/index"
+          options={{
+            headerTitle: "",
+            headerShadowVisible: false,
+            headerStyle: { backgroundColor: "white" },
+            headerLeft: () => (
+              <View className="flex-row justify-center items-center">
+                <TouchableOpacity>
+                  <Ionicons name="arrow-back" size={24} />
+                </TouchableOpacity>
+
+                <Text className="font-bold ms-[10px] text-BLACK">
+                  Transaction History
+                </Text>
+              </View>
+            ),
+          }}
+        />
       </Stack>
     </>
   );

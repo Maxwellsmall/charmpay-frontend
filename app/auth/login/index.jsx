@@ -65,6 +65,7 @@ const Page = () => {
       <TouchableOpacity
         className="bg-blue-900 w-96 p-3 rounded-lg absolute bottom-5 flex-row justify-center items-center"
         onPress={() => login(phoneNumber, value, setLoading)}
+      
       >
         {loading && <ActivityIndicator size={24} color={"white"} />}
         <Text className="text-white text-center font-semibold">NEXT</Text>
