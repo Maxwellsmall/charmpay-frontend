@@ -15,7 +15,7 @@ const validatePhoneNumber = (phoneNumber) => {
 
 const signup = async (transactionPin, setLoading) => {
   try {
-    router.navigate("/auth/signup/verify/success");
+    // router.navigate("/auth/signup/verify/success");
     setLoading(true);
     if (!transactionPin) {
       Alert.alert("", "Create a transaction pin before submission");
@@ -36,6 +36,55 @@ const signup = async (transactionPin, setLoading) => {
     return response.data;
   } catch (error) {
     console.log(error);
+    console.log(error.response.data.message);
+    Alert.alert("", error.response.data.message);
+  } finally {
+    setLoading(false);
+  }
+};
+const login = async (phoneNumber, passCode, setLoading) => {
+  try {
+    router.navigate("/(tabs)/dashboard");
+    setLoading(true);
+    if (!phoneNumber || !passCode) {
+      Alert.alert("", "Input your details before submission");
+      return;
+    }
+
+    const response = await axios.post(
+      "https://charmpay-backend.vercel.app/api/auth/login",
+      {
+        phoneNumber,
+        passCode,
+      }
+    );
+    console.log(response.data);
+    const token = response.data.token;
+    console.log(token);
+    AsyncStorage.setItem("token", token);
+
+    // check if user have verified thier email
+    if (!response.data.user.emailVerified) {
+      router.navigate("/auth/signup/verify");
+      await requestOtp();
+      Alert.alert(
+        "",
+        "Logged in successfully, verify your account to continue"
+      );
+
+      return response.data;
+    }
+    Alert.alert("", "Logged in successfully");
+
+    router.navigate("/(tabs)/dashboard");
+    return response.data;
+  } catch (error) {
+    console.log(error.response.data);
+    Alert.alert(
+      "",
+      (error.response.data.message && error.response.data.message) ||
+        "Check your internet connection"
+    );
   } finally {
     setLoading(false);
   }
@@ -104,4 +153,52 @@ const updateStorage = async (passcode, confirmPasscode) => {
   }
 };
 
-export default { signup, storeData, updateStorage };
+const verify = async (otp, setLoading) => {
+  try {
+    router.navigate("/auth/login");
+    setLoading(true);
+    const storedData = await AsyncStorage.getItem("credentials");
+    const credentials = JSON.parse(storedData);
+
+    const email = credentials.email;
+    console.log(email, otp);
+    const response = await axios.post(
+      "https://charmpay-backend.vercel.app/api/auth/verify/account",
+      {
+        email,
+        otp,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error.response.data.error);
+    Alert.alert("", error.response.data.error.message);
+  } finally {
+    setLoading(false);
+  }
+};
+const requestOtp = async (setLoading) => {
+  try {
+    setLoading(true);
+    const storedData = await AsyncStorage.getItem("credentials");
+    const credentials = JSON.parse(storedData);
+
+    const email = credentials.email;
+    console.log(email);
+    const response = await axios.post(
+      "https://charmpay-backend.vercel.app/api/auth/verify/requestOTP",
+      {
+        email,
+      }
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    // console.log(error.response.data.error);
+    Alert.alert("", error.response.data.error.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
+export default { signup, login, storeData, updateStorage, verify, requestOtp };

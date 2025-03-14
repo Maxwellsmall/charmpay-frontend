@@ -6,6 +6,7 @@ import {
   rootStyle,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import {
   CodeField,
@@ -15,9 +16,13 @@ import {
 } from "react-native-confirmation-code-field";
 import { router } from "expo-router";
 const CELL_COUNT = 6; // Number of digits in the passcode
+import useApi from "@/app/hooks/useApi";
 
-const Page = ({ navigation }) => {
+const Page = () => {
+  const { login } = useApi;
   const [value, setValue] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [loading, setLoading] = useState(false);
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -31,7 +36,9 @@ const Page = ({ navigation }) => {
         </Text>
         <TextInput
           className="px-4 pt-4 placeholderTextColor-[#F5F5F5] bg-[#F5F5F5] w-96 rounded-md"
-          placeholder="Email address"
+          placeholder="Phone Number"
+          onChangeText={(text) => setPhoneNumber(text)}
+          keyboardType="number-pad"
         />
       </View>
       <CodeField
@@ -56,9 +63,11 @@ const Page = ({ navigation }) => {
         )}
       />
       <TouchableOpacity
-        className="bg-blue-900 absolute bottom-3 w-96 p-3 rounded-lg"
-        onPress={() => router.navigate("/dashboard/settings")}
+        className="bg-blue-900 w-96 p-3 rounded-lg absolute bottom-5 flex-row justify-center items-center"
+        onPress={() => login(phoneNumber, value, setLoading)}
+      
       >
+        {loading && <ActivityIndicator size={24} color={"white"} />}
         <Text className="text-white text-center font-semibold">NEXT</Text>
       </TouchableOpacity>
     </View>

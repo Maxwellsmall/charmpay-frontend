@@ -20,7 +20,7 @@ export default function Page() {
   const [email, setEmail] = useState("");
 
   const handleStore = () => {
-    storeData(firstName, lastName, phoneNumber, countryCode, email);
+    storeData(firstName, lastName, phoneNumber, callingCode, email);
   };
 
   return (
