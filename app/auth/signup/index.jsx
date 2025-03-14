@@ -82,7 +82,7 @@ export default function Page() {
         <TouchableOpacity
           className="bg-blue-900 w-96 p-3 rounded-lg self-center"
           // onPress={handleStore}
-          onPress={() => router.navigate("/dashboard/profile")}
+          onPress={() => router.navigate("/settings/settings")}
         >
           <Text className="text-white text-center font-semibold">NEXT</Text>
         </TouchableOpacity>

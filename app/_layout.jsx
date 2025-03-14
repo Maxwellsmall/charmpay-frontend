@@ -106,8 +106,9 @@ export default function RootLayout() {
             headerLeft: () => (
               <View className="flex-row justify-center items-center">
                 <TouchableOpacity>
-                  <Ionicons name="chevron-back" />
+                  <Ionicons name="arrow-back" size={24} />
                 </TouchableOpacity>
+
                 <Text className="font-bold ms-[10px] text-BLACK">Settings</Text>
               </View>
             ),
@@ -138,7 +139,8 @@ export default function RootLayout() {
             headerTitle: "",
             headerShadowVisible: false,
             headerStyle: { backgroundColor: "white" },
-            headerLeft: () => (
+            headerTitleAlign: "center", 
+            headerTitle: () => (
               <View className="flex-row justify-center items-center">
                 <TouchableOpacity className=" p-2 rounded-sm">
                   <Image
