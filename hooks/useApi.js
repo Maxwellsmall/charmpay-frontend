@@ -15,7 +15,6 @@ const validatePhoneNumber = (phoneNumber) => {
 
 const signup = async (transactionPin, setLoading) => {
   try {
-    // router.navigate("/auth/signup/verify/success");
     setLoading(true);
     if (!transactionPin) {
       Alert.alert("", "Create a transaction pin before submission");
@@ -44,7 +43,6 @@ const signup = async (transactionPin, setLoading) => {
 };
 const login = async (phoneNumber, passCode, setLoading) => {
   try {
-    router.navigate("/(tabs)/dashboard");
     setLoading(true);
     if (!phoneNumber || !passCode) {
       Alert.alert("", "Input your details before submission");
@@ -200,5 +198,30 @@ const requestOtp = async (setLoading) => {
     setLoading(false);
   }
 };
+const getProfile = async (setLoading) => {
+  try {
+    setLoading(true);
+    const token = await AsyncStorage.getItem("token");
+    console.log(token);
+    const response = await axios.get(
+      "https://charmpay-backend.vercel.app/api/user/me"
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    // console.log(error.response.data.error);
+    Alert.alert("", error.response.data.error.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
-export default { signup, login, storeData, updateStorage, verify, requestOtp };
+export default {
+  signup,
+  login,
+  storeData,
+  updateStorage,
+  verify,
+  requestOtp,
+  getProfile,
+};

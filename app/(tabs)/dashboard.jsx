@@ -1,11 +1,20 @@
 import { View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
-import React from "react";
+import { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import Inbox from "@/components/Inbox";
 import Task from "@/components/Task";
 import Transactions from "@/components/Transactions";
+import useApi from "@/hooks/useApi";
 
 export default function Page() {
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState({});
+  const { getProfile } = useApi;
+
+  useEffect(() => {
+    const response = getProfile();
+    setResult(response);
+  }, []);
   return (
     <View className="flex-1 bg-white">
       <View className="flex-row justify-between items-center px-5">

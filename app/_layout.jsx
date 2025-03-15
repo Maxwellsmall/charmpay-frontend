@@ -173,11 +173,11 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
-          name="/tasks/index"
+          name="tasks/index"
           options={{
             headerTitle: "",
             headerShadowVisible: false,
-            headerShown: false,
+            headerShown: true,
           }}
         />
       </Stack>

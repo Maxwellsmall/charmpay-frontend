@@ -16,7 +16,7 @@ export default function TabLayout() {
         name="tasks"
         options={{
           title: "Your Tasks",
-          tabBarIcon: () => <Ionicons name="home" size={20} />
+          tabBarIcon: () => <Ionicons name="list" size={20} />,
         }}
       />
     </Tabs>
