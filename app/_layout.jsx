@@ -146,7 +146,7 @@ export default function Layout() {
             ),
             headerRight: () => (
               <View className="flex-row justify-center items-center">
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => router.navigate("/settings")}>
                   <Ionicons name="settings-outline" size={24} />
                 </TouchableOpacity>
               </View>

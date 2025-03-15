@@ -145,7 +145,7 @@ const updateStorage = async (passcode, confirmPasscode) => {
     credentials.passCode = passcode;
     await AsyncStorage.setItem("credentials", JSON.stringify(credentials));
 
-    router.navigate("/auth/signup/otp/passcode");
+    // router.navigate("/auth/signup/otp/passcode");
   } catch (error) {
     console.log(error);
   }

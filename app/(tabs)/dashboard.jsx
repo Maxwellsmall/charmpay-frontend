@@ -5,6 +5,7 @@ import Inbox from "@/components/Inbox";
 import Task from "@/components/Task";
 import Transactions from "@/components/Transactions";
 import useApi from "@/hooks/useApi";
+import { router } from "expo-router";
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
@@ -18,7 +19,10 @@ export default function Page() {
   return (
     <View className="flex-1 bg-white">
       <View className="flex-row justify-between items-center px-5">
-        <TouchableOpacity className="flex-row justify-normal items-center">
+        <TouchableOpacity
+          className="flex-row justify-normal items-center"
+          onPress={() => router.navigate("/settings/settings")}
+        >
           <Image
             source={require("../../assets/images/OIP.png")}
             className="rounded-full w-[40px]"

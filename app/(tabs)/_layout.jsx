@@ -18,7 +18,7 @@ export default function TabLayout() {
           title: "Your Tasks",
           tabBarIcon: () => <Ionicons name="list" size={20} />,
         }}
-      />
+      />s
     </Tabs>
   );
 }

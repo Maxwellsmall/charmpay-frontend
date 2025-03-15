@@ -45,11 +45,7 @@ export default function Page() {
             <View className="flex">
               <View className="flex-row mb-[30px]">
                 <View className="flex-row items-center">
-                  <Ionicons
-                    name="reorder-three-outline"
-                    className="me-[10px]"
-                    size={24}
-                  />
+                  <Ionicons name="list" className="me-[10px]" size={24} />
                   <Text className="text-black font-bold text-lg">
                     Transaction History
                   </Text>
@@ -58,7 +54,7 @@ export default function Page() {
                   <TouchableOpacity
                     // onPress={() => navigation.navigate("LoginSettings")}
                     className="flex-row items-center"
-                    onPress={() => router.navigate("/transaction/index")}
+                    onPress={() => router.navigate("/auth/transaction")}
                   >
                     <Ionicons name="chevron-forward" size={20} color="black" />
                   </TouchableOpacity>
@@ -149,6 +145,7 @@ export default function Page() {
                   <TouchableOpacity
                     // onPress={() => navigation.navigate("LoginSettings")}
                     className="flex-row items-center"
+                    onPress={() => router.navigate("/dashboard/profile")}
                   >
                     <Ionicons name="chevron-forward" size={20} color="black" />
                   </TouchableOpacity>

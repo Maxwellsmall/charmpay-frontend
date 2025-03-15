@@ -12,7 +12,7 @@ import useApi from "@/hooks/useApi";
 const CELL_COUNT = 6; // Number of digits in the passcode
 
 const Page = ({ navigation }) => {
-  const { updateStorage } = useApi;
+  // const { updateStorage } = useApi;
   const [value, setValue] = useState("");
   const [confirmValue, setConfirmValue] = useState("");
 
@@ -101,7 +101,8 @@ const Page = ({ navigation }) => {
       {/* Next Button */}
       <TouchableOpacity
         className="bg-blue-900 absolute bottom-3 w-96 p-3 rounded-lg"
-        onPress={updateStorage}
+        // onPress={updateStorage}
+        onPress={() => router.navigate("/auth/signup/otp/passcode")}
       >
         <Text className="text-white text-center font-semibold">NEXT</Text>
       </TouchableOpacity>
@@ -113,7 +114,7 @@ export default Page;
 
 const styles = StyleSheet.create({
   codeFieldRoot: {
-    width: "80%",
+    width: "90%",
     alignSelf: "center",
     marginBottom: 20,
   },
