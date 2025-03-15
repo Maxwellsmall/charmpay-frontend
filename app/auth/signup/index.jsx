@@ -8,7 +8,7 @@ import {
 import React, { useState } from "react";
 import { router } from "expo-router";
 import CountryPicker from "react-native-country-picker-modal";
-import useApi from "@/app/hooks/useApi";
+import useApi from "@/hooks/useApi";
 
 export default function Page() {
   const { storeData } = useApi;
