@@ -7,40 +7,40 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function Layout() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [token, setToken] = useState(null);
   const router = useRouter();
 
-  useEffect(() => {
-    setTimeout(() => {
-      getToken();
-    }, [5000]);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     getToken();
+  //   }, [2000]);
+  // }, []);
 
-  const getToken = async () => {
-    try {
-      const data = await AsyncStorage.getItem("token");
-      console.log(data);
-      setToken(data);
-      if (!data || data === "null") {
-        router.replace("/");
-      } else {
-        router.replace("/(tabs)/dashboard");
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setTimeout(() => setLoading(false), 3000);
-    }
-  };
+  // const getToken = async () => {
+  //   try {
+  //     const data = await AsyncStorage.getItem("token");
+  //     console.log(data);
+  //     setToken(data);
+  //     if (!data || data === "null") {
+  //       router.replace("/");
+  //     } else {
+  //       router.replace("/(tabs)/dashboard");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     setTimeout(() => setLoading(false), 1000);
+  //   }
+  // };
 
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="blue" />
-      </View>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+  //       <ActivityIndicator size="large" color="blue" />
+  //     </View>
+  //   );
+  // }
 
   return (
     <>
@@ -49,6 +49,13 @@ export default function Layout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
           name="index"
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="auth/index"
           options={{
             headerShown: true,
             headerShadowVisible: false,
@@ -62,6 +69,18 @@ export default function Layout() {
                 <Text style={{ fontWeight: "bold" }}>Charmpay</Text>
               </View>
             ),
+          }}
+        />
+        <Stack.Screen
+          name="screens/firstBoard"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="screens/secondBoard"
+          options={{
+            headerShown: false,
           }}
         />
         <Stack.Screen
