@@ -16,9 +16,9 @@ import {
 import { router } from "expo-router";
 import useApi from "@/hooks/useApi";
 
-const CELL_COUNT = 4; // Number of digits in the passcode
+const CELL_COUNT = 6; // Number of digits in the passcode
 
-const Page = ({ navigation }) => {
+const Page = () => {
   const { verify, requestOtp } = useApi;
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,16 +29,15 @@ const Page = ({ navigation }) => {
   });
 
   return (
-    <View className="flex-1 justify-start items-center bg-white">
+    <View className="flex-1 justify-start items-center bg-white pt-[20px]">
       <View>
-        <Text className="text-blue-900 mr-20 font-bold p-5">
+        <Text className="text-blue-900 font-[600] text-[20px] mb-[10px]">
           Verify your account
         </Text>
-        <View className="grid p-3">
-          <Text className="text-[#3A259C] ml-5">
-            An OTP has been sent to your Email address paste,
+        <View className=" mb-[20px]">
+          <Text className="text-[#3A259C]">
+            An OTP has been sent to your Email address paste, to verify.
           </Text>
-          <Text className="text-[#3A259C] ml-5">to verify.</Text>
         </View>
       </View>
       {/* Passcode Input */}

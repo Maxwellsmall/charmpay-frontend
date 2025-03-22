@@ -8,17 +8,41 @@ export default function TabLayout() {
       <Tabs.Screen
         name="dashboard"
         options={{
+          title: "Home",
           headerShown: false,
-          tabBarIcon: () => <Ionicons name="home" size={20} />,
+          tabBarIcon: ({ focused, size }) => (
+            <Ionicons name={focused ? "home" : "home-outline"} size={size} />
+          ),
         }}
       />
       <Tabs.Screen
         name="tasks"
         options={{
-          title: "Your Tasks",
-          tabBarIcon: () => <Ionicons name="list" size={20} />,
+          title: "Tasks",
+          tabBarIcon: ({ focused, size }) => (
+            <Ionicons
+              name={focused ? "checkbox" : "checkbox-outline"}
+              size={size}
+            />
+          ),
         }}
-      />s
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          sceneStyle: {
+            backgroundColor: "white",
+          },
+          title: "Profile",
+          headerShown: false,
+          tabBarIcon: ({ focused, size }) => (
+            <Ionicons
+              name={focused ? "person" : "person-outline"}
+              size={size}
+            />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

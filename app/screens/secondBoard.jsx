@@ -1,54 +1,57 @@
-// src/screens/OnboardingScreenTwo.js
-import React from "react";
+import { useEffect, useRef } from "react";
+import { useRouter } from "expo-router";
 import {
   View,
   Text,
+  Image,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  Dimensions,
+  Animated,
 } from "react-native";
 
-const { width } = Dimensions.get("window");
+const Page = () => {
+  const router = useRouter();
+  const moveAnim = useRef(new Animated.Value(200)).current; // Start off-screen (left)
 
-const Page = ({ navigation }) => {
+  useEffect(() => {
+    Animated.timing(moveAnim, {
+      toValue: 0, // Move to original position
+      duration: 500, // Duration: 1 second
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
-      {/* Skip Button */}
-      <TouchableOpacity
-        style={styles.skipButton}
-        onPress={() => {
-          // If skipping here, maybe go directly to main app
-          // For now, let's just console log or do nothing
-          console.log("Skipped Onboarding");
-        }}
+      {/* Moving Image */}
+      <Animated.View
+        style={[styles.balanceCard, { transform: [{ translateX: moveAnim }] }]}
       >
-        <Text style={styles.skipText}>Skip</Text>
-      </TouchableOpacity>
-
-      {/* Circle in background */}
-      <View style={styles.circle} />
-
-      {/* Overlapping rectangles */}
-      <View style={styles.rectBlue} />
-      <View style={styles.rectGreen} />
+        <Image
+          source={require("../../assets/images/Boarding_Second_Image.png")}
+          style={{ marginHorizontal: 50, width: "100%" }}
+          resizeMode="contain"
+        />
+      </Animated.View>
 
       {/* Text Content */}
-      <View style={styles.textContainer}>
-        <Text style={styles.heading}>Pay Your Way Worldwide</Text>
+      <Animated.View
+        style={[
+          styles.textContainer,
+          { transform: [{ translateY: moveAnim }] },
+        ]}
+      >
+        <Text style={styles.heading}>Pay Your Way WorldWide</Text>
         <Text style={styles.description}>
-          Spend, save, and grow their money all in one place until the job is
-          done.
+          Spend, save, and grow their money all together in on place.
         </Text>
-      </View>
+      </Animated.View>
 
       {/* Get Started Button */}
       <TouchableOpacity
         style={styles.getStartedButton}
-        onPress={() => {
-          // Navigate to your app’s main screen or next step
-          console.log("Get Started pressed");
-        }}
+        onPress={() => router.navigate("/auth")}
       >
         <Text style={styles.getStartedText}>Get Started</Text>
       </TouchableOpacity>
@@ -58,73 +61,44 @@ const Page = ({ navigation }) => {
 
 export default Page;
 
-const CIRCLE_SIZE = 250;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    position: "relative",
     paddingHorizontal: 20,
+    position: "relative",
+    paddingTop: 40,
   },
-  skipButton: {
-    alignSelf: "flex-end",
-    marginTop: 10,
-  },
-  skipText: {
-    fontSize: 16,
-    color: "#999",
-  },
-  circle: {
-    position: "absolute",
-    top: 80,
-    left: (width - CIRCLE_SIZE) / 2, // center horizontally
-    width: CIRCLE_SIZE,
-    height: CIRCLE_SIZE,
-    backgroundColor: "#E0E0E0",
-    borderRadius: CIRCLE_SIZE / 2,
-    zIndex: -1,
-  },
-  rectBlue: {
-    position: "absolute",
-    top: 120,
-    left: width * 0.25,
-    width: 120,
-    height: 80,
-    backgroundColor: "#4E6EF2",
-    borderRadius: 8,
-  },
-  rectGreen: {
-    position: "absolute",
-    top: 150,
-    left: width * 0.45,
-    width: 120,
-    height: 80,
-    backgroundColor: "#39D697",
-    borderRadius: 8,
+  balanceCard: {
+    marginTop: 40,
+    alignItems: "center",
+    justifyContent: "center",
   },
   textContainer: {
-    marginTop: 320,
+    marginTop: 40,
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
   heading: {
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 16,
+    marginTop: 20,
   },
   description: {
+    paddingHorizontal: 50,
     fontSize: 14,
     color: "#666",
     textAlign: "center",
     lineHeight: 20,
   },
   getStartedButton: {
+    width: "90%",
     position: "absolute",
     bottom: 40,
     alignSelf: "center",
-    backgroundColor: "#6200EE",
+    backgroundColor: "#301B92",
     paddingVertical: 14,
     paddingHorizontal: 50,
     borderRadius: 8,
@@ -133,5 +107,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "600",
+    textAlign: "center",
   },
 });

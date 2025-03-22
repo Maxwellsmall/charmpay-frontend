@@ -36,7 +36,12 @@ const signup = async (transactionPin, setLoading) => {
   } catch (error) {
     console.log(error);
     console.log(error.response.data.message);
-    Alert.alert("", error.response.data.message);
+    Alert.alert(
+      "",
+      error.response.data.message
+        ? error.response.data.message
+        : "Check your Internet connection"
+    );
   } finally {
     setLoading(false);
   }
@@ -123,13 +128,13 @@ const storeData = async (
     const credentials = JSON.parse(data);
 
     console.log(credentials);
-    router.navigate("/auth/signup/otp/");
+    router.navigate("/auth/signup/code/passcode");
   } catch (error) {
     console.error("Error storing data:", error);
   }
 };
 
-const updateStorage = async (passcode, confirmPasscode) => {
+const storePasscode = async (passcode, confirmPasscode) => {
   try {
     if (!passcode || !confirmPasscode) {
       Alert.alert("", "Please insert passcode before submission");
@@ -145,15 +150,15 @@ const updateStorage = async (passcode, confirmPasscode) => {
     credentials.passCode = passcode;
     await AsyncStorage.setItem("credentials", JSON.stringify(credentials));
 
-    // router.navigate("/auth/signup/otp/passcode");
+    router.navigate("/auth/signup/code/transactionCode");
   } catch (error) {
     console.log(error);
   }
 };
 
 const verify = async (otp, setLoading) => {
+  console.log("otp", otp);
   try {
-    router.navigate("/auth/login");
     setLoading(true);
     const storedData = await AsyncStorage.getItem("credentials");
     const credentials = JSON.parse(storedData);
@@ -167,10 +172,16 @@ const verify = async (otp, setLoading) => {
         otp,
       }
     );
+    router.navigate("/auth/login");
     return response.data;
   } catch (error) {
-    console.log(error.response.data.error);
-    Alert.alert("", error.response.data.error.message);
+    console.log(error.response.data.message);
+    Alert.alert(
+      "",
+      error.response.data.message
+        ? error.response.data.message
+        : "Check Your Internet Connection"
+    );
   } finally {
     setLoading(false);
   }
@@ -202,15 +213,23 @@ const getProfile = async (setLoading) => {
   try {
     setLoading(true);
     const token = await AsyncStorage.getItem("token");
-    console.log(token);
     const response = await axios.get(
-      "https://charmpay-backend.vercel.app/api/user/me"
+      "https://charmpay-backend.vercel.app/api/user/me",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     console.log(response.data);
     return response.data;
   } catch (error) {
-    // console.log(error.response.data.error);
-    Alert.alert("", error.response.data.error.message);
+    Alert.alert(
+      "",
+      error.response.data.message
+        ? error.response.data.message
+        : "Check Your Internet Connection"
+    );
   } finally {
     setLoading(false);
   }
@@ -220,7 +239,7 @@ export default {
   signup,
   login,
   storeData,
-  updateStorage,
+  storePasscode,
   verify,
   requestOtp,
   getProfile,

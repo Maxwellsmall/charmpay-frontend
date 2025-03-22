@@ -1,102 +1,152 @@
-import { View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
 import { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import Inbox from "@/components/Inbox";
 import Task from "@/components/Task";
 import Transactions from "@/components/Transactions";
 import useApi from "@/hooks/useApi";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 
 export default function Page() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState({});
+  const [userData, setUserData] = useState({});
   const { getProfile } = useApi;
+  const [showBalance, setShowBalance] = useState(false);
 
   useEffect(() => {
-    const response = getProfile();
-    setResult(response);
+    const handleFetch = async () => {
+      const response = await getProfile(setLoading);
+      setUserData(response);
+    };
+    handleFetch();
   }, []);
+
+  if (loading) {
+    return (
+      <View className="flex-1 w-full justify-center items-center">
+        <ActivityIndicator size={30} />
+      </View>
+    );
+  }
+
+  const TransactionCard = ({ status }) => {
+    return (
+      <View className="border-[#D9D9D9] border-[1px] p-4 my-[10px] rounded-[10px]">
+        <View className="flex-row items-center justify-between">
+          <Text className="text-[14px] font-bold">
+            Transfer to CHUKWUCHEBEM ESTHER
+          </Text>
+          <Text className="text-[14px] font-bold">+NGN 50,000</Text>
+        </View>
+        <View className="flex-row items-center justify-between">
+          <Text className="text-[12px]">Feb 27th, 01:48:19</Text>
+          <View className="bg-green-200 p-1 rounded-[10px]">
+            <Text className="text-[12px] text-green-700">{status}</Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  // return <Redirect href="/profile" />;
+
   return (
     <View className="flex-1 bg-white">
       <View className="flex-row justify-between items-center px-5">
         <TouchableOpacity
           className="flex-row justify-normal items-center"
-          onPress={() => router.navigate("/settings/settings")}
+          onPress={() => router.navigate("/profile")}
         >
           <Image
             source={require("../../assets/images/OIP.png")}
             className="rounded-full w-[40px]"
           />
-          <Text className="text-bold ml-3 font-semibold">
-            HI, Chukwuchebem David
-          </Text>
+          <View className="ml-3">
+            <Text className="text-bold font-bold">
+              HI, {userData?.firstName} {userData?.lastName}
+            </Text>
+            <Text className="text-[#616060] font-semibold text-[10px]">
+              Good morning!
+            </Text>
+          </View>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Ionicons name="notifications-outline" size={37} />
+          <Ionicons name="notifications-outline" size={30} />
         </TouchableOpacity>
       </View>
-      <ScrollView
-        contentContainerStyle={{
-          width: "100%", // Makes content full width
-          alignItems: "center",
-          paddingTop: 20,
-        }}
-      >
-        <View className="w-full px-5 ">
-          <View className="border-4 border-[#C4BEE1] p-5 rounded-lg">
-            <View className="flex-row items-center justify-between">
-              <View className="flex-row items-center">
-                <Ionicons name="shield-checkmark" size={24} color={"#301B92"} />
-                <Text className="text-[12px] font-semibold ml-2">
-                  Available balance
+      <ScrollView className="mx-5 mt-[25px]">
+        <View>
+          <View className="flex-row items-center">
+            <Text className="me-3 text-[16px] font-bold text-[#616060]">
+              Total balance
+            </Text>
+            <TouchableOpacity
+              onPress={() => setShowBalance((prev) => !prev)}
+              className="p-[5px]"
+            >
+              <Ionicons name={showBalance ? "eye-off" : "eye"} size={16} />
+            </TouchableOpacity>
+          </View>
+          <Text className="text-[35px] font-bold mt-[10px]">
+            NGN {showBalance ? "12,300.00" : "****"}
+          </Text>
+
+          <View className="flex-row items-center justify-between mt-[15px]">
+            <TouchableOpacity
+              className="bg-blue-900 p-2 rounded-[25px]"
+              onPress={() => router.navigate("/tasks/create")}
+            >
+              <View className="flex-row items-center justify-center">
+                <View className="bg-white rounded-full items-center justify-center p-1 me-1">
+                  <Ionicons name="add" color={"black"} size={20} />
+                </View>
+                <Text className="text-white text-[14px] font-semibold">
+                  Create Task
                 </Text>
-                <TouchableOpacity>
-                  <Ionicons name="eye-sharp" size={24} color={"#301B92"} />
-                </TouchableOpacity>
               </View>
-              <TouchableOpacity className="flex-row items-center">
-                <Text className="text-[12px] font-semibold">
-                  Transaction History
+            </TouchableOpacity>
+            <TouchableOpacity className="bg-blue-900 p-2 rounded-[25px]">
+              <View className="flex-row items-center justify-center">
+                <View className="bg-white rounded-full items-center justify-center p-1 me-1">
+                  <Ionicons name="arrow-up" color={"black"} size={20} />
+                </View>
+                <Text className="text-white text-[14px] font-semibold">
+                  Withdraw
                 </Text>
-                <Ionicons name="chevron-forward" size={15} color={"black"} />
-              </TouchableOpacity>
-            </View>
-            <View className="flex-row items-center mt-10 justify-between">
-              <Text className="text-[12px] font-semibold">C$200,000</Text>
-              <TouchableOpacity className="bg-blue-700 rounded-full p-2 px-3">
-                <Text className="text-white text-[12px] font-semibold">
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity className="bg-blue-900 p-2 rounded-[25px]">
+              <View className="flex-row items-center justify-center">
+                <View className="bg-white rounded-full items-center justify-center p-1 me-1">
+                  <Ionicons name="arrow-down" color={"black"} size={20} />
+                </View>
+                <Text className="text-white text-[14px] font-semibold">
                   Add money
                 </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View className="pt-10">
-            <TouchableOpacity className="flex-row justify-between items-center">
-              <Text className="font-semibold">Task Inbox</Text>
-              <Ionicons name="chevron-forward" size={15} color={"black"} />
+              </View>
             </TouchableOpacity>
-            <Inbox />
-            <Inbox />
-            <Inbox />
           </View>
-          <View className="pt-10">
-            <TouchableOpacity className="flex-row justify-between items-center">
-              <Text className="font-semibold">Assigned Task</Text>
-              <Ionicons name="chevron-forward" size={15} color={"black"} />
-            </TouchableOpacity>
-            <Task />
-            <Task />
-            <Task />
+        </View>
+        <View className="mt-[20px]">
+          <View className="flex-row items-center justify-between">
+            <Text className="text-[20px] font-semibold">Transactions</Text>
+            <Text className="text-[16px] text-blue-500">See all</Text>
           </View>
-          <View className="pt-10">
-            <TouchableOpacity className="flex-row justify-between items-center">
-              <Text className="font-semibold">Transactions</Text>
-              <Ionicons name="chevron-forward" size={15} color={"black"} />
-            </TouchableOpacity>
-            <Transactions />
-            <Transactions />
-            <Transactions />
-          </View>
+          <TransactionCard status="Successs" />
+          <TransactionCard status="Successs" />
+          <TransactionCard status="Successs" />
+          <TransactionCard status="Successs" />
+          {/* {Array(5).map((item, index) => (
+          ))} */}
         </View>
       </ScrollView>
     </View>

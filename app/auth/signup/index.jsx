@@ -4,11 +4,13 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import { router } from "expo-router";
 import CountryPicker from "react-native-country-picker-modal";
 import useApi from "@/hooks/useApi";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Page() {
   const { storeData } = useApi;
@@ -24,33 +26,49 @@ export default function Page() {
   };
 
   return (
-    <View className="flex-1 bg-white">
+    <SafeAreaView className="bg-white flex-1">
       <ScrollView
         contentContainerStyle={{
-          flexGrow: 1,
           justifyContent: "center",
           alignItems: "center",
+          marginTop: 20,
         }}
       >
-        <View className="w-full items-center">
+        <View className="w-full px-5">
+          <Text className="text-[24px] font-bold">Welcome to Charmpay</Text>
+          <Text className="text-[14px] text-[#5e5a5aa6] font-semibold mt-[10px]">
+            Create an escrow account....No more risk,just fair transactions.
+          </Text>
+        </View>
+        <View className="w-full items-center pt-6">
+          <Text className="w-[90%] font-bold my-3 text-left text-[12px]">
+            First Name
+          </Text>
           <TextInput
-            className="mb-3 px-4 bg-[#F5F5F5] w-96 h-[50px] rounded-md"
+            className="mb-3 px-4 bg-[#F5F5F5] w-[90%] h-[50px] rounded-md"
             placeholder="First Name"
             onChangeText={(text) => setFirstName(text)}
           />
+          <Text className="w-[90%] font-bold my-3 text-left text-[12px]">
+            Last Name
+          </Text>
           <TextInput
-            className="mb-3 px-5 bg-[#F5F5F5] w-96 h-[50px] rounded-md"
+            className="mb-3 px-5 bg-[#F5F5F5] w-[90%] h-[50px] rounded-md"
             placeholder="Last Name"
             onChangeText={(text) => setlastName(text)}
           />
+          <Text className="w-[90%] font-bold my-3 text-left text-[12px]">
+            Email
+          </Text>
           <TextInput
-            className="mb-3 px-5 bg-[#F5F5F5] w-96 h-[50px] rounded-md"
+            className="mb-3 px-5 bg-[#F5F5F5] w-[90%] h-[50px] rounded-md"
             placeholder="Email"
             onChangeText={(text) => setEmail(text)}
           />
-
-          {/* Phone Number Input with Country Picker */}
-          <View className="flex-row items-center bg-[#F5F5F5] w-96 h-[50px] rounded-md px-3">
+          <Text className="w-[90%] font-bold my-3 text-left text-[12px]">
+            Phone number
+          </Text>
+          <View className="flex-row items-center bg-[#F5F5F5] w-[90%] h-[50px] rounded-md px-3">
             {/* Country Picker */}
             <CountryPicker
               withFilter
@@ -76,16 +94,15 @@ export default function Page() {
             />
           </View>
         </View>
+        <View className=" bg-white">
+          <TouchableOpacity
+            className="bg-blue-900 w-96 mt-8 py-4 rounded-lg self-center"
+            onPress={handleStore}
+          >
+            <Text className="text-white text-center font-semibold">NEXT</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
-
-      <View className="p-4 bg-white">
-        <TouchableOpacity
-          className="bg-blue-900 w-96 p-3 rounded-lg self-center"
-          onPress={handleStore}
-        >
-          <Text className="text-white text-center font-semibold">NEXT</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 }

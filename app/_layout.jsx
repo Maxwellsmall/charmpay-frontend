@@ -5,6 +5,7 @@ import { ActivityIndicator, StatusBar } from "react-native";
 import { View, Image, Text, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
+import Header from "@/components/Header";
 
 export default function Layout() {
   const [loading, setLoading] = useState(false);
@@ -85,43 +86,115 @@ export default function Layout() {
         />
         <Stack.Screen
           name="auth/signup/index"
-          options={{ headerTitle: "Signup", headerShadowVisible: false }}
+          options={{
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerLeft: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  source={require("../assets/images/logo.png")}
+                  style={{ width: 48, height: 48, marginRight: 12 }}
+                />
+                <Text style={{ fontWeight: "bold" }}>Charmpay</Text>
+              </View>
+            ),
+          }}
         />
         <Stack.Screen
-          name="auth/signup/otp/index"
-          options={{ headerTitle: "", headerShadowVisible: false }}
+          name="auth/signup/code/transactionCode"
+          options={{
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerLeft: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  source={require("../assets/images/logo.png")}
+                  style={{ width: 48, height: 48, marginRight: 12 }}
+                />
+                <Text style={{ fontWeight: "bold" }}>Charmpay</Text>
+              </View>
+            ),
+          }}
         />
         <Stack.Screen
-          name="auth/signup/otp/passcode"
-          options={{ headerTitle: "", headerShadowVisible: false }}
+          name="auth/signup/code/passcode"
+          options={{
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerLeft: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  source={require("../assets/images/logo.png")}
+                  style={{ width: 48, height: 48, marginRight: 12 }}
+                />
+                <Text style={{ fontWeight: "bold" }}>Charmpay</Text>
+              </View>
+            ),
+          }}
         />
         <Stack.Screen
           name="auth/signup/verify/index"
-          options={{ headerTitle: "", headerShadowVisible: false }}
+          options={{
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerLeft: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  source={require("../assets/images/logo.png")}
+                  style={{ width: 48, height: 48, marginRight: 12 }}
+                />
+                <Text style={{ fontWeight: "bold" }}>Charmpay</Text>
+              </View>
+            ),
+          }}
         />
         <Stack.Screen
           name="auth/signup/verify/success"
-          options={{ headerTitle: "", headerShadowVisible: false }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="auth/login/index"
-          options={{ headerTitle: "", headerShadowVisible: false }}
+          options={{
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerLeft: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  source={require("../assets/images/logo.png")}
+                  style={{ width: 48, height: 48, marginRight: 12 }}
+                />
+                <Text style={{ fontWeight: "bold" }}>Charmpay</Text>
+              </View>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="settings/help/index"
+          options={{
+            header: () => <Header title="Help Center" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+            animation: "slide_from_right",
+          }}
         />
         <Stack.Screen
           name="settings/index"
           options={{
-            headerTitle: "",
+            header: () => <Header title="Settings" />,
             headerShadowVisible: false,
-            headerStyle: { backgroundColor: "white" },
-            headerLeft: () => (
-              <View className="flex-row justify-center items-center">
-                <TouchableOpacity>
-                  <Ionicons name="arrow-back" size={24} />
-                </TouchableOpacity>
-
-                <Text className="font-bold ms-[10px] text-BLACK">Settings</Text>
-              </View>
-            ),
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+            animation: "slide_from_right",
           }}
         />
         <Stack.Screen
@@ -197,6 +270,23 @@ export default function Layout() {
             headerTitle: "",
             headerShadowVisible: false,
             headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="tasks/create"
+          options={{
+            header: () => <Header title="Create Task" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="tasks/success"
+          options={{
+            headerShown: false,
           }}
         />
       </Stack>

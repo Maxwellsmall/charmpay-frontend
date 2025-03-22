@@ -12,8 +12,9 @@ export default function Page() {
         >
           <Text className="text-white text-center font-semibold">LOGIN</Text>
         </TouchableOpacity>
+        <Text className="text-center my-4 ">OR</Text>
         <TouchableOpacity
-          className="bg-[#F5F5F5] mt-4 w-80 p-3 rounded-lg"
+          className="bg-[#F5F5F5] w-80 p-3 rounded-lg"
           onPress={() => router.navigate("./auth/signup/")}
         >
           <Text className="text-black text-center font-semibold">SIGNUP</Text>

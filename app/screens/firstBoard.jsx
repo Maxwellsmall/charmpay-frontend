@@ -1,5 +1,4 @@
-// src/screens/OnboardingScreenOne.js
-import React from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "expo-router";
 import {
   View,
@@ -8,35 +7,50 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
+  Animated,
 } from "react-native";
 
 const Page = () => {
   const router = useRouter();
+  const moveAnim = useRef(new Animated.Value(200)).current; // Start off-screen (left)
+
+  useEffect(() => {
+    Animated.timing(moveAnim, {
+      toValue: 0, // Move to original position
+      duration: 500, // Duration: 1 second
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Skip Button */}
       <TouchableOpacity
         style={styles.skipButton}
-        onPress={() => {
-          // Handle skip action (maybe go to the last screen or main app)
-          router.navigate("/screens/secondBoard");
-        }}
+        onPress={() => router.navigate("/auth")}
       >
         <Text style={styles.skipText}>Skip</Text>
       </TouchableOpacity>
 
-      {/* Balance Card */}
-      <View style={styles.balanceCard}>
-        {/* <Text style={styles.balanceTitle}>Total Balance</Text>
-        <Text style={styles.balanceAmount}>$12,756.00</Text>
-        <TouchableOpacity style={styles.addMoneyButton}>
-          <Text style={styles.addMoneyText}>Add money</Text>
-        </TouchableOpacity> */}
-        <Image source={require("../../assets/images/Boarding_Image.png")} />
-      </View>
+      {/* Moving Image */}
+      <Animated.View
+        style={[styles.balanceCard, { transform: [{ translateX: moveAnim }] }]}
+      >
+        <Image
+          source={require("../../assets/images/Boarding_Image.png")}
+          // className="mx-[20px]"
+          style={{ marginHorizontal: 50, width: "100%" }}
+          resizeMode="contain"
+        />
+      </Animated.View>
 
       {/* Text Content */}
-      <View style={styles.textContainer}>
+      <Animated.View
+        style={[
+          styles.textContainer,
+          { transform: [{ translateY: moveAnim }] },
+        ]}
+      >
         <Text style={styles.heading}>
           Your Money, Protected. Your Transactions, Hassle-Free
         </Text>
@@ -44,14 +58,14 @@ const Page = () => {
           We know trust matters. That’s why we created an escrow payment system
           that ensures your money stays safe until the job is done.
         </Text>
-      </View>
+      </Animated.View>
 
       {/* Get Started Button */}
       <TouchableOpacity
         style={styles.getStartedButton}
-        onPress={() => navigation.navigate("OnboardingTwo")}
+        onPress={() => router.navigate("/screens/secondBoard")}
       >
-        <Text style={styles.getStartedText}>Get Started</Text>
+        <Text style={styles.getStartedText}>Next</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -67,47 +81,21 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   skipButton: {
-    alignSelf: "flex-end",
-    marginTop: 10,
+    alignSelf: "flex-start",
+    marginTop: 30,
+    borderWidth: 1,
+    padding: 5,
+    paddingHorizontal: 10,
+    borderRadius: 50,
   },
   skipText: {
     fontSize: 16,
-    color: "#999",
+    color: "#000",
   },
   balanceCard: {
     marginTop: 40,
-    backgroundColor: "#F8F8F8",
-    borderRadius: 12,
-    padding: 20,
     alignItems: "center",
     justifyContent: "center",
-    // shadow styles (if you want a card effect)
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-  balanceTitle: {
-    fontSize: 16,
-    color: "#555",
-    marginBottom: 4,
-  },
-  balanceAmount: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 12,
-  },
-  addMoneyButton: {
-    backgroundColor: "#6200EE",
-    borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-  },
-  addMoneyText: {
-    color: "#fff",
-    fontSize: 14,
-    fontWeight: "600",
   },
   textContainer: {
     marginTop: 40,
@@ -115,7 +103,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   heading: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 16,
@@ -127,10 +115,11 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   getStartedButton: {
+    width: "90%",
     position: "absolute",
     bottom: 40,
     alignSelf: "center",
-    backgroundColor: "#6200EE",
+    backgroundColor: "#301B92",
     paddingVertical: 14,
     paddingHorizontal: 50,
     borderRadius: 8,
@@ -139,5 +128,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "600",
+    textAlign: "center",
   },
 });

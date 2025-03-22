@@ -18,7 +18,7 @@ import useApi from "@/hooks/useApi";
 
 const CELL_COUNT = 4;
 
-const Page = ({ navigation }) => {
+const Page = () => {
   const { signup } = useApi;
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,9 +29,9 @@ const Page = ({ navigation }) => {
   });
 
   return (
-    <View className="flex-1 justify-center items-center bg-white">
-      <View>
-        <Text className="text-blue-900 mr-20 font-[600] text-[20px] p-5">
+    <View className="flex-1 items-center bg-white">
+      <View className="w-[90%] pt-10">
+        <Text className="text-blue-900 mr-20 font-[600] text-[20px] p-5 text-left">
           Create a transaction pin
         </Text>
       </View>
@@ -58,7 +58,7 @@ const Page = ({ navigation }) => {
       />
 
       <View className="grid">
-        <Text className="text-[#3A259C] w-80">
+        <Text className="text-[#3A259C] w-96">
           This is the pin you will use in making transaction from your Charmpay
           account
         </Text>
@@ -67,8 +67,8 @@ const Page = ({ navigation }) => {
       {/* Next Button */}
       <TouchableOpacity
         className="bg-blue-900 absolute bottom-3 w-96 flex-row justify-center p-3 rounded-lg"
-        // onPress={() => signup(value, setLoading)}
-        onPress={() => router.navigate("/auth/signup/verify/success")}
+        onPress={() => signup(value, setLoading)}
+        // onPress={() => router.navigate("/auth/signup/verify/success")}
       >
         {loading && <ActivityIndicator size={25} color={"white"} />}
         <Text className="text-white text-center font-semibold ml-3">NEXT</Text>
