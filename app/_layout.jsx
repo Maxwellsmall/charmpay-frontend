@@ -1,51 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter, Stack } from "expo-router";
 import "../global.css";
 import { ActivityIndicator, StatusBar } from "react-native";
 import { View, Image, Text, TouchableOpacity } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 import Header from "@/components/Header";
-
+import AuthProvider from "@/context/AuthProvider";
+import { AuthContext } from "@/context/AuthProvider";
 export default function Layout() {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState(null);
   const router = useRouter();
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     getToken();
-  //   }, [2000]);
-  // }, []);
-
-  // const getToken = async () => {
-  //   try {
-  //     const data = await AsyncStorage.getItem("token");
-  //     console.log(data);
-  //     setToken(data);
-  //     if (!data || data === "null") {
-  //       router.replace("/");
-  //     } else {
-  //       router.replace("/(tabs)/dashboard");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setTimeout(() => setLoading(false), 1000);
-  //   }
-  // };
-
-  // if (loading) {
-  //   return (
-  //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-  //       <ActivityIndicator size="large" color="blue" />
-  //     </View>
-  //   );
-  // }
-
   return (
-    <>
-      <StatusBar barStyle={"dark-content"} />
+    <AuthProvider>
+      <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
@@ -289,7 +257,43 @@ export default function Layout() {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="funding/index"
+          options={{
+            header: () => <Header title="add money" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            headerLeft: () => <Text>Hello world</Text>,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="dashboard/notifications"
+          options={{
+            header: () => (
+              <Header title="Notifications" isNotification={true} />
+            ),
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="dashboard/taskDetails/index"
+          options={{
+            header: () => <Header title="Task Details" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
       </Stack>
-    </>
+    </AuthProvider>
   );
 }

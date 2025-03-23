@@ -4,8 +4,29 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import profileImage from "@/assets/images/OIP.png";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import useApi from "@/hooks/useApi";
+import { Alert } from "react-native";
 
 export default function profile() {
+  const { logout } = useApi;
+  const handleLogout = () => {
+    console.log("hu");
+    Alert.alert("Loggout?", "Are you sure you want to logout?", [
+      {
+        text: "CANCEL",
+        onPress: () => {
+          return;
+        },
+      },
+      {
+        text: "LOGOUT",
+        style: "destructive",
+        onPress: () => {
+          logout();
+        },
+      },
+    ]);
+  };
   return (
     <SafeAreaView>
       <ScrollView>
@@ -56,7 +77,10 @@ export default function profile() {
             </View>
             <Ionicons name="chevron-forward" size={24} />
           </TouchableOpacity>
-          <TouchableOpacity className="flex-row py-3 items-center border-b-2 border-gray-200">
+          <TouchableOpacity
+            className="flex-row py-3 items-center border-b-2 border-gray-200"
+            onPress={handleLogout}
+          >
             <View className="bg-[#FCE8EA] p-3 rounded-full me-3">
               <Ionicons name="exit-outline" size={24} color={"red"} />
             </View>

@@ -36,7 +36,7 @@ const Page = () => {
         </Text>
         <View className=" mb-[20px]">
           <Text className="text-[#3A259C]">
-            An OTP has been sent to your Email address paste, to verify.
+            An OTP has been sent to your Email address, paste to verify.
           </Text>
         </View>
       </View>
@@ -82,7 +82,7 @@ const Page = () => {
 export default Page;
 const styles = StyleSheet.create({
   codeFieldRoot: {
-    width: "60%",
+    width: "90%",
     alignSelf: "center",
     marginBottom: 20,
   },

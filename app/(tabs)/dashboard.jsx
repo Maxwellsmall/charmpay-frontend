@@ -79,7 +79,9 @@ export default function Page() {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.navigate("/dashboard/notifications")}
+        >
           <Ionicons name="notifications-outline" size={30} />
         </TouchableOpacity>
       </View>
@@ -97,7 +99,7 @@ export default function Page() {
             </TouchableOpacity>
           </View>
           <Text className="text-[35px] font-bold mt-[10px]">
-            NGN {showBalance ? "12,300.00" : "****"}
+            NGN {showBalance ? `${userData.wallet.currentBalance}.00` : "****"}
           </Text>
 
           <View className="flex-row items-center justify-between mt-[15px]">
@@ -124,7 +126,10 @@ export default function Page() {
                 </Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity className="bg-blue-900 p-2 rounded-[25px]">
+            <TouchableOpacity
+              className="bg-blue-900 p-2 rounded-[25px] "
+              onPress={() => router.navigate("/funding")}
+            >
               <View className="flex-row items-center justify-center">
                 <View className="bg-white rounded-full items-center justify-center p-1 me-1">
                   <Ionicons name="arrow-down" color={"black"} size={20} />

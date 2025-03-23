@@ -3,7 +3,12 @@ import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 
-export default function Header({ title, isModal, setIsVisible }) {
+export default function Header({
+  title,
+  isModal,
+  setIsVisible,
+  isNotification,
+}) {
   return (
     <View className="flex-row py-3 px-5">
       <TouchableOpacity
@@ -15,6 +20,14 @@ export default function Header({ title, isModal, setIsVisible }) {
       <View className="ms-auto me-auto items-center justify-center">
         <Text className="text-center text-[20px] font-bold">{title}</Text>
       </View>
+      {isNotification && (
+        <TouchableOpacity
+          onPress={() => router.navigate("/settings/settings")}
+          className="bg-[#f5f5f5] p-2 rounded-full"
+        >
+          <Ionicons name={"settings-outline"} size={24} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

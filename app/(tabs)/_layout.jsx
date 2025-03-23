@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { TouchableOpacity, Image, Text } from "react-native";
+import Header from "@/components/Header";
 
 export default function TabLayout() {
   return (
@@ -19,6 +20,7 @@ export default function TabLayout() {
         name="tasks"
         options={{
           title: "Tasks",
+          header: () => <Header title="Task" />,
           tabBarIcon: ({ focused, size }) => (
             <Ionicons
               name={focused ? "checkbox" : "checkbox-outline"}
