@@ -6,7 +6,6 @@ import { View, Image, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Header from "@/components/Header";
 import AuthProvider from "@/context/AuthProvider";
-import { AuthContext } from "@/context/AuthProvider";
 export default function Layout() {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState(null);
@@ -166,53 +165,28 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
-          name="dashboard/profile/index"
+          name="settings/personalDetails"
           options={{
-            headerTitle: "",
+            header: () => <Header title="Personal Details" />,
             headerShadowVisible: false,
-            headerStyle: { backgroundColor: "white" },
-            headerLeft: () => (
-              <View className="flex-row justify-center items-center">
-                <TouchableOpacity>
-                  <Ionicons name="arrow-back" size={24} />
-                </TouchableOpacity>
-
-                <Text className="font-bold ms-[10px] text-BLACK">
-                  Edit profile
-                </Text>
-              </View>
-            ),
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
           }}
         />
         <Stack.Screen
-          name="settings/settings"
+          name="settings/profile/edit"
           options={{
-            headerTitle: "",
+            header: () => <Header title="Edit Profile" />,
             headerShadowVisible: false,
-            headerStyle: { backgroundColor: "white" },
-            headerTitleAlign: "center",
-            headerTitle: () => (
-              <View className="flex-row justify-center items-center">
-                <TouchableOpacity className=" p-2 rounded-sm">
-                  <Image
-                    source={require("../assets/images/OIP.png")}
-                    className="w-14 rounded-full"
-                  />
-                </TouchableOpacity>
-                <Text className="font-bold ms-[10px] text-BLACK">
-                  HI, IBEH PROMISE
-                </Text>
-              </View>
-            ),
-            headerRight: () => (
-              <View className="flex-row justify-center items-center">
-                <TouchableOpacity onPress={() => router.navigate("/settings")}>
-                  <Ionicons name="settings-outline" size={24} />
-                </TouchableOpacity>
-              </View>
-            ),
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
           }}
         />
+
         <Stack.Screen
           name="auth/transaction/index"
           options={{
@@ -260,7 +234,7 @@ export default function Layout() {
         <Stack.Screen
           name="funding/index"
           options={{
-            header: () => <Header title="add money" />,
+            header: () => <Header title="Add money" />,
             headerShadowVisible: false,
             headerShown: true,
             headerLeft: () => <Text>Hello world</Text>,
@@ -270,11 +244,22 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
-          name="dashboard/notifications"
+          name="dashboard/notifications/index"
           options={{
             header: () => (
               <Header title="Notifications" isNotification={true} />
             ),
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="dashboard/notifications/settings"
+          options={{
+            header: () => <Header title="Notifications" />,
             headerShadowVisible: false,
             headerShown: true,
             contentStyle: {

@@ -1,14 +1,31 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
+import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import profileImage from "@/assets/images/OIP.png";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import useApi from "@/hooks/useApi";
-import { Alert } from "react-native";
 
 export default function profile() {
-  const { logout } = useApi;
+  const { getProfile, logout } = useApi;
+  const [loading, setLoading] = useState(false);
+  const [userProfile, setUserProfile] = useState({});
+  useEffect(() => {
+    const handleFetch = async () => {
+      const response = await getProfile(setLoading);
+      setUserProfile(response);
+    };
+    handleFetch();
+  }, []);
+
   const handleLogout = () => {
     console.log("hu");
     Alert.alert("Loggout?", "Are you sure you want to logout?", [
@@ -27,6 +44,13 @@ export default function profile() {
       },
     ]);
   };
+  if (loading) {
+    return (
+      <View className="flex-1 w-full justify-center items-center">
+        <ActivityIndicator size={30} />
+      </View>
+    );
+  }
   return (
     <SafeAreaView>
       <ScrollView>
@@ -37,7 +61,7 @@ export default function profile() {
             resizeMode="cover"
           />
           <Text className="text-[24px] font-bold mt-[10px]">
-            Akalugwu Desmond
+            {userProfile?.firstName} {userProfile?.lastName}
           </Text>
           <Text className="text-[11px] text-[#1E1E1E] mt-[5px]">
             Personal Account
@@ -46,7 +70,7 @@ export default function profile() {
         <View className="px-5 mt-[20px]">
           <TouchableOpacity
             className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
-            onPress={() => router.navigate("/settings")}
+            onPress={() => router.navigate("/settings/")}
           >
             <View className="flex-row items-center">
               <View className="bg-[#f5f5f5] p-3 rounded-full me-3">

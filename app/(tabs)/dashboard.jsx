@@ -57,8 +57,6 @@ export default function Page() {
     );
   };
 
-  // return <Redirect href="/profile" />;
-
   return (
     <View className="flex-1 bg-white">
       <View className="flex-row justify-between items-center px-5">
@@ -80,7 +78,7 @@ export default function Page() {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => router.navigate("/dashboard/notifications")}
+          onPress={() => router.navigate("/dashboard/notifications/")}
         >
           <Ionicons name="notifications-outline" size={30} />
         </TouchableOpacity>

@@ -6,7 +6,7 @@ export default function Page() {
     <View className="flex-1 px-5 items-center">
       <View className="flex-row justify-between items-center w-full mb-5">
         <Text className="text-[14px] text-neutral-400">Title</Text>
-        <Text className="font-semibold">Fix th dog's cage</Text>
+        <Text className="font-semibold">Fix the dog's cage</Text>
       </View>
       <View className="flex-row justify-between items-center w-full mb-5">
         <Text className="text-[14px] text-neutral-400">Description</Text>
@@ -29,10 +29,10 @@ export default function Page() {
       </View>
       <View className="flex-row justify-between items-center w-full mb-5">
         <Text className="text-[14px] text-neutral-400">Payment Method</Text>
-        <Text className="font-semibold w-32"> Escro payment</Text>
+        <Text className="font-semibold w-32"> Escrow payment</Text>
       </View>
       <View className="flex-row justify-between items-center w-full mb-5">
-        <Text className="text-[14px] text-neutral-400">Transactio Id</Text>
+        <Text className="text-[14px] text-neutral-400">Transaction Id</Text>
         <Text className="font-semibold w-32"> 756xx5gxxd567kkio9cxx35</Text>
       </View>
       <View className="flex-row justify-between items-center w-full mb-5">

@@ -257,7 +257,6 @@ const getProfile = async (setLoading) => {
     setLoading(false);
   }
 };
-
 const logout = async () => {
   try {
     await AsyncStorage.removeItem("token");
@@ -268,7 +267,13 @@ const logout = async () => {
     console.log(error ? error : "Check Your Internet Connection");
   }
 };
-const addFunding = async (amount, setIsFunding, setUrl, setLoading) => {
+const addFunding = async (
+  amount,
+  setIsFunding,
+  setUrl,
+  setLoading,
+  setReferenceId
+) => {
   try {
     const token = await AsyncStorage.getItem("token");
     setLoading(true);
@@ -292,35 +297,100 @@ const addFunding = async (amount, setIsFunding, setUrl, setLoading) => {
       }
     );
 
-    console.log(response.data.data.authorization_url);
+    console.log(response.data.data);
     setUrl(response.data.data.authorization_url);
+    setReferenceId(response.data.data.reference);
     setIsFunding(true);
     return response.data;
   } catch (error) {
     console.log(error.response.data);
-    // Alert.alert(
-    //   "",
-    //   (error.response.data.message && error.response.data.message) ||
-    //     "Check your internet connection",
-    //   [
-    //     {
-    //       text: "cancel",
-    //       onPress: () => {
-    //         return;
-    //       },
-    //     },
-    //     {
-    //       text: "Okay",
-    //       onPress: () => {
-    //         addFunding();
-    //       },
-    //     },
-    //   ]
-    // );
   } finally {
     setLoading(false);
   }
 };
+const verifyFunding = async (reference, setLoading) => {
+  try {
+    const token = await AsyncStorage.getItem("token");
+    setLoading(true);
+    const response = await axios.post(
+      "https://charmpay-backend.vercel.app/api/funding/verify",
+      {
+        reference,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log(response.data);
+    router.dismissTo("/(tabs)/dashboard");
+    return response.data;
+  } catch (error) {
+    console.log(error.response.data);
+  } finally {
+    setLoading(false);
+  }
+};
+const getAlltransactions = async (setLoading) => {
+  try {
+    setLoading(true);
+    const token = await AsyncStorage.getItem("token");
+    const response = await axios.get(
+      "https://charmpay-backend.vercel.app/api/transaction/me",
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (response.status === 401) {
+      Alert.alert("Session Expired", "Please log in again.");
+      await AsyncStorage.removeItem("token"); // Clear invalid token
+      router.replace("/auth/login");
+      return;
+    }
+
+    console.log("Transactions:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Transaction Fetch Error:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+const editProfile = async (firstName, lastName, setLoading) => {
+  try {
+    const token = await AsyncStorage.getItem("token");
+    setLoading(true);
+    if (!firstName || !lastName) {
+      Alert.alert("", "Edit your profile before saving");
+      return;
+    }
+
+    const response = await axios.post(
+      "https://charmpay-backend.vercel.app/api/user/me/edit",
+      {
+        firstName,
+        lastName,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log(response.data);
+    Alert.alert("Saved!", response.data.message);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 export default {
   signup,
   login,
@@ -331,4 +401,6 @@ export default {
   getProfile,
   logout,
   addFunding,
+  verifyFunding,
+  editProfile,
 };

@@ -30,13 +30,14 @@ export default function CreateTask() {
         </View>
         <View className="mb-3">
           <Text className="mb-[5px] text-[18px]">Description</Text>
-          <TextInput
-            className="px-4 bg-[#F5F5F5] w-full rounded-md"
-            placeholder="Enter Task Description"
-            multiline
-            numberOfLines={10}
-            //   onChangeText={(text) => setFirstName(text)}
-          />
+          <View className="bg-[#F5F5F5] w-full rounded-md h-36 py-0">
+            <TextInput
+              className="px-4 "
+              placeholder="Enter Task Description"
+              multiline
+              numberOfLines={10}
+            />
+          </View>
         </View>
         <View className="mb-3">
           <Text className="mb-[5px] text-[18px]">Amount</Text>

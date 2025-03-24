@@ -6,6 +6,9 @@ export const AuthContext = createContext();
 export default function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setAuthenticated] = useState(false);
+  const [isFunding, setIsFunding] = useState(false);
+  const [referenceId, setReferenceId] = useState("");
+
   useEffect(() => {
     const getToken = async () => {
       try {
@@ -29,7 +32,12 @@ export default function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         isLoading,
+        setIsLoading,
         isAuthenticated,
+        isFunding,
+        setIsFunding,
+        referenceId,
+        setReferenceId,
       }}
     >
       {children}

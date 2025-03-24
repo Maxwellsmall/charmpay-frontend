@@ -15,7 +15,7 @@ export default function page() {
   const [loading, setLoading] = useState(false);
   const [amount, setAmount] = useState("");
   const [url, setUrl] = useState("");
-  const [isFunding, setIsFunding] = useState(false);
+  const { isFunding, setIsFunding, setReferenceId } = useContext(AuthContext);
   const { addFunding } = useApi;
 
   if (isFunding) {
@@ -43,7 +43,13 @@ export default function page() {
           <TouchableOpacity
             className="bg-blue-900 w-full p-3 rounded-lg mt-3 flex-row justify-center items-center"
             onPress={() => {
-              addFunding(amount, setIsFunding, setUrl, setLoading);
+              addFunding(
+                amount,
+                setIsFunding,
+                setUrl,
+                setLoading,
+                setReferenceId
+              );
             }}
           >
             {loading && <ActivityIndicator size={24} color={"white"} />}
