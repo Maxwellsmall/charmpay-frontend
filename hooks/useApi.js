@@ -46,10 +46,10 @@ const signup = async (transactionPin, setLoading) => {
     setLoading(false);
   }
 };
-const login = async (phoneNumber, passCode, setLoading) => {
+const login = async (email, passCode, setLoading) => {
   try {
     setLoading(true);
-    if (!phoneNumber || !passCode) {
+    if (!email || !passCode) {
       Alert.alert("", "Input your details before submission");
       return;
     }
@@ -57,7 +57,7 @@ const login = async (phoneNumber, passCode, setLoading) => {
     const response = await axios.post(
       "https://charmpay-backend.vercel.app/api/auth/login",
       {
-        phoneNumber,
+        email,
         passCode,
       }
     );
@@ -248,10 +248,7 @@ const getProfile = async (setLoading) => {
       error.response
         ? error.response.data.message || "Failed to fetch profile."
         : "Check your internet connection.",
-      [
-        { text: "Retry", onPress: () => getProfile(setLoading) },
-        { text: "Cancel", style: "cancel" },
-      ]
+      [{ text: "Retry", onPress: () => getProfile(setLoading) }]
     );
   } finally {
     setLoading(false);
@@ -368,7 +365,7 @@ const editProfile = async (firstName, lastName, setLoading) => {
       return;
     }
 
-    const response = await axios.post(
+    const response = await axios.patch(
       "https://charmpay-backend.vercel.app/api/user/me/edit",
       {
         firstName,
@@ -391,6 +388,45 @@ const editProfile = async (firstName, lastName, setLoading) => {
   }
 };
 
+const fetchAllBeneficiary = async (setLoading) => {
+  try {
+    setLoading(true);
+
+    const token = await AsyncStorage.getItem("token");
+    if (!token) {
+      Alert.alert("Error", "No authentication token found. Please log in.");
+      router.replace("/auth/login");
+      return;
+    }
+
+    const response = await axios.get(
+      "https://charmpay-backend.vercel.app/api/beneficiary/me",
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error.response.data.message);
+
+    // Show error message based on error type
+    Alert.alert(
+      "Error",
+      error.response
+        ? error.response.data.message || "Failed to fetch beneficiary."
+        : "Check your internet connection.",
+      [
+        { text: "Retry", onPress: () => fetchAllBeneficiary(setLoading) },
+        { text: "Cancel", style: "cancel" },
+      ]
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+
 export default {
   signup,
   login,
@@ -403,4 +439,5 @@ export default {
   addFunding,
   verifyFunding,
   editProfile,
+  fetchAllBeneficiary,
 };

@@ -278,6 +278,28 @@ export default function Layout() {
             },
           }}
         />
+        <Stack.Screen
+          name="dashboard/transactions/history"
+          options={{
+            header: () => <Header title="Transaction History" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="tasks/disputes/index"
+          options={{
+            header: () => <Header title="Dispute Transaction" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
       </Stack>
     </AuthProvider>
   );

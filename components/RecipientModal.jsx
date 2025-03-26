@@ -7,16 +7,28 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import profileImage from "@/assets/images/OIP.png";
 import { Ionicons } from "@expo/vector-icons";
+import useApi from "@/hooks/useApi";
 
 export default function RecipientModal({
   setIsVisible,
   isVisible,
   setRecipient,
 }) {
+  const { fetchAllBeneficiary } = useApi;
+  const [beneficiaries, setBeneficiaries] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchBeneficiary = async () => {
+      let response = fetchAllBeneficiary(setLoading);
+      setBeneficiaries(response);
+    };
+    fetchBeneficiary();
+  }, []);
   const handleSetRecipient = (recipient) => {
     setRecipient(recipient);
     setIsVisible(false);

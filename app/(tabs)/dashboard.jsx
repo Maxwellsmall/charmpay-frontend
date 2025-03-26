@@ -6,14 +6,16 @@ import {
   Image,
   FlatList,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import Inbox from "@/components/Inbox";
 import Task from "@/components/Task";
 import Transactions from "@/components/Transactions";
 import useApi from "@/hooks/useApi";
 import { useRouter } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Page() {
   const router = useRouter();
@@ -21,12 +23,20 @@ export default function Page() {
   const [userData, setUserData] = useState({});
   const { getProfile } = useApi;
   const [showBalance, setShowBalance] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
+  const handleFetch = async () => {
+    setRefreshing(true);
+
+    const response = await getProfile(setLoading);
+    setUserData(response);
+    setRefreshing(false);
+  };
   useEffect(() => {
-    const handleFetch = async () => {
-      const response = await getProfile(setLoading);
-      setUserData(response);
-    };
+    handleFetch();
+  }, []);
+
+  const onRefresh = useCallback(() => {
     handleFetch();
   }, []);
 
@@ -38,28 +48,14 @@ export default function Page() {
     );
   }
 
-  const TransactionCard = ({ status }) => {
-    return (
-      <View className="border-[#D9D9D9] border-[1px] p-4 my-[10px] rounded-[10px]">
-        <View className="flex-row items-center justify-between">
-          <Text className="text-[14px] font-bold">
-            Transfer to CHUKWUCHEBEM ESTHER
-          </Text>
-          <Text className="text-[14px] font-bold">+NGN 50,000</Text>
-        </View>
-        <View className="flex-row items-center justify-between">
-          <Text className="text-[12px]">Feb 27th, 01:48:19</Text>
-          <View className="bg-green-200 p-1 rounded-[10px]">
-            <Text className="text-[12px] text-green-700">{status}</Text>
-          </View>
-        </View>
-      </View>
-    );
-  };
-
   return (
-    <View className="flex-1 bg-white">
-      <View className="flex-row justify-between items-center px-5">
+    <ScrollView
+      className="flex-1 bg-white"
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
+      <View className="flex-row justify-between items-center px-5 mt-3">
         <TouchableOpacity
           className="flex-row justify-normal items-center"
           onPress={() => router.navigate("/profile")}
@@ -78,9 +74,10 @@ export default function Page() {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
+          className="bg-[#f5f5f5] p-2 rounded-full"
           onPress={() => router.navigate("/dashboard/notifications/")}
         >
-          <Ionicons name="notifications-outline" size={30} />
+          <Ionicons name="notifications-outline" size={23} />
         </TouchableOpacity>
       </View>
       <ScrollView className="mx-5 mt-[25px]">
@@ -100,7 +97,7 @@ export default function Page() {
             NGN {showBalance ? `${userData.wallet.currentBalance}.00` : "****"}
           </Text>
 
-          <View className="flex-row items-center justify-between mt-[15px]">
+          <View className="flex-row items-center justify-evenly mt-[15px]">
             <TouchableOpacity
               className="bg-blue-900 p-2 rounded-[25px]"
               onPress={() => router.navigate("/tasks/create")}
@@ -139,19 +136,31 @@ export default function Page() {
             </TouchableOpacity>
           </View>
         </View>
+        <LinearGradient
+          colors={["#5A45FE", "#362998"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          className="w-[90%] rounded-3xl mt-10 self-center py-5 px-7 justify-center items-start"
+        >
+          <Text className="text-white text-[20px]">Invite a friend and</Text>
+          <Text className="text-white text-[20px]">earn cash back</Text>
+
+          <Text className="text-[10px] text-yellow-600">Invite friend</Text>
+        </LinearGradient>
         <View className="mt-[20px]">
           <View className="flex-row items-center justify-between">
             <Text className="text-[20px] font-semibold">Transactions</Text>
-            <Text className="text-[16px] text-blue-500">See all</Text>
+            <TouchableOpacity
+              onPress={() => router.navigate("/dashboard/transactions/history")}
+            >
+              <Text className="text-[16px] text-blue-500">See all</Text>
+            </TouchableOpacity>
           </View>
-          <TransactionCard status="Successs" />
-          <TransactionCard status="Successs" />
-          <TransactionCard status="Successs" />
-          <TransactionCard status="Successs" />
-          {/* {Array(5).map((item, index) => (
-          ))} */}
+          <Transactions status="success" />
+          <Transactions status="success" />
+          <Transactions status="success" />
         </View>
       </ScrollView>
-    </View>
+    </ScrollView>
   );
 }

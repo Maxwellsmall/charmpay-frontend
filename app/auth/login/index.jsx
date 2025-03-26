@@ -30,11 +30,11 @@ const Page = () => {
       </Text>
 
       <Text className="w-[90%] font-bold mb-5 text-left text-[12px] text-[#3A259C]">
-        Email / Phone Number
+        Email
       </Text>
       <TextInput
         className="px-4 py-5 placeholderTextColor-[#F5F5F5] bg-[#F5F5F5] w-[90%] rounded-md"
-        placeholder="Email Address / Phone Number"
+        placeholder="Email Address"
         onChangeText={(text) => setEmail(text)}
       />
       <Text className="w-[90%] font-bold my-5 text-left text-[12px] text-[#3A259C]">
@@ -47,6 +47,7 @@ const Page = () => {
           secureTextEntry={!showPassword}
           onChangeText={(text) => setPassCode(text)}
           keyboardType="number-pad"
+          maxLength={6}
         />
         <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
           {showPassword ? (

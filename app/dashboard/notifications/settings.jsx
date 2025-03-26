@@ -24,7 +24,7 @@ export default function Page() {
             >
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
-                  <Ionicons name="person-outline" size={24} />
+                  <Ionicons name="information-circle-outline" size={24} />
                 </View>
                 <Text className="text-[20px]">Info and Updates</Text>
               </View>
@@ -33,7 +33,7 @@ export default function Page() {
             <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
-                  <Ionicons name="link-outline" size={24} />
+                  <Ionicons name="card-outline" size={24} />
                 </View>
                 <Text className="text-[20px]">Financial Activity</Text>
               </View>
@@ -42,7 +42,7 @@ export default function Page() {
             <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
-                  <Ionicons name="link-outline" size={24} />
+                  <Ionicons name="document-outline" size={24} />
                 </View>
                 <Text className="text-[20px]">non-Financial Activity</Text>
               </View>
@@ -51,7 +51,7 @@ export default function Page() {
             <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
-                  <Ionicons name="link-outline" size={24} />
+                  <Ionicons name="lock-closed-outline" size={24} />
                 </View>
                 <Text className="text-[20px]">Security</Text>
               </View>

@@ -18,7 +18,7 @@ export default function Header({
     try {
       setIsFunding(false);
       await verifyFunding(referenceId, setIsLoading);
-      router.dismissTo("/(tabs)/dashboard");
+      router.dismissTo("/dashboard");
     } catch (error) {
       console.log(error);
     }
