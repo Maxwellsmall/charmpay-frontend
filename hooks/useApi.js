@@ -26,7 +26,7 @@ const signup = async (transactionPin, setLoading) => {
     credentials.transactionPin = transactionPin;
     console.log(credentials);
     const response = await axios.post(
-      "https://charmpay-backend.vercel.app/api/auth/signup",
+      `${process.env.EXPO_PUBLIC_API_URL}/api/auth/signup`,
       credentials
     );
     console.log(response.data);
@@ -55,7 +55,7 @@ const login = async (email, passCode, setLoading) => {
     }
 
     const response = await axios.post(
-      "https://charmpay-backend.vercel.app/api/auth/login",
+      `${process.env.EXPO_PUBLIC_API_URL}/api/auth/login`,
       {
         email,
         passCode,
@@ -167,7 +167,7 @@ const verify = async (otp, setLoading) => {
     const email = credentials.email;
     console.log(email, otp);
     const response = await axios.post(
-      "https://charmpay-backend.vercel.app/api/auth/verify/account",
+      `${process.env.EXPO_PUBLIC_API_URL}/api/auth/verify/account`,
       {
         email,
         otp,
@@ -196,7 +196,7 @@ const requestOtp = async (setLoading) => {
     const email = credentials.email;
     console.log(email);
     const response = await axios.post(
-      "https://charmpay-backend.vercel.app/api/auth/verify/requestOTP",
+      `${process.env.EXPO_PUBLIC_API_URL}/api/auth/verify/requestOTP`,
       {
         email,
       }
@@ -205,7 +205,6 @@ const requestOtp = async (setLoading) => {
     Alert.alert("", "An OTP has been sent to your email");
     return response.data;
   } catch (error) {
-    // console.log(error.response.data.error);
     Alert.alert("", error.response.data.error.message);
   } finally {
     setLoading(false);
@@ -223,7 +222,7 @@ const getProfile = async (setLoading) => {
     }
 
     const response = await axios.get(
-      "https://charmpay-backend.vercel.app/api/user/me",
+      `${process.env.EXPO_PUBLIC_API_URL}/api/user/me`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -240,9 +239,14 @@ const getProfile = async (setLoading) => {
     console.log("User Profile:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Profile Fetch Error:", error);
-
+    console.error("Profile Fetch Error:", error.response.status);
     // Show error message based on error type
+    if (error.response.status === 401) {
+      Alert.alert("Session Expired", "Please log in again.");
+      await AsyncStorage.removeItem("token"); // Clear invalid token
+      router.replace("/auth/login");
+      return;
+    }
     Alert.alert(
       "Error",
       error.response
@@ -283,7 +287,7 @@ const addFunding = async (
       return;
     }
     const response = await axios.post(
-      "https://charmpay-backend.vercel.app/api/funding/init",
+      `${process.env.EXPO_PUBLIC_API_URL}/api/funding/init`,
       {
         amount,
       },
@@ -310,7 +314,7 @@ const verifyFunding = async (reference, setLoading) => {
     const token = await AsyncStorage.getItem("token");
     setLoading(true);
     const response = await axios.post(
-      "https://charmpay-backend.vercel.app/api/funding/verify",
+      `${process.env.EXPO_PUBLIC_API_URL}/api/funding/verify`,
       {
         reference,
       },
@@ -330,12 +334,12 @@ const verifyFunding = async (reference, setLoading) => {
     setLoading(false);
   }
 };
-const getAlltransactions = async (setLoading) => {
+const getAllTransactions = async (setLoading) => {
   try {
     setLoading(true);
     const token = await AsyncStorage.getItem("token");
     const response = await axios.get(
-      "https://charmpay-backend.vercel.app/api/transaction/me",
+      `${process.env.EXPO_PUBLIC_API_URL}/api/transaction/me`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -366,7 +370,7 @@ const editProfile = async (firstName, lastName, setLoading) => {
     }
 
     const response = await axios.patch(
-      "https://charmpay-backend.vercel.app/api/user/me/edit",
+      `${process.env.EXPO_PUBLIC_API_URL}/api/user/me/edit`,
       {
         firstName,
         lastName,
@@ -387,7 +391,6 @@ const editProfile = async (firstName, lastName, setLoading) => {
     setLoading(false);
   }
 };
-
 const fetchAllBeneficiary = async (setLoading) => {
   try {
     setLoading(true);
@@ -400,7 +403,7 @@ const fetchAllBeneficiary = async (setLoading) => {
     }
 
     const response = await axios.get(
-      "https://charmpay-backend.vercel.app/api/beneficiary/me",
+      `${process.env.EXPO_PUBLIC_API_URL}/api/beneficiary/me`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -426,6 +429,90 @@ const fetchAllBeneficiary = async (setLoading) => {
     setLoading(false);
   }
 };
+const createTask = async (
+  title,
+  discription,
+  assignedTo,
+  amount,
+  setLoading
+) => {
+  try {
+    const token = await AsyncStorage.getItem("token");
+    setLoading(true);
+    if (!title || !discription || !amount) {
+      Alert.alert("", "Ensure all inputs are filled before submission");
+      return;
+    }
+    if (!assignedTo) {
+      Alert.alert("", "Select Your recipiant");
+      return;
+    }
+    if (!validateNumber(amount)) {
+      Alert.alert("", "Invalid number");
+      return;
+    }
+    const response = await axios.post(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/task/create`,
+      {
+        title,
+        discription,
+        assignedTo,
+        amount,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log(response.data);
+    Alert.alert("", response.data.message);
+    return response.data;
+  } catch (error) {
+    console.log(error.response.data);
+    Alert.alert(
+      "Error",
+      error.response
+        ? error.response.data.message || "Failed to fetch beneficiary."
+        : "Check your internet connection."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+const getAllTask = async (setLoading) => {
+  try {
+    setLoading(true);
+    const token = await AsyncStorage.getItem("token");
+    const response = await axios.get(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/task/me`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (response.status === 401) {
+      Alert.alert("Session Expired", "Please log in again.");
+      await AsyncStorage.removeItem("token"); // Clear invalid token
+      router.replace("/auth/login");
+      return;
+    }
+
+    console.log("Task:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Task Fetch Error:", error);
+    Alert.alert(
+      "Error",
+      error.response
+        ? error.response.data.message || "Failed to fetch task."
+        : "Check your internet connection."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
 export default {
   signup,
@@ -439,5 +526,8 @@ export default {
   addFunding,
   verifyFunding,
   editProfile,
+  getAllTransactions,
   fetchAllBeneficiary,
+  createTask,
+  getAllTask,
 };

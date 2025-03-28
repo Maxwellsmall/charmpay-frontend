@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from "react-native";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import Inbox from "@/components/Inbox";
 import Task from "@/components/Task";
@@ -16,18 +16,18 @@ import Transactions from "@/components/Transactions";
 import useApi from "@/hooks/useApi";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { AuthContext } from "@/context/AuthProvider";
 
 export default function Page() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState({});
   const { getProfile } = useApi;
   const [showBalance, setShowBalance] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const { userData, setUserData } = useContext(AuthContext);
 
   const handleFetch = async () => {
     setRefreshing(true);
-
     const response = await getProfile(setLoading);
     setUserData(response);
     setRefreshing(false);

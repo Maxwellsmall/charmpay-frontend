@@ -8,6 +8,7 @@ export default function AuthProvider({ children }) {
   const [isAuthenticated, setAuthenticated] = useState(false);
   const [isFunding, setIsFunding] = useState(false);
   const [referenceId, setReferenceId] = useState("");
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
     const getToken = async () => {
@@ -38,6 +39,8 @@ export default function AuthProvider({ children }) {
         setIsFunding,
         referenceId,
         setReferenceId,
+        userData,
+        setUserData,
       }}
     >
       {children}

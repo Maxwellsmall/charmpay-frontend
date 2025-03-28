@@ -7,24 +7,18 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import profileImage from "@/assets/images/OIP.png";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import useApi from "@/hooks/useApi";
+import { AuthContext } from "@/context/AuthProvider";
 
 export default function profile() {
-  const { getProfile, logout } = useApi;
+  const { logout } = useApi;
   const [loading, setLoading] = useState(false);
-  const [userProfile, setUserProfile] = useState({});
-  useEffect(() => {
-    const handleFetch = async () => {
-      const response = await getProfile(setLoading);
-      setUserProfile(response);
-    };
-    handleFetch();
-  }, []);
+  const { userData, setUserData } = useContext(AuthContext);
 
   const handleLogout = () => {
     console.log("hu");
@@ -61,7 +55,7 @@ export default function profile() {
             resizeMode="cover"
           />
           <Text className="text-[24px] font-bold mt-[10px]">
-            {userProfile?.firstName} {userProfile?.lastName}
+            {userData?.firstName} {userData?.lastName}
           </Text>
           <Text className="text-[11px] text-[#1E1E1E] mt-[5px]">
             Personal Account

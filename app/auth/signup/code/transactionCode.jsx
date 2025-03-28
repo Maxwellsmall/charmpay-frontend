@@ -66,7 +66,7 @@ const Page = () => {
 
       {/* Next Button */}
       <TouchableOpacity
-        className="bg-blue-900 absolute bottom-3 w-96 flex-row justify-center p-3 rounded-lg"
+        className="bg-blue-900 absolute bottom-3 w-96 flex-row justify-center items-center p-3 rounded-lg"
         onPress={() => signup(value, setLoading)}
         // onPress={() => router.navigate("/auth/signup/verify/success")}
       >
