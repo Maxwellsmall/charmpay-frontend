@@ -4,16 +4,43 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  FlatList,
+  RefreshControl,
+  ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import TasksView from "@/components/TasksView";
+import useApi from "@/hooks/useApi";
 
 export default function Page() {
   const [toggle, setToggle] = useState(true);
+  const { getMyTask, getOthersTask } = useApi;
+
+  const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [tasks, setTasks] = useState([]);
+
+  const handleFetch = async () => {
+    const response = await getMyTask(setLoading);
+    setTasks(response);
+  };
+
+  const handleFetchOthers = async () => {
+    const response = await getOthersTask(setLoading);
+    setTasks(response);
+  };
+  useEffect(() => {
+    handleFetch();
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    handleFetch();
+    handleFetchOthers();
+  }, []);
 
   return (
-    <View className=" flex-1 self-center w-[90%] justify-center items-center">
+    <View className=" flex-1 self-center w-[90%] items-center">
       <TextInput
         className="px-4 py-5 mb-5 placeholderTextColor-[#F5F5F5] bg-white w-[100%] rounded-full"
         placeholder="Search"
@@ -25,7 +52,10 @@ export default function Page() {
             className={`px-7 py-1 rounded-md ${
               toggle ? "bg-white" : "bg-gray-400"
             }`}
-            onPress={() => setToggle(true)}
+            onPress={() => {
+              setToggle(true);
+              handleFetch();
+            }}
           >
             <Text className={toggle ? "text-black" : "text-white"}>
               Task Assigned to me
@@ -37,7 +67,10 @@ export default function Page() {
             className={`px-7 py-1 rounded-md ${
               !toggle ? "bg-white" : "bg-gray-400"
             }`}
-            onPress={() => setToggle(false)}
+            onPress={() => {
+              setToggle(false);
+              handleFetchOthers();
+            }}
           >
             <Text className={!toggle ? "text-black" : "text-white"}>
               Task Assigned By me
@@ -45,13 +78,24 @@ export default function Page() {
           </TouchableOpacity>
         </View>
       </View>
-      <ScrollView className="w-full">
-        <Text className="mt-5 font-bold">Recent</Text>
-        <TasksView status={"success"} />
-        <TasksView status={"success"} />
-        <TasksView status={"success"} />
-        <TasksView status={"success"} />
-      </ScrollView>
+      {loading ? (
+        <View className="flex-1 w-full justify-center items-center">
+          <ActivityIndicator size={30} />
+        </View>
+      ) : (
+        <View className="w-full">
+          <FlatList
+            data={tasks}
+            renderItem={({ item }) => <TasksView task={item} />}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            ListEmptyComponent={
+              <Text className="mt-6 text-center">No Tasks found</Text>
+            }
+          />
+        </View>
+      )}
     </View>
   );
 }

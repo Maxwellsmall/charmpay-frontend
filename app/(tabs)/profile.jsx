@@ -22,7 +22,7 @@ export default function profile() {
 
   const handleLogout = () => {
     console.log("hu");
-    Alert.alert("Loggout?", "Are you sure you want to logout?", [
+    Alert.alert("Logout?", "Are you sure you want to logout?", [
       {
         text: "CANCEL",
         onPress: () => {

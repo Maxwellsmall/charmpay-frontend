@@ -1,26 +1,18 @@
 import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
-import { useState, useEffect } from "react";
-import useApi from "@/hooks/useApi";
+import { useState, useContext } from "react";
 import { MaterialIcons, Ionicons, Feather } from "@expo/vector-icons";
+import { AuthContext } from "@/context/AuthProvider";
 
 export default function Page() {
-  const { getProfile } = useApi;
   const [loading, setLoading] = useState(false);
-  const [userProfile, setUserProfile] = useState({});
+  const { userData, setUserData } = useContext(AuthContext);
 
-  const handleFetch = async () => {
-    const response = await getProfile(setLoading);
-    setUserProfile(response);
-  };
-  useEffect(() => {
-    handleFetch();
-  }, []);
   return (
     <View>
       <View className="flex-row items-center">
         <Image source={require("@/assets/images/Charmpay_Bot.png")} />
         <View>
-          <Text className="font-bold">Hi {userProfile?.firstName}</Text>
+          <Text className="font-bold">Hi {userData?.firstName}</Text>
           <Text className="font-bold">How can we hwlp you today?</Text>
         </View>
       </View>

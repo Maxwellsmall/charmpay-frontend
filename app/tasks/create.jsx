@@ -4,18 +4,27 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
-  Image,
+  ActivityIndicator,
 } from "react-native";
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import RecipientModal from "@/components/RecipientModal";
-import profileImage from "@/assets/images/OIP.png";
 import { router } from "expo-router";
+import Beneficiary from "@/components/Beneficiary";
+import User from "@/components/User";
+import useApi from "@/hooks/useApi";
 
 export default function CreateTask() {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [recipient, setRecipient] = useState(null);
+  const [isBeneficiary, setIsBeneficiary] = useState(false);
+  const [title, setTitle] = useState("");
+  const [discription, setDiscription] = useState("");
+  const [amount, setAmount] = useState(0);
+  const [id, setId] = useState("");
+  const { createTask } = useApi;
 
   return (
     <SafeAreaView className="flex-1">
@@ -25,7 +34,7 @@ export default function CreateTask() {
           <TextInput
             className="px-4 bg-[#F5F5F5] w-full h-[50px] rounded-md"
             placeholder="Enter Task Title"
-            //   onChangeText={(text) => setFirstName(text)}
+            onChangeText={(text) => setTitle(text)}
           />
         </View>
         <View className="mb-3">
@@ -36,6 +45,7 @@ export default function CreateTask() {
               placeholder="Enter Task Description"
               multiline
               numberOfLines={10}
+              onChangeText={(text) => setDiscription(text)}
             />
           </View>
         </View>
@@ -45,7 +55,7 @@ export default function CreateTask() {
             className="px-4 bg-[#F5F5F5] w-full h-[50px] rounded-md"
             placeholder="Enter Amount to be held in escrow"
             keyboardType="number-pad"
-            //   onChangeText={(text) => setFirstName(text)}
+            onChangeText={(text) => setAmount(text)}
           />
         </View>
         <View className="mb-3">
@@ -62,38 +72,29 @@ export default function CreateTask() {
                 Select Recipient
               </Text>
             </TouchableOpacity>
+          ) : isBeneficiary ? (
+            <Beneficiary
+              recipient={recipient}
+              setIsModalVisible={setIsModalVisible}
+              setId={setId}
+              // setIsBeneficiary={setIsBeneficiary}
+            />
           ) : (
-            <View className="flex-row justify-between items-center">
-              <TouchableOpacity
-                className="flex-row justify-normal items-center"
-                onPress={() => setIsModalVisible(true)}
-              >
-                <Image
-                  source={profileImage}
-                  className="rounded-full w-[40px]"
-                />
-                <View className="ml-3">
-                  <Text className="text-bold font-bold">
-                    Chukwuchebem David
-                  </Text>
-                  <Text className="text-[#616060] font-semibold text-[10px]">
-                    daviddominic767@gmail.com
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Ionicons name="ellipsis-vertical" size={24} />
-              </TouchableOpacity>
-            </View>
+            <User
+              recipient={recipient}
+              setIsModalVisible={setIsModalVisible}
+              setId={setId}
+            />
           )}
         </View>
       </ScrollView>
       <View className="p-4 mt-auto bg-white">
         <TouchableOpacity
-          className="bg-blue-900 w-96 p-3 rounded-lg self-center"
-          onPress={() => router.replace("/tasks/success")}
+          className="bg-blue-900 w-96 p-3 rounded-lg self-center flex-row justify-center items-center"
+          onPress={() => createTask(title, discription, id, amount, setLoading)}
         >
-          <Text className="text-white text-center font-semibold">
+          {loading && <ActivityIndicator size={24} color={"white"} />}
+          <Text className="text-white text-center font-semibold ml-2">
             Create task
           </Text>
         </TouchableOpacity>
@@ -102,6 +103,7 @@ export default function CreateTask() {
         isVisible={isModalVisible}
         setIsVisible={setIsModalVisible}
         setRecipient={setRecipient}
+        setIsBeneficiary={setIsBeneficiary}
       />
     </SafeAreaView>
   );

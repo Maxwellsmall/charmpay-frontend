@@ -21,15 +21,18 @@ import { AuthContext } from "@/context/AuthProvider";
 export default function Page() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const { getProfile } = useApi;
+  const { getProfile, getAllTransactions } = useApi;
   const [showBalance, setShowBalance] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const { userData, setUserData } = useContext(AuthContext);
+  const [transactions, setTransactions] = useState([]);
 
   const handleFetch = async () => {
     setRefreshing(true);
-    const response = await getProfile(setLoading);
-    setUserData(response);
+    const userDetails = await getProfile(setLoading);
+    const userTransactions = await getAllTransactions(setLoading);
+    setUserData(userDetails);
+    setTransactions(userTransactions);
     setRefreshing(false);
   };
   useEffect(() => {
@@ -50,37 +53,13 @@ export default function Page() {
 
   return (
     <ScrollView
-      className="flex-1 bg-white"
+      className=" bg-white"
+      scrollEnabled={true}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      <View className="flex-row justify-between items-center px-5 mt-3">
-        <TouchableOpacity
-          className="flex-row justify-normal items-center"
-          onPress={() => router.navigate("/profile")}
-        >
-          <Image
-            source={require("../../assets/images/OIP.png")}
-            className="rounded-full w-[40px]"
-          />
-          <View className="ml-3">
-            <Text className="text-bold font-bold">
-              HI, {userData?.firstName} {userData?.lastName}
-            </Text>
-            <Text className="text-[#616060] font-semibold text-[10px]">
-              Good morning!
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          className="bg-[#f5f5f5] p-2 rounded-full"
-          onPress={() => router.navigate("/dashboard/notifications/")}
-        >
-          <Ionicons name="notifications-outline" size={23} />
-        </TouchableOpacity>
-      </View>
-      <ScrollView className="mx-5 mt-[25px]">
+      <View className=" mx-5 mt-2">
         <View>
           <View className="flex-row items-center">
             <Text className="me-3 text-[16px] font-bold text-[#616060]">
@@ -94,7 +73,8 @@ export default function Page() {
             </TouchableOpacity>
           </View>
           <Text className="text-[35px] font-bold mt-[10px]">
-            NGN {showBalance ? `${userData.wallet.currentBalance}.00` : "****"}
+            {userData.wallet.currency}{" "}
+            {showBalance ? `${userData.wallet.currentBalance}.00` : "****"}
           </Text>
 
           <View className="flex-row items-center justify-evenly mt-[15px]">
@@ -156,11 +136,21 @@ export default function Page() {
               <Text className="text-[16px] text-blue-500">See all</Text>
             </TouchableOpacity>
           </View>
-          <Transactions status="success" />
-          <Transactions status="success" />
-          <Transactions status="success" />
+          {!transactions ? (
+            <View className="mt-[10px]">
+              <Text className="text-center text-[16px]">
+                No transactions yet.
+              </Text>
+            </View>
+          ) : (
+            transactions
+              ?.slice(0, 3)
+              .map((item, index) => (
+                <Transactions key={index} transaction={item} />
+              ))
+          )}
         </View>
-      </ScrollView>
+      </View>
     </ScrollView>
   );
 }

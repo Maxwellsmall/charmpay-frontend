@@ -168,7 +168,7 @@ export default function Layout() {
           name="settings/personalDetails"
           options={{
             header: () => <Header title="Personal Details" />,
-            headerShadowVisible: false,
+            headerShaNdowVisible: false,
             headerShown: true,
             contentStyle: {
               backgroundColor: "white",
@@ -268,7 +268,7 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
-          name="dashboard/taskDetails/index"
+          name="dashboard/taskDetails/[taskId]"
           options={{
             header: () => <Header title="Task Details" />,
             headerShadowVisible: false,

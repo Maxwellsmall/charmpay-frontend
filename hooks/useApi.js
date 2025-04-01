@@ -436,6 +436,7 @@ const createTask = async (
   amount,
   setLoading
 ) => {
+  console.log(title, discription, assignedTo, amount);
   try {
     const token = await AsyncStorage.getItem("token");
     setLoading(true);
@@ -468,6 +469,7 @@ const createTask = async (
 
     console.log(response.data);
     Alert.alert("", response.data.message);
+    router.replace("/tasks/success");
     return response.data;
   } catch (error) {
     console.log(error.response.data);
@@ -481,12 +483,12 @@ const createTask = async (
     setLoading(false);
   }
 };
-const getAllTask = async (setLoading) => {
+const getTaskById = async (taskId, setLoading) => {
   try {
     setLoading(true);
     const token = await AsyncStorage.getItem("token");
     const response = await axios.get(
-      `${process.env.EXPO_PUBLIC_API_URL}/api/task/me`,
+      `${process.env.EXPO_PUBLIC_API_URL}/api/task/${taskId}`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -504,6 +506,103 @@ const getAllTask = async (setLoading) => {
   } catch (error) {
     console.error("Task Fetch Error:", error);
     Alert.alert(
+      "",
+      error.response
+        ? error.response.data.message || "Failed to fetch task."
+        : "Check your internet connection."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+const getMyTask = async (setLoading) => {
+  try {
+    setLoading(true);
+    const token = await AsyncStorage.getItem("token");
+    const response = await axios.get(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/task/tome`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (response.status === 401) {
+      Alert.alert("Session Expired", "Please log in again.");
+      await AsyncStorage.removeItem("token"); // Clear invalid token
+      router.replace("/auth/login");
+      return;
+    }
+
+    console.log("Task:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Task Fetch Error:", error);
+    Alert.alert(
+      "",
+      error.response
+        ? error.response.data.message || "Failed to fetch task."
+        : "Check your internet connection."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+const getOthersTask = async (setLoading) => {
+  try {
+    setLoading(true);
+    const token = await AsyncStorage.getItem("token");
+    const response = await axios.get(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/task/toothers`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (response.status === 401) {
+      Alert.alert("Session Expired", "Please log in again.");
+      await AsyncStorage.removeItem("token"); // Clear invalid token
+      router.replace("/auth/login");
+      return;
+    }
+
+    console.log("Task:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Task Fetch Error:", error);
+    Alert.alert(
+      "",
+      error.response
+        ? error.response.data.message || "Failed to fetch task."
+        : "Check your internet connection."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+const getUserByEmail = async (email, setLoading, setErrorMessage) => {
+  try {
+    if (!validateEmail(email)) return;
+    setLoading(true);
+    const token = await AsyncStorage.getItem("token");
+    const response = await axios.get(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/user/${email}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (response.status === 401) {
+      Alert.alert("Session Expired", "Please log in again.");
+      await AsyncStorage.removeItem("token"); // Clear invalid token
+      router.replace("/auth/login");
+      return;
+    }
+
+    console.log("Task:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Task Fetch Error:", error);
+    setErrorMessage(
       "Error",
       error.response
         ? error.response.data.message || "Failed to fetch task."
@@ -513,7 +612,240 @@ const getAllTask = async (setLoading) => {
     setLoading(false);
   }
 };
+const getAllNotifications = async (setLoading) => {
+  try {
+    setLoading(true);
+    const token = await AsyncStorage.getItem("token");
+    const response = await axios.get(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/notification/me`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
+    if (response.status === 401) {
+      Alert.alert("Session Expired", "Please log in again.");
+      await AsyncStorage.removeItem("token"); // Clear invalid token
+      router.replace("/auth/login");
+      return;
+    }
+
+    console.log("Notifications:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Task Fetch Error:", error);
+    setErrorMessage(
+      "Error",
+      error.response
+        ? error.response.data.message || "Failed to notifications."
+        : "Check your internet connection."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+const registerForPushNotificationsAsync = async () => {
+  let token = (await Notifications.getExpoPushTokenAsync()).data;
+
+  // Send token to your backend server
+  await fetch("https://your-backend.com/api/save-token", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token }),
+  });
+
+  return token;
+};
+
+const In_local_notification = () => {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+    }),
+  });
+
+  // Function to request permissions
+  async function requestPermissions() {
+    const { status } = await Notifications.requestPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert(
+        "Permission Required",
+        "Please enable notifications in settings."
+      );
+      return false;
+    }
+    return true;
+  }
+
+  // Function to schedule a notification
+  async function schedulePushNotification() {
+    const hasPermission = await requestPermissions();
+    if (!hasPermission) return;
+
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "You've got mail! 📬",
+        body: "Here is the notification body",
+        data: { data: "goes here", test: { test1: "more data" } },
+      },
+      trigger: { seconds: 2 }, // Corrected trigger type
+    });
+  }
+};
+
+const push_notification = () => {
+  //   import { useState, useEffect, useRef } from 'react';
+  // import { Text, View, Button, Platform, Alert } from 'react-native';
+  // import * as Device from 'expo-device';
+  // import * as Notifications from 'expo-notifications';
+  // import Constants from 'expo-constants';
+
+  // Set notification handler
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
+
+  //export default
+
+  function App() {
+    const [expoPushToken, setExpoPushToken] = useState("");
+    const [channels, setChannels] = useState([]); // Fixed TypeScript syntax
+    const [notification, setNotification] = useState(null);
+    const notificationListener = useRef(null);
+    const responseListener = useRef(null);
+
+    useEffect(() => {
+      registerForPushNotificationsAsync().then((token) => {
+        if (token) setExpoPushToken(token);
+      });
+
+      if (Platform.OS === "android") {
+        Notifications.getNotificationChannelsAsync().then((value) =>
+          setChannels(value || [])
+        );
+      }
+
+      notificationListener.current =
+        Notifications.addNotificationReceivedListener((notification) => {
+          setNotification(notification);
+        });
+
+      responseListener.current =
+        Notifications.addNotificationResponseReceivedListener((response) => {
+          console.log(response);
+        });
+
+      return () => {
+        if (notificationListener.current) {
+          Notifications.removeNotificationSubscription(
+            notificationListener.current
+          );
+        }
+        if (responseListener.current) {
+          Notifications.removeNotificationSubscription(
+            responseListener.current
+          );
+        }
+      };
+    }, []);
+
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "space-around",
+        }}
+      >
+        <Text>Your expo push token: {expoPushToken}</Text>
+        <Text>{`Channels: ${JSON.stringify(
+          channels.map((c) => c.id),
+          null,
+          2
+        )}`}</Text>
+        <View style={{ alignItems: "center", justifyContent: "center" }}>
+          <Text>
+            Title: {notification?.request?.content?.title || "No Notification"}
+          </Text>
+          <Text>Body: {notification?.request?.content?.body || "No Body"}</Text>
+          <Text>
+            Data:{" "}
+            {notification
+              ? JSON.stringify(notification.request.content.data)
+              : "No Data"}
+          </Text>
+        </View>
+        <Button
+          title="Press to schedule a notification"
+          onPress={schedulePushNotification}
+        />
+      </View>
+    );
+  }
+
+  // ✅ Fixed Notification Scheduling
+  async function schedulePushNotification() {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "You've got mail! 📬",
+        body: "Here is the notification body",
+        data: { data: "goes here", test: { test1: "more data" } },
+      },
+      trigger: { seconds: 2 }, // Fixed incorrect trigger
+    });
+  }
+
+  // ✅ Fixed Push Notification Registration
+  async function registerForPushNotificationsAsync() {
+    let token;
+
+    if (Platform.OS === "android") {
+      await Notifications.setNotificationChannelAsync("myNotificationChannel", {
+        name: "Default Channel",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: "#FF231F7C",
+      });
+    }
+
+    if (Device.isDevice) {
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== "granted") {
+        Alert.alert("Permission Denied", "Enable notifications in settings.");
+        return;
+      }
+
+      try {
+        const projectId =
+          Constants?.expoConfig?.extra?.eas?.projectId ??
+          Constants?.easConfig?.projectId;
+        if (!projectId) throw new Error("Project ID not found");
+
+        token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
+        console.log("Expo Push Token:", token);
+      } catch (e) {
+        console.error(e);
+        token = `Error: ${e}`;
+      }
+    } else {
+      Alert.alert("Physical device required for push notifications.");
+    }
+
+    return token;
+  }
+};
 export default {
   signup,
   login,
@@ -529,5 +861,9 @@ export default {
   getAllTransactions,
   fetchAllBeneficiary,
   createTask,
-  getAllTask,
+  getMyTask,
+  getOthersTask,
+  getUserByEmail,
+  getTaskById,
+  getAllNotifications,
 };
