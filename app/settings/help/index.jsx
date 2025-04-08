@@ -2,6 +2,7 @@ import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
 import { useState, useContext } from "react";
 import { MaterialIcons, Ionicons, Feather } from "@expo/vector-icons";
 import { AuthContext } from "@/context/AuthProvider";
+import { router } from "expo-router";
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
@@ -13,7 +14,7 @@ export default function Page() {
         <Image source={require("@/assets/images/Charmpay_Bot.png")} />
         <View>
           <Text className="font-bold">Hi {userData?.firstName}</Text>
-          <Text className="font-bold">How can we hwlp you today?</Text>
+          <Text className="font-bold">How can we help you today?</Text>
         </View>
       </View>
       <View>
@@ -24,7 +25,10 @@ export default function Page() {
         />
       </View>
       <View className="flex-row justify-between items-center mx-4 mt-10">
-        <TouchableOpacity className="pl-3">
+        <TouchableOpacity
+          className="pl-3"
+          onPress={() => router.navigate("/settings/help/dispute")}
+        >
           <View className="">
             <View className="flex-row items-center">
               <Ionicons name="document-outline" size={25} />

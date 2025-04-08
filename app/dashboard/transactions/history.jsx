@@ -4,6 +4,7 @@ import {
   ScrollView,
   ActivityIndicator,
   RefreshControl,
+  TouchableOpacity,
   FlatList,
 } from "react-native";
 import { useState, useEffect, useCallback } from "react";
@@ -37,7 +38,7 @@ export default function history() {
     );
   }
   return (
-    <View className="flex-1, mx-5">
+    <TouchableOpacity className="flex-1, mx-5">
       <FlatList
         data={transactions}
         renderItem={({ item }) => <Transactions transaction={item} />}
@@ -46,6 +47,6 @@ export default function history() {
         }
         ListEmptyComponent={<Text>No beneficiaries found</Text>}
       />
-    </View>
+    </TouchableOpacity>
   );
 }

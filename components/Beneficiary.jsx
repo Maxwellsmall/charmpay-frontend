@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 const Beneficiary = ({ recipient, setIsModalVisible, setId }) => {
   setId(recipient.beneficiaryUser.id);
   return (
-    <View className="flex-row justify-between items-center">
+    <View className="flex-row justify-between items-center p-2">
       <TouchableOpacity
         className="flex-row justify-normal items-center"
         onPress={() => setIsModalVisible(true)}
@@ -22,9 +22,6 @@ const Beneficiary = ({ recipient, setIsModalVisible, setId }) => {
             {recipient?.beneficiaryUser.email}
           </Text>
         </View>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Ionicons name="ellipsis-vertical" size={24} />
       </TouchableOpacity>
     </View>
   );

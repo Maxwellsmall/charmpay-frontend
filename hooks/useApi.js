@@ -66,7 +66,6 @@ const login = async (email, passCode, setLoading) => {
     console.log(token);
     AsyncStorage.setItem("token", token);
 
-    // check if user have verified thier email
     if (!response.data.user.emailVerified) {
       router.navigate("/auth/signup/verify");
       await requestOtp();
@@ -74,7 +73,6 @@ const login = async (email, passCode, setLoading) => {
         "",
         "Logged in successfully, verify your account to continue"
       );
-
       return response.data;
     }
     Alert.alert("", "Logged in successfully");
@@ -239,9 +237,9 @@ const getProfile = async (setLoading) => {
     console.log("User Profile:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Profile Fetch Error:", error.response.status);
+    console.error("Profile Fetch Error:", error.response);
     // Show error message based on error type
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       Alert.alert("Session Expired", "Please log in again.");
       await AsyncStorage.removeItem("token"); // Clear invalid token
       router.replace("/auth/login");
@@ -309,31 +307,6 @@ const addFunding = async (
     setLoading(false);
   }
 };
-const verifyFunding = async (reference, setLoading) => {
-  try {
-    const token = await AsyncStorage.getItem("token");
-    setLoading(true);
-    const response = await axios.post(
-      `${process.env.EXPO_PUBLIC_API_URL}/api/funding/verify`,
-      {
-        reference,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    console.log(response.data);
-    router.dismissTo("/(tabs)/dashboard");
-    return response.data;
-  } catch (error) {
-    console.log(error.response.data);
-  } finally {
-    setLoading(false);
-  }
-};
 const getAllTransactions = async (setLoading) => {
   try {
     setLoading(true);
@@ -356,6 +329,38 @@ const getAllTransactions = async (setLoading) => {
     return response.data;
   } catch (error) {
     console.error("Transaction Fetch Error:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+const getTransactionById = async (transactionId, setLoading) => {
+  try {
+    setLoading(true);
+    const token = await AsyncStorage.getItem("token");
+    const response = await axios.get(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/transaction/${transactionId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (response.status === 401) {
+      Alert.alert("Session Expired", "Please log in again.");
+      await AsyncStorage.removeItem("token"); // Clear invalid token
+      router.replace("/auth/login");
+      return;
+    }
+
+    console.log("Transaction:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Transacions Fetch Error:", error);
+    Alert.alert(
+      "",
+      error.response
+        ? error.response.data.message || "Failed to fetch transactions."
+        : "Check your internet connection."
+    );
   } finally {
     setLoading(false);
   }
@@ -856,9 +861,9 @@ export default {
   getProfile,
   logout,
   addFunding,
-  verifyFunding,
   editProfile,
   getAllTransactions,
+  getTransactionById,
   fetchAllBeneficiary,
   createTask,
   getMyTask,

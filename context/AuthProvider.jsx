@@ -23,8 +23,10 @@ export default function AuthProvider({ children }) {
           setAuthenticated(false);
         } else {
           let response = await getProfile(() => {});
-          setUserData(response);
+
           setAuthenticated(true);
+
+          setUserData(response);
         }
       } catch (error) {
         console.log(error);

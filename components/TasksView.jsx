@@ -18,7 +18,9 @@ export default function Inbox({ task }) {
         </Text>
       </View>
       <View className="flex-row items-center justify-between">
-        <Text className="text-[12px]">Yeserday, 01:48:19</Text>
+        <Text className="text-[12px]">
+          {Date(task.createdAt).split("G")[0]}
+        </Text>
         <View className="bg-green-200 p-1 rounded-[10px]">
           <Text className="text-[12px] text-green-700">{task.status}</Text>
         </View>

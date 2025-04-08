@@ -13,16 +13,6 @@ export default function Header({
 }) {
   const { setIsLoading, isFunding, setIsFunding, referenceId } =
     useContext(AuthContext);
-  const { verifyFunding } = useApi;
-  const handleVerify = async () => {
-    try {
-      setIsFunding(false);
-      await verifyFunding(referenceId, setIsLoading);
-      router.dismissTo("/dashboard");
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <View className="flex-row py-3 px-5">
@@ -47,8 +37,11 @@ export default function Header({
       )}
       {isFunding && (
         <TouchableOpacity
-          onPress={handleVerify}
           className="bg-[#f5f5f5] p-2 rounded-full"
+          onPress={() => {
+            router.dismissTo("/(tabs)/dashboard");
+            setIsFunding(false);
+          }}
         >
           <Ionicons name={"close"} size={24} />
         </TouchableOpacity>

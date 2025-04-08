@@ -237,7 +237,17 @@ export default function Layout() {
             header: () => <Header title="Add money" />,
             headerShadowVisible: false,
             headerShown: true,
-            headerLeft: () => <Text>Hello world</Text>,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="funding/transfer"
+          options={{
+            header: () => <Header title="Transfer" />,
+            headerShadowVisible: false,
+            headerShown: true,
             contentStyle: {
               backgroundColor: "white",
             },
@@ -279,6 +289,17 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
+          name="dashboard/transactions/[transactionId]"
+          options={{
+            header: () => <Header title="Transactions Details" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
           name="dashboard/transactions/history"
           options={{
             header: () => <Header title="Transaction History" />,
@@ -293,6 +314,50 @@ export default function Layout() {
           name="tasks/disputes/index"
           options={{
             header: () => <Header title="Dispute Transaction" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/help/dispute"
+          options={{
+            header: () => <Header title="Transfer Dispute" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/help/report"
+          options={{
+            header: () => <Header title="Report Scam" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/help/error"
+          options={{
+            header: () => <Header title="Report Tranfer Error" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/help/security"
+          options={{
+            header: () => <Header title="Security Check`" />,
             headerShadowVisible: false,
             headerShown: true,
             contentStyle: {

@@ -99,9 +99,15 @@ export default function Notifications() {
         </View>
       </View>
       <ScrollView>
-        {notifications.map((item) => {
-          return <Notification notification={item} key={item.id} />;
-        })}
+        {notifications ? (
+          notifications.map((item) => {
+            return <Notification notification={item} key={item.id} />;
+          })
+        ) : (
+          <View>
+            <Text className="text-center">No notifications yet.</Text>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
