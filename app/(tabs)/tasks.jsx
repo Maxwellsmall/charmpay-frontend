@@ -15,10 +15,12 @@ import useApi from "@/hooks/useApi";
 
 export default function Page() {
   const [toggle, setToggle] = useState(true);
-  const { getMyTask, getOthersTask } = useApi;
-
+  const { getMyTask, getOthersTask, searchTask } = useApi;
+  const [task, setTask] = useState("");
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [tasks, setTasks] = useState([]);
 
   const handleFetch = async () => {
@@ -39,11 +41,38 @@ export default function Page() {
     handleFetchOthers();
   }, []);
 
+  const handleSearch = async (text) => {
+    setTask(text);
+    if (text.trim() === "") {
+      setTasks(null);
+      setErrorMessage("");
+      return;
+    }
+    const result = await searchTask(
+      text,
+      setLoading,
+      setTasks,
+      setErrorMessage
+    );
+    console.log(result);
+    if (result) {
+      setTasks(result);
+      setErrorMessage("");
+    } else {
+      setTasks(null);
+      setErrorMessage("Task not found.");
+    }
+    setLoading(false);
+  };
+
   return (
     <View className=" flex-1 self-center w-[90%] items-center">
       <TextInput
         className="px-4 py-5 mb-5 placeholderTextColor-[#F5F5F5] bg-white w-[100%] rounded-full"
         placeholder="Search"
+        returnKeyType="search"
+        value={task}
+        onChangeText={handleSearch}
       />
       <View className="w-full flex-row justify-center items-center">
         <View className="flex-row items-center py-1 px-1 bg-gray-400 rounded-md">
@@ -54,6 +83,7 @@ export default function Page() {
             }`}
             onPress={() => {
               setToggle(true);
+              setTask("");
               handleFetch();
             }}
           >
@@ -69,6 +99,7 @@ export default function Page() {
             }`}
             onPress={() => {
               setToggle(false);
+              setTask("");
               handleFetchOthers();
             }}
           >

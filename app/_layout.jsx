@@ -254,6 +254,27 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
+          name="funding/withdraw"
+          options={{
+            header: () => <Header title="withdraw" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="funding/success"
+          options={{
+            headerShadowVisible: false,
+            headerShown: false,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
           name="dashboard/notifications/index"
           options={{
             header: () => (
@@ -311,7 +332,7 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
-          name="tasks/disputes/index"
+          name="tasks/disputes/[taskId]"
           options={{
             header: () => <Header title="Dispute Transaction" />,
             headerShadowVisible: false,

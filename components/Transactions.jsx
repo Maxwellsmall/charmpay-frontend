@@ -1,8 +1,11 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React from "react";
+import { useContext } from "react";
 import { router } from "expo-router";
+import { AuthContext } from "@/context/AuthProvider";
 
 export default function Transactions({ transaction }) {
+  const { userData, setUserData, isLoading, setIsLoading } =
+    useContext(AuthContext);
   console.log(transaction.id);
   return (
     <TouchableOpacity
@@ -13,6 +16,8 @@ export default function Transactions({ transaction }) {
     >
       <View className="flex-row items-center justify-between">
         {transaction.type == "funding" ? (
+          <Text className="text-[14px] font-bold">Money Deposit</Text>
+        ) : transaction.receiverId == userData.id ? (
           <Text className="text-[14px] font-bold">Money Deposit</Text>
         ) : (
           <Text className="text-[14px] font-bold">

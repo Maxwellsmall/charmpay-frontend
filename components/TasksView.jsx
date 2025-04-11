@@ -14,7 +14,7 @@ export default function Inbox({ task }) {
       <View className="flex-row items-center justify-between">
         <Text className="text-[14px] font-bold">{task.title}</Text>
         <Text className="text-[14px] font-bold">
-          +NGN {task.transaction.amount}
+          +NGN {task?.transaction?.amount}
         </Text>
       </View>
       <View className="flex-row items-center justify-between">

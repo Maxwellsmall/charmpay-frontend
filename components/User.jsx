@@ -1,9 +1,14 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import React from "react";
+import { useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function User({ recipient, setIsModalVisible, setId }) {
   setId(recipient.id);
+  useEffect(() => {
+    if (recipient) {
+      setId(recipient.id);
+    }
+  }, [recipient]);
   return (
     <View className="flex-row justify-between items-center">
       <TouchableOpacity

@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import React, { useContext } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { AuthContext } from "@/context/AuthProvider";
 import useApi from "@/hooks/useApi";
@@ -10,6 +10,7 @@ export default function Header({
   isModal,
   setIsVisible,
   isNotification,
+  isTasks,
 }) {
   const { setIsLoading, isFunding, setIsFunding, referenceId } =
     useContext(AuthContext);
@@ -44,6 +45,17 @@ export default function Header({
           }}
         >
           <Ionicons name={"close"} size={24} />
+        </TouchableOpacity>
+      )}
+      {isTasks && (
+        <TouchableOpacity
+          className="bg-white w-10 h-10 justify-center items-center rounded-full"
+          onPress={() => {
+            router.navigate("/tasks/create");
+            setIsFunding(false);
+          }}
+        >
+          <FontAwesome6 name={"plus"} size={20} />
         </TouchableOpacity>
       )}
     </View>

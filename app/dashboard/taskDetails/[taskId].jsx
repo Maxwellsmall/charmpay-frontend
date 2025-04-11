@@ -86,7 +86,7 @@ export default function Page() {
         <View className="w-96 flex-row justify-between px-2 items-center self-center mt-auto mb-4">
           <TouchableOpacity
             className="px-5 py-3 rounded-full bg-white border-[1px]"
-            onPress={() => router.navigate("/tasks/disputes/")}
+            onPress={() => router.navigate(`/tasks/disputes/${task.id}`)}
           >
             <Text className="text-black">Dispute</Text>
           </TouchableOpacity>

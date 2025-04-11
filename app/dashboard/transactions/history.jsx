@@ -19,7 +19,7 @@ export default function history() {
 
   const handleFetch = async () => {
     const response = await getAllTransactions(setLoading);
-    setTransactions(response);
+    setTransactions(response.reverse());
   };
 
   useEffect(() => {

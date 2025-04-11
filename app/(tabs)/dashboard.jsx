@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useState, useEffect, useCallback, useContext } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import * as SMS from "expo-sms";
 import Inbox from "@/components/Inbox";
 import Task from "@/components/Task";
 import Transactions from "@/components/Transactions";
@@ -49,6 +50,20 @@ export default function Page() {
   if (isLoading) {
     return <Skeleton />;
   }
+
+  const sendSMS = async () => {
+    const isAvailable = await SMS.isAvailableAsync();
+
+    if (isAvailable) {
+      const { result } = await SMS.sendSMSAsync(
+        [""], // Phone number(s) as an array
+        "This is an Invitation to download the charmpay app." // Your message
+      );
+      console.log("SMS Result:", result); // result = 'sent' | 'cancelled'
+    } else {
+      alert("SMS is not available on this device");
+    }
+  };
 
   return (
     <View className="flex-1 bg-white relative">
@@ -91,7 +106,10 @@ export default function Page() {
                   </Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity className="bg-blue-900 p-2 rounded-[25px]">
+              <TouchableOpacity
+                className="bg-blue-900 p-2 rounded-[25px]"
+                onPress={() => router.navigate("/funding/withdraw")}
+              >
                 <View className="flex-row items-center justify-center">
                   <View className="bg-white rounded-full items-center justify-center p-1 me-1">
                     <Ionicons name="arrow-up" color={"black"} size={20} />
@@ -133,7 +151,11 @@ export default function Page() {
           >
             <Text className="text-white text-[20px]">Invite a friend and</Text>
             <Text className="text-white text-[20px]">earn cash back</Text>
-            <Text className="text-[16px] text-yellow-600">Invite friends</Text>
+            <TouchableOpacity onPress={sendSMS}>
+              <Text className="text-[16px] text-yellow-600">
+                Invite friends
+              </Text>
+            </TouchableOpacity>
           </LinearGradient>
           <View className="mt-[20px]">
             <View className="flex-row items-center justify-between">
@@ -154,8 +176,8 @@ export default function Page() {
               </View>
             ) : (
               transactions
-                ?.slice(0, 3)
-                .reverse()
+                ?.reverse()
+                .slice(0, 3)
                 .map((item, index) => (
                   <Transactions key={index} transaction={item} />
                 ))

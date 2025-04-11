@@ -53,27 +53,20 @@ export default function RecipientModal({
 
   const handleSearch = async (text) => {
     setEmail(text);
-    if (text.trim() === "") {
-      setSearchResult(null);
-      setErrorMessage("");
-      return;
-    }
+    setErrorMessage("");
+    setSearchResult(null);
 
-    setLoading(true);
+    if (text.trim() === "") return;
+
     const result = await getUserByEmail(text, setLoading, setErrorMessage);
 
     if (result) {
       setSearchResult(result);
-      setErrorMessage("");
-    } else {
-      setSearchResult(null);
-      setErrorMessage("User not found.");
     }
-    setLoading(false);
   };
 
   const BeneficiaryItem = ({ recipient }) => (
-    <View className="flex-row justify-between items-center">
+    <View className="flex-row justify-between items-center my-2">
       <TouchableOpacity
         className="flex-row items-center"
         onPress={() => handleSetRecipient(recipient, true)}
@@ -92,9 +85,9 @@ export default function RecipientModal({
           </Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      {/* <TouchableOpacity>
         <Ionicons name="ellipsis-vertical" size={24} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 

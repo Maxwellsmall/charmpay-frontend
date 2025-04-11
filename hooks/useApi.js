@@ -317,14 +317,6 @@ const getAllTransactions = async (setLoading) => {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-
-    if (response.status === 401) {
-      Alert.alert("Session Expired", "Please log in again.");
-      await AsyncStorage.removeItem("token"); // Clear invalid token
-      router.replace("/auth/login");
-      return;
-    }
-
     console.log("Transactions:", response.data);
     return response.data;
   } catch (error) {
@@ -541,8 +533,7 @@ const getMyTask = async (setLoading) => {
     console.log("Task:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Task Fetch Error:", error);
-    Alert.alert(
+    console.log(
       "",
       error.response
         ? error.response.data.message || "Failed to fetch task."
@@ -584,13 +575,13 @@ const getOthersTask = async (setLoading) => {
     setLoading(false);
   }
 };
-const getUserByEmail = async (email, setLoading, setErrorMessage) => {
+const searchTask = async (task, setLoading, setErrorMessage) => {
+  console.log("tasks in api", task);
   try {
-    if (!validateEmail(email)) return;
     setLoading(true);
     const token = await AsyncStorage.getItem("token");
     const response = await axios.get(
-      `${process.env.EXPO_PUBLIC_API_URL}/api/user/${email}`,
+      `${process.env.EXPO_PUBLIC_API_URL}/api/task/search?q=${task}`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -606,7 +597,7 @@ const getUserByEmail = async (email, setLoading, setErrorMessage) => {
     console.log("Task:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Task Fetch Error:", error);
+    console.log("Task Fetch Error:", error);
     setErrorMessage(
       "Error",
       error.response
@@ -617,6 +608,42 @@ const getUserByEmail = async (email, setLoading, setErrorMessage) => {
     setLoading(false);
   }
 };
+const getUserByEmail = async (email, setLoading, setErrorMessage) => {
+  try {
+    if (!validateEmail(email)) return null;
+    setLoading(true);
+    const token = await AsyncStorage.getItem("token");
+
+    const response = await axios.get(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/user/${email}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (response.status === 401) {
+      Alert.alert("Session Expired", "Please log in again.");
+      await AsyncStorage.removeItem("token");
+      router.replace("/auth/login");
+      return null;
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Task Fetch Error:", error);
+
+    if (error.response?.status === 422) {
+      setErrorMessage("Email cannot be a recipient");
+    } else {
+      setErrorMessage(error.response?.data?.message || "User not found.");
+    }
+
+    return null;
+  } finally {
+    setLoading(false);
+  }
+};
+
 const getAllNotifications = async (setLoading) => {
   try {
     setLoading(true);
@@ -851,6 +878,180 @@ const push_notification = () => {
     return token;
   }
 };
+
+const transfer = async (recipientId, amount, transactionPin, setLoading) => {
+  console.log(recipientId, amount, transactionPin);
+
+  try {
+    const token = await AsyncStorage.getItem("token");
+    setLoading(true);
+    if (!amount || !transactionPin) {
+      Alert.alert("", "Ensure all inputs are filled before submission");
+      return;
+    }
+    if (!recipientId) {
+      Alert.alert("", "Select Your recipiant");
+      return;
+    }
+    if (!validateNumber(amount)) {
+      Alert.alert("", "Invalid number");
+      return;
+    }
+    const response = await axios.post(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/transaction/direct`,
+      {
+        amount,
+        recipientId,
+        transactionPin,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log(response.data);
+    Alert.alert("", response.data.message);
+    router.replace("/funding/success");
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    Alert.alert(
+      "Error",
+      error.response
+        ? error.response.data.message || "Failed to transfer."
+        : "Check your internet connection."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+const initializeWithdraw = async (
+  name,
+  type,
+  bankCode,
+  accountNumber,
+  setLoading
+) => {
+  try {
+    console.log(name, type, bankCode, accountNumber);
+    const token = await AsyncStorage.getItem("token");
+    setLoading(true);
+
+    if (!name || !type || !bankCode || !accountNumber) {
+      Alert.alert("", "Ensure all inputs are filled before submission");
+      return;
+    }
+    if (!bankCode) {
+      Alert.alert("", "Select Your recipiant");
+      return;
+    }
+    if (!validateNumber(accountNumber)) {
+      Alert.alert("", "Invalid account number");
+      return;
+    }
+    const response = await axios.post(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/withdraw/createRecipient`,
+      {
+        type,
+        bankCode,
+        name,
+        accountNumber,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log(response.data);
+    Alert.alert("", response.data.message);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    Alert.alert(
+      "Error",
+      error.response
+        ? error.response.data.message || "Failed to transfer."
+        : "Check your internet connection."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+const getAllBanks = async (setLoading) => {
+  try {
+    setLoading(true);
+    const token = await AsyncStorage.getItem("token");
+    const response = await axios.get(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/withdraw/banks`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (response.status === 401) {
+      Alert.alert("Session Expired", "Please log in again.");
+      await AsyncStorage.removeItem("token"); // Clear invalid token
+      router.replace("/auth/login");
+      return;
+    }
+
+    console.log("Banks:", response.data);
+    return response.data;
+  } catch (error) {
+    console.log(
+      "",
+      error.response
+        ? error.response.data.message || "Failed to fetch Banks."
+        : "Check your internet connection."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+
+const raiseDispute = async (taskId, text, setLoading) => {
+  try {
+    console.log(taskId);
+    const token = await AsyncStorage.getItem("token");
+    setLoading(true);
+    if (!text) {
+      Alert.alert("", "You must provude an evidence before submission");
+      return;
+    }
+    const response = await axios.post(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/dispute/raise/${taskId}`,
+      {
+        text,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log(response.data);
+    Alert.alert("", response.data.message);
+    router.back();
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    Alert.alert(
+      "Error",
+      error.response
+        ? error.response.data.message || "Failed to send."
+        : "Check your internet connection."
+    );
+    router.back();
+  } finally {
+    setLoading(false);
+  }
+};
+
 export default {
   signup,
   login,
@@ -868,7 +1069,12 @@ export default {
   createTask,
   getMyTask,
   getOthersTask,
+  searchTask,
   getUserByEmail,
   getTaskById,
   getAllNotifications,
+  transfer,
+  initializeWithdraw,
+  getAllBanks,
+  raiseDispute,
 };

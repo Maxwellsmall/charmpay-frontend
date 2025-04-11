@@ -15,6 +15,7 @@ export default function TabLayout() {
       screenOptions={{
         tabBarStyle: { paddingHorizontal: 20, height: 60 },
         tabBarActiveTintColor: "#301B92",
+        tabBarHideOnKeyboard: true,
       }}
     >
       <Tabs.Screen
@@ -64,7 +65,7 @@ export default function TabLayout() {
         name="tasks"
         options={{
           title: "Tasks",
-          header: () => <Header title="Task" />,
+          header: () => <Header title="Task" isTasks={true} />,
           tabBarIcon: ({ focused, size }) => (
             <Ionicons
               name={focused ? "checkbox" : "checkbox-outline"}
