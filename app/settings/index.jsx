@@ -75,7 +75,7 @@ export default function Page() {
             </TouchableOpacity>
             <TouchableOpacity
               className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
-              onPress={() => router.navigate("/settings/app")}
+              onPress={() => router.navigate("/settings/preference")}
             >
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">

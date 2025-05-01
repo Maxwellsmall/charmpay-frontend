@@ -15,14 +15,14 @@ import useApi from "@/hooks/Api";
 export default function CreateTask() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const { raiseDispute } = useApi;
-  const { taskId } = useLocalSearchParams();
+  const { recieverEvidence } = useApi;
+  const { disputeId } = useLocalSearchParams();
 
   return (
     <SafeAreaView className="flex-1">
       <ScrollView className="px-5 mt-4">
         <Text className="mb-[5px] text-[15px] font-bold">
-          Want to raise a dispute?
+          Has a dispute been raised against you?
         </Text>
         <Text
           className="mb-[20px] text-[15px] font-bold
@@ -48,11 +48,11 @@ export default function CreateTask() {
       <View className="p-4 mt-auto bg-white">
         <TouchableOpacity
           className="bg-blue-900 w-96 p-3 rounded-lg self-center flex-row justify-center items-center"
-          onPress={() => raiseDispute(taskId, message, setLoading)}
+          onPress={() => recieverEvidence(disputeId, message, setLoading)}
         >
           {loading && <ActivityIndicator size={24} color={"white"} />}
           <Text className="text-white text-center font-semibold ml-2">
-            Raise Dispute
+            Submit Evidence
           </Text>
         </TouchableOpacity>
       </View>

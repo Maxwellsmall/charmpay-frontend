@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useState, useEffect, useCallback } from "react";
 import Transactions from "@/components/Transactions";
-import useApi from "@/hooks/useApi";
+import useApi from "@/hooks/Api";
 
 export default function history() {
   const { getAllTransactions } = useApi;

@@ -16,7 +16,7 @@ import RecipientModal from "@/components/RecipientModal";
 import { router } from "expo-router";
 import Beneficiary from "@/components/Beneficiary";
 import User from "@/components/User";
-import useApi from "@/hooks/useApi";
+import useApi from "@/hooks/Api";
 import {
   CodeField,
   Cursor,

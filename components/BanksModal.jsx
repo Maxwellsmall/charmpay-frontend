@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import { FontAwesome } from "@expo/vector-icons";
-import useApi from "@/hooks/useApi";
+import useApi from "@/hooks/Api";
 
 export default function RecipientModal({
   setIsVisible,

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import useApi from "@/hooks/useApi";
+import useApi from "@/hooks/Api";
 
 const CELL_COUNT = 6; // Number of digits in the passcode
 

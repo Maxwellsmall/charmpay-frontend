@@ -13,7 +13,7 @@ import BanksModal from "@/components/BanksModal";
 import { router } from "expo-router";
 import Bank from "@/components/Bank";
 import User from "@/components/User";
-import useApi from "@/hooks/useApi";
+import useApi from "@/hooks/Api";
 
 export default function Page() {
   const [isModalVisible, setIsModalVisible] = useState(false);

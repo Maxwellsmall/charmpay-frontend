@@ -14,7 +14,7 @@ import * as SMS from "expo-sms";
 import Inbox from "@/components/Inbox";
 import Task from "@/components/Task";
 import Transactions from "@/components/Transactions";
-import useApi from "@/hooks/useApi";
+import useApi from "@/hooks/Api";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { AuthContext } from "@/context/AuthProvider";
@@ -89,7 +89,14 @@ export default function Page() {
             </View>
             <Text className="text-[35px] font-bold mt-[10px]">
               {userData?.wallet?.currency}{" "}
-              {showBalance ? `${userData?.wallet?.currentBalance}.00` : "****"}
+              {showBalance
+                ? new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: userData?.wallet?.currency || "USD",
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  }).format(userData?.wallet?.currentBalance)
+                : "****"}
             </Text>
 
             <View className="flex-row items-center justify-evenly mt-[15px]">

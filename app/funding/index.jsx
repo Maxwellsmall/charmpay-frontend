@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useContext, useState } from "react";
-import useApi from "@/hooks/useApi";
+import useApi from "@/hooks/Api";
 import { WebView } from "react-native-webview";
 import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "@/context/AuthProvider";

@@ -22,7 +22,7 @@ export default function Page() {
             <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
-                  <Ionicons name="thermometer-outline" size={24} />
+                  <Ionicons name="settings-outline" size={24} />
                 </View>
                 <Text className="text-[20px] font-bold">Contact Support</Text>
               </View>

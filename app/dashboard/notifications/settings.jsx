@@ -26,7 +26,7 @@ export default function Page() {
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
                   <Ionicons name="information-circle-outline" size={24} />
                 </View>
-                <Text className="text-[20px]">Info and Updates</Text>
+                <Text className="text-[20px] font-bold">Info and Updates</Text>
               </View>
               <Ionicons name="chevron-forward" size={24} />
             </TouchableOpacity>
@@ -35,7 +35,9 @@ export default function Page() {
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
                   <Ionicons name="card-outline" size={24} />
                 </View>
-                <Text className="text-[20px]">Financial Activity</Text>
+                <Text className="text-[20px] font-bold">
+                  Financial Activity
+                </Text>
               </View>
               <Ionicons name="chevron-forward" size={24} />
             </TouchableOpacity>
@@ -44,7 +46,9 @@ export default function Page() {
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
                   <Ionicons name="document-outline" size={24} />
                 </View>
-                <Text className="text-[20px]">non-Financial Activity</Text>
+                <Text className="text-[20px] font-bold">
+                  non-Financial Activity
+                </Text>
               </View>
               <Ionicons name="chevron-forward" size={24} />
             </TouchableOpacity>
@@ -53,7 +57,7 @@ export default function Page() {
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
                   <Ionicons name="lock-closed-outline" size={24} />
                 </View>
-                <Text className="text-[20px]">Security</Text>
+                <Text className="text-[20px] font-bold">Security</Text>
               </View>
               <Ionicons name="chevron-forward" size={24} />
             </TouchableOpacity>
