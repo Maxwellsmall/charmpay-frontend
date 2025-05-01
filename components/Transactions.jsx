@@ -1,30 +1,42 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from "react-native";
-import React from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import { useContext } from "react";
+import { router } from "expo-router";
+import { AuthContext } from "@/context/AuthProvider";
 
-export default function Transactions() {
+export default function Transactions({ transaction }) {
+  const { userData, setUserData, isLoading, setIsLoading } =
+    useContext(AuthContext);
+  console.log(transaction.id);
   return (
-    <View
-      className="p-2 rounded-lg mt-4"
-      style={{ backgroundColor: "#F5F5F5" }}
+    <TouchableOpacity
+      className="border-[#D9D9D9] border-b-[1px] p-4 my-[10px] rounded-[10px]"
+      onPress={() =>
+        router.navigate(`/dashboard/transactions/${transaction.id}`)
+      }
     >
-      <View className=" flex-row justify-between items-center p-12 px-3 py-4">
-        <Text className="font-medium">Transfer to Chuckuchebem David</Text>
-        <Text className="font-semibold">N 500,000</Text>
+      <View className="flex-row items-center justify-between">
+        {transaction.type == "funding" ? (
+          <Text className="text-[14px] font-bold">Money Deposit</Text>
+        ) : transaction.receiverId == userData.id ? (
+          <Text className="text-[14px] font-bold">Money Deposit</Text>
+        ) : (
+          <Text className="text-[14px] font-bold">
+            Transfer to {transaction.receiver.firstName}{" "}
+            {transaction.receiver.lastName}
+          </Text>
+        )}
+        <Text className="text-[14px] font-bold">+NGN {transaction.amount}</Text>
       </View>
-      <View className="flex-row justify-between items-center p-12 px-3 py-4">
-        <Text className="text-xs">Feb 20th, 2025</Text>
-        <TouchableWithoutFeedback
-          className="P-3"
-          style={{ backgroundColor: "#C4BEE1" }}
-        >
-          <Text style={{ color: "#C4BEE1" }}>pending</Text>
-        </TouchableWithoutFeedback>
+      <View className="flex-row items-center justify-between">
+        <Text className="text-[12px]">
+          {Date(transaction.createdAt).split("G")[0]}
+        </Text>
+        <View className="bg-green-200 p-1 rounded-[10px]">
+          <Text className="text-[12px] text-green-700">
+            {transaction.status}
+          </Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }

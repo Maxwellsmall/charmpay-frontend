@@ -8,68 +8,67 @@ import {
   TextInput,
   ActivityIndicator,
 } from "react-native";
-import {
-  CodeField,
-  Cursor,
-  useBlurOnFulfill,
-  useClearByFocusCell,
-} from "react-native-confirmation-code-field";
+
 import { router } from "expo-router";
-const CELL_COUNT = 6; // Number of digits in the passcode
-import useApi from "@/app/hooks/useApi";
+import useApi from "@/hooks/useApi";
+import { Ionicons } from "@expo/vector-icons";
 
 const Page = () => {
   const { login } = useApi;
-  const [value, setValue] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [passCode, setPassCode] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
+
   return (
     <View className="flex-1 justify-start pt-10 items-center bg-white">
-      <View>
-        <Text className="w-[90%] font-bold mb-5 text-left text-[29px] text-[#3A259C]">
-          Login
-        </Text>
-        <TextInput
-          className="px-4 pt-4 placeholderTextColor-[#F5F5F5] bg-[#F5F5F5] w-96 rounded-md"
-          placeholder="Phone Number"
-          onChangeText={(text) => setPhoneNumber(text)}
-          keyboardType="number-pad"
-        />
-      </View>
-      <CodeField
-        ref={ref}
-        {...props}
-        value={value}
-        onChangeText={setValue}
-        cellCount={CELL_COUNT}
-        rootStyle={styles.codeFieldRoot}
-        keyboardType="number-pad"
-        textContentType="oneTimeCode"
-        renderCell={({ index, symbol, isFocused }) => (
-          <View
-            key={index}
-            style={[styles.cell, isFocused && styles.focusCell]}
-            onLayout={getCellOnLayoutHandler(index)}
-          >
-            <Text style={styles.cellText}>
-              {symbol || (isFocused ? <Cursor /> : null)}
-            </Text>
-          </View>
-        )}
+      <Text className="w-[90%] font-bold mb-5 text-left text-[29px]">
+        Welcome back
+      </Text>
+      <Text className="w-[90%] font-medium mb-16 text-left text-[12px]">
+        Login into your account
+      </Text>
+
+      <Text className="w-[90%] font-bold mb-5 text-left text-[12px] text-[#3A259C]">
+        Email
+      </Text>
+      <TextInput
+        className="px-4 py-5 placeholderTextColor-[#F5F5F5] bg-[#F5F5F5] w-[90%] rounded-md"
+        placeholder="Email Address"
+        onChangeText={(text) => setEmail(text)}
       />
+      <Text className="w-[90%] font-bold my-5 text-left text-[12px] text-[#3A259C]">
+        Passcode
+      </Text>
+      <View className="px-4 py-2 placeholderTextColor-[#F5F5F5] bg-[#F5F5F5] w-[90%] rounded-md flex-row justify-between items-center">
+        <TextInput
+          className="placeholderTextColor-[#F5F5F5] w-[50%] "
+          placeholder="Passcode"
+          secureTextEntry={!showPassword}
+          onChangeText={(text) => setPassCode(text)}
+          keyboardType="number-pad"
+          maxLength={6}
+        />
+        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+          {showPassword ? (
+            <Ionicons name="eye" size={20} />
+          ) : (
+            <Ionicons name="eye-off" size={20} />
+          )}
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity
-        className="bg-blue-900 w-96 p-3 rounded-lg absolute bottom-5 flex-row justify-center items-center"
-        onPress={() => login(phoneNumber, value, setLoading)}
-      
+        className="bg-blue-900 w-[90%] p-3 py-4 rounded-lg mt-8 flex-row justify-center items-center"
+        onPress={() => login(email, passCode, setLoading)}
+        // onPress={() => router.navigate("/dashboard")}
       >
         {loading && <ActivityIndicator size={24} color={"white"} />}
-        <Text className="text-white text-center font-semibold">NEXT</Text>
+        <Text className="text-white text-center font-semibold">LOGIN</Text>
       </TouchableOpacity>
+
+      <Text className="w-[90%] font-bold mt-5 text-[12px] text-center text-[#3A259C]">
+        Forgotten Password?
+      </Text>
     </View>
   );
 };

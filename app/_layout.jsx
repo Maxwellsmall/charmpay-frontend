@@ -1,53 +1,29 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter, Stack } from "expo-router";
 import "../global.css";
 import { ActivityIndicator, StatusBar } from "react-native";
-import { View, Image, Text } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { View, Image, Text, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import Header from "@/components/Header";
+import AuthProvider from "@/context/AuthProvider";
 export default function Layout() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [token, setToken] = useState(null);
   const router = useRouter();
-
-  useEffect(() => {
-    setTimeout(() => {
-      getToken();
-    }, [5000]);
-  }, []);
-
-  const getToken = async () => {
-    try {
-      const data = await AsyncStorage.getItem("token");
-      console.log(data);
-      setToken(data);
-      if (!data || data === "null") {
-        router.replace("/");
-      } else {
-        router.replace("/(tabs)/dashboard");
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setTimeout(() => setLoading(false), 3000);
-    }
-  };
-
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="blue" />
-      </View>
-    );
-  }
-
   return (
-    <>
-      <StatusBar barStyle={"dark-content"} />
+    <AuthProvider>
+      <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
           name="index"
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="auth/index"
           options={{
             headerShown: true,
             headerShadowVisible: false,
@@ -64,92 +40,153 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
+          name="screens/firstBoard"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="screens/secondBoard"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="auth/signup/index"
-          options={{ headerTitle: "Signup", headerShadowVisible: false }}
+          options={{
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerLeft: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  source={require("../assets/images/logo.png")}
+                  style={{ width: 48, height: 48, marginRight: 12 }}
+                />
+                <Text style={{ fontWeight: "bold" }}>Charmpay</Text>
+              </View>
+            ),
+          }}
         />
         <Stack.Screen
-          name="auth/signup/otp/index"
-          options={{ headerTitle: "", headerShadowVisible: false }}
+          name="auth/signup/code/transactionCode"
+          options={{
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerLeft: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  source={require("../assets/images/logo.png")}
+                  style={{ width: 48, height: 48, marginRight: 12 }}
+                />
+                <Text style={{ fontWeight: "bold" }}>Charmpay</Text>
+              </View>
+            ),
+          }}
         />
         <Stack.Screen
-          name="auth/signup/otp/passcode"
-          options={{ headerTitle: "", headerShadowVisible: false }}
+          name="auth/signup/code/passcode"
+          options={{
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerLeft: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  source={require("../assets/images/logo.png")}
+                  style={{ width: 48, height: 48, marginRight: 12 }}
+                />
+                <Text style={{ fontWeight: "bold" }}>Charmpay</Text>
+              </View>
+            ),
+          }}
         />
         <Stack.Screen
           name="auth/signup/verify/index"
-          options={{ headerTitle: "", headerShadowVisible: false }}
+          options={{
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerLeft: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  source={require("../assets/images/logo.png")}
+                  style={{ width: 48, height: 48, marginRight: 12 }}
+                />
+                <Text style={{ fontWeight: "bold" }}>Charmpay</Text>
+              </View>
+            ),
+          }}
         />
         <Stack.Screen
           name="auth/signup/verify/success"
-          options={{ headerTitle: "", headerShadowVisible: false }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="auth/login/index"
-          options={{ headerTitle: "", headerShadowVisible: false }}
+          options={{
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerLeft: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  source={require("../assets/images/logo.png")}
+                  style={{ width: 48, height: 48, marginRight: 12 }}
+                />
+                <Text style={{ fontWeight: "bold" }}>Charmpay</Text>
+              </View>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="settings/help/index"
+          options={{
+            header: () => <Header title="Help Center" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+            animation: "slide_from_right",
+          }}
         />
         <Stack.Screen
           name="settings/index"
           options={{
-            headerTitle: "",
+            header: () => <Header title="Settings" />,
             headerShadowVisible: false,
-            headerStyle: { backgroundColor: "white" },
-            headerLeft: () => (
-              <View className="flex-row justify-center items-center">
-                <TouchableOpacity>
-                  <Ionicons name="chevron-back" />
-                </TouchableOpacity>
-                <Text className="font-bold ms-[10px] text-BLACK">Settings</Text>
-              </View>
-            ),
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+            animation: "slide_from_right",
           }}
         />
         <Stack.Screen
-          name="dashboard/profile/index"
+          name="settings/personalDetails"
           options={{
-            headerTitle: "",
+            header: () => <Header title="Personal Details" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/profile/edit"
+          options={{
+            header: () => <Header title="Edit Profile" />,
             headerShadowVisible: false,
-            headerStyle: { backgroundColor: "white" },
-            headerLeft: () => (
-              <View className="flex-row justify-center items-center">
-                <TouchableOpacity>
-                  <Ionicons name="arrow-back" size={24} />
-                </TouchableOpacity>
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
 
-                <Text className="font-bold ms-[10px] text-BLACK">
-                  Edit profile
-                </Text>
-              </View>
-            ),
-          }}
-        />
-        <Stack.Screen
-          name="settings/settings"
-          options={{
-            headerTitle: "",
-            headerShadowVisible: false,
-            headerStyle: { backgroundColor: "white" },
-            headerLeft: () => (
-              <View className="flex-row justify-center items-center">
-                <TouchableOpacity className=" p-2 rounded-sm">
-                  <Image
-                    source={require("../assets/images/OIP.png")}
-                    className="w-14 rounded-full"
-                  />
-                </TouchableOpacity>
-                <Text className="font-bold ms-[10px] text-BLACK">
-                  HI, IBEH PROMISE
-                </Text>
-              </View>
-            ),
-            headerRight: () => (
-              <View className="flex-row justify-center items-center">
-                <TouchableOpacity>
-                  <Ionicons name="settings-outline" size={24} />
-                </TouchableOpacity>
-              </View>
-            ),
-          }}
-        />
         <Stack.Screen
           name="auth/transaction/index"
           options={{
@@ -169,7 +206,265 @@ export default function Layout() {
             ),
           }}
         />
+        <Stack.Screen
+          name="tasks/index"
+          options={{
+            headerTitle: "",
+            headerShadowVisible: false,
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="tasks/create"
+          options={{
+            header: () => <Header title="Create Task" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="tasks/success"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="funding/index"
+          options={{
+            header: () => <Header title="Add money" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="funding/transfer"
+          options={{
+            header: () => <Header title="Transfer" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="funding/withdraw"
+          options={{
+            header: () => <Header title="withdraw" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="funding/[recipientId]"
+          options={{
+            header: () => <Header title="withdraw" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="funding/success"
+          options={{
+            headerShadowVisible: false,
+            headerShown: false,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="dashboard/notifications/index"
+          options={{
+            header: () => (
+              <Header title="Notifications" isNotification={true} />
+            ),
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="dashboard/notifications/settings"
+          options={{
+            header: () => <Header title="Notifications" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="dashboard/taskDetails/[taskId]"
+          options={{
+            header: () => <Header title="Task Details" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="dashboard/taskDetails/activities"
+          options={{
+            header: () => <Header title="" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="dashboard/transactions/[transactionId]"
+          options={{
+            header: () => <Header title="Transactions Details" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="dashboard/transactions/history"
+          options={{
+            header: () => <Header title="Transaction History" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="tasks/disputes/[taskId]"
+          options={{
+            header: () => <Header title="Dispute Transaction" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/help/dispute"
+          options={{
+            header: () => <Header title="Transfer Dispute" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/help/report"
+          options={{
+            header: () => <Header title="Report Scam" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/help/error"
+          options={{
+            header: () => <Header title="Report Tranfer Error" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/help/security"
+          options={{
+            header: () => <Header title="Security Check`" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/deposit"
+          options={{
+            header: () => <Header title="Payment" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/privacy"
+          options={{
+            header: () => <Header title="Security & Privacy" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/legal"
+          options={{
+            header: () => <Header title="Legal & Compliance" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="settings/preference"
+          options={{
+            header: () => <Header title="App Preference" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/support"
+          options={{
+            header: () => <Header title="Help & Support" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
       </Stack>
-    </>
+    </AuthProvider>
   );
 }
