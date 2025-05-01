@@ -433,13 +433,14 @@ const createTask = async (
   discription,
   assignedTo,
   amount,
+  dueDate,
   setLoading
 ) => {
-  console.log(title, discription, assignedTo, amount);
+  console.log(title, discription, assignedTo, amount, dueDate);
   try {
     const token = await AsyncStorage.getItem("token");
     setLoading(true);
-    if (!title || !discription || !amount) {
+    if (!title || !discription || !amount || !dueDate) {
       Alert.alert("", "Ensure all inputs are filled before submission");
       return;
     }
@@ -458,6 +459,7 @@ const createTask = async (
         discription,
         assignedTo,
         amount,
+        dueDate,
       },
       {
         headers: {
@@ -915,7 +917,7 @@ const transfer = async (recipientId, amount, transactionPin, setLoading) => {
 
     console.log(response.data);
     Alert.alert("", response.data.message);
-    router.replace("/funding/success");
+    router.replace(`/dashboard/transactions/${response.data.transactionId}`);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -1060,7 +1062,6 @@ const getAllBanks = async (setLoading) => {
     setLoading(false);
   }
 };
-
 const raiseDispute = async (taskId, text, setLoading) => {
   try {
     console.log(taskId);
@@ -1099,6 +1100,187 @@ const raiseDispute = async (taskId, text, setLoading) => {
     setLoading(false);
   }
 };
+const recieverEvidence = async (disputeId, text, setLoading) => {
+  try {
+    console.log(disputeId, text);
+    const token = await AsyncStorage.getItem("token");
+    setLoading(true);
+    if (!text) {
+      Alert.alert("", "You must provude an evidence before submission");
+      return;
+    }
+    const response = await axios.patch(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/dispute/${disputeId}/addReceiverEvidence`,
+      {
+        text,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log(response.data);
+    Alert.alert("", response.data.message);
+    router.back();
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    Alert.alert(
+      "Error",
+      error.response
+        ? error.response.data.message || "Failed to send."
+        : "Check your internet connection."
+    );
+    router.dismiss(2);
+  } finally {
+    setLoading(false);
+  }
+};
+const disapproveTask = async (taskId, transactionPin, setLoading) => {
+  try {
+    console.log(taskId, transactionPin);
+    const token = await AsyncStorage.getItem("token");
+    setLoading(true);
+    if (!transactionPin) {
+      Alert.alert("", "You must provide an evidence before submission");
+      return;
+    }
+    const response = await axios.post(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/task/${taskId}/disapprove`,
+      {
+        transactionPin,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log(response.data);
+    console.log("success");
+    Alert.alert("", response.data.message);
+    router.back();
+    return response.data;
+  } catch (error) {
+    console.error(error.response.data.message);
+    console.error("error", error.response);
+    Alert.alert(
+      "Error",
+      error.response
+        ? error.response.data.message || "Failed to send."
+        : "Check your internet connection."
+    );
+    router.back();
+  } finally {
+    setLoading(false);
+  }
+};
+const approveTask = async (taskId, transactionPin, setLoading) => {
+  try {
+    console.log(taskId, transactionPin);
+    const token = await AsyncStorage.getItem("token");
+    setLoading(true);
+    if (!transactionPin) {
+      Alert.alert("", "You must provude an evidence before submission");
+      return;
+    }
+    const response = await axios.post(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/task/${taskId}/approve`,
+      {
+        transactionPin,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log(response.data);
+    Alert.alert("", response.data.message);
+    router.back();
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    Alert.alert(
+      "Error",
+      error.response
+        ? error.response.data.message || "Failed to send."
+        : "Check your internet connection."
+    );
+    router.back();
+  } finally {
+    setLoading(false);
+  }
+};
+const getAllDisputes = async (setLoading) => {
+  try {
+    setLoading(true);
+    const token = await AsyncStorage.getItem("token");
+    const response = await axios.get(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/dispute/me`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (response.status === 401) {
+      Alert.alert("Session Expired", "Please log in again.");
+      await AsyncStorage.removeItem("token"); // Clear invalid token
+      router.replace("/auth/login");
+      return;
+    }
+
+    console.log("Disputes:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Disputes Fetch Error:", error);
+    setErrorMessage(
+      "Error",
+      error.response
+        ? error.response.data.message || "Failed to fetch."
+        : "Check your internet connection."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+
+const getDisputeById = async (disputeId, setLoading) => {
+  try {
+    setLoading(true);
+    const token = await AsyncStorage.getItem("token");
+    const response = await axios.get(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/dispute/${disputeId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (response.status === 401) {
+      Alert.alert("Session Expired", "Please log in again.");
+      await AsyncStorage.removeItem("token"); // Clear invalid token
+      router.replace("/auth/login");
+      return;
+    }
+
+    console.log("Dispute:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Dispute Fetch Error:", error);
+    Alert.alert(
+      "",
+      error.response
+        ? error.response.data.message || "Failed to fetch Dispute."
+        : "Check your internet connection."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
 export default {
   signup,
@@ -1126,4 +1308,9 @@ export default {
   withdraw,
   getAllBanks,
   raiseDispute,
+  recieverEvidence,
+  disapproveTask,
+  approveTask,
+  getAllDisputes,
+  getDisputeById,
 };

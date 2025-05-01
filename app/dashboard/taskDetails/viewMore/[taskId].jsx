@@ -7,8 +7,9 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-import useApi from "@/hooks/useApi";
+import useApi from "@/hooks/Api";
 import { useLocalSearchParams } from "expo-router";
+import * as SMS from "expo-sms";
 
 export default function Page() {
   const router = useRouter();
@@ -26,6 +27,28 @@ export default function Page() {
     };
     fetchTask();
   }, []);
+
+  const sendSMS = async () => {
+    const isAvailable = await SMS.isAvailableAsync();
+
+    if (isAvailable) {
+      const { result } = await SMS.sendSMSAsync(
+        [""], // Phone number(s) as an array
+        `Task Details @Charmpay
+            SentBy: ${task?.assigner?.firstName} ${task?.assigner?.lastName}
+            Reciever: ${task?.assignee?.firstName} ${task?.assignee?.lastName}
+            Type: ${task?.status}
+            PhoneNumber: ${task?.assignee?.phoneNumber.slice(0, -5)}****
+            dueDate: ${Date(task?.dueDate).split("G")[0]}
+            Amount: ${task?.amount}
+            Id: ${task.id}` // Your message
+      );
+      console.log("SMS Result:", result); // result = 'sent' | 'cancelled'
+    } else {
+      alert("SMS is not available on this device");
+    }
+  };
+
   return loading ? (
     <View className="flex-1 w-full justify-center items-center">
       <ActivityIndicator size={30} />
@@ -86,11 +109,14 @@ export default function Page() {
         <View className="w-96 flex-row justify-between px-2 items-center self-center mt-auto mb-4">
           <TouchableOpacity
             className="px-5 py-3 rounded-full bg-white border-[1px]"
-            onPress={() => router.navigate(`/tasks/disputes/${task.id}`)}
+            onPress={() => router.navigate(`/tasks/disputes/${taskId}`)}
           >
             <Text className="text-black">Dispute</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="px-5 py-3 rounded-full bg-blue-900">
+          <TouchableOpacity
+            className="px-5 py-3 rounded-full bg-blue-900"
+            onPress={sendSMS}
+          >
             <Text className="text-white">Share Recipt</Text>
           </TouchableOpacity>
         </View>

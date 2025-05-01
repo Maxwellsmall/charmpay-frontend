@@ -12,7 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import profileImage from "@/assets/images/OIP.png";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import useApi from "@/hooks/useApi";
+import useApi from "@/hooks/Api";
 
 export default function Page() {
   const { getProfile, logout } = useApi;

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 import { router } from "expo-router";
-import useApi from "@/hooks/useApi";
+import useApi from "@/hooks/Api";
 import { Ionicons } from "@expo/vector-icons";
 
 const Page = () => {

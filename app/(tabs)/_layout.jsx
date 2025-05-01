@@ -10,6 +10,13 @@ import HeaderSkeleton from "@/components/Skelectons/HeaderSkelecton";
 export default function TabLayout() {
   const router = useRouter();
   const { userData, setUserData, isLoading } = useContext(AuthContext);
+
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning!";
+    if (hour < 18) return "Good afternoon!";
+    return "Good evening!";
+  };
   return (
     <Tabs
       screenOptions={{
@@ -38,16 +45,21 @@ export default function TabLayout() {
                   className="flex-row justify-normal items-center"
                   onPress={() => router.navigate("/profile")}
                 >
-                  <Image
-                    source={require("../../assets/images/OIP.png")}
-                    className="rounded-full w-[40px] h-[40px]"
-                  />
+                  {userData?.avatar ? (
+                    <Image
+                      source={profileImage}
+                      className="rounded-full w-[40px] h-[40px]"
+                      resizeMode="cover"
+                    />
+                  ) : (
+                    <Ionicons name="person-circle" size={40} />
+                  )}
                   <View className="ml-3">
                     <Text className="font-bold">
                       HI, {userData?.firstName} {userData?.lastName}
                     </Text>
                     <Text className="text-[#616060] font-semibold text-[10px]">
-                      Good morning!
+                      {getGreeting()}
                     </Text>
                   </View>
                 </TouchableOpacity>

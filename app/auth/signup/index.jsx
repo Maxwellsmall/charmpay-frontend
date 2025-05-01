@@ -9,7 +9,7 @@ import {
 import { useState } from "react";
 import { router } from "expo-router";
 import CountryPicker from "react-native-country-picker-modal";
-import useApi from "@/hooks/useApi";
+import useApi from "@/hooks/Api";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Page() {

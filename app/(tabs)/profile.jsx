@@ -12,7 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import profileImage from "@/assets/images/OIP.png";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import useApi from "@/hooks/useApi";
+import useApi from "@/hooks/Api";
 import { AuthContext } from "@/context/AuthProvider";
 
 export default function profile() {
@@ -49,11 +49,15 @@ export default function profile() {
     <SafeAreaView>
       <ScrollView>
         <View className="justify-center items-center mt-[50px]">
-          <Image
-            source={profileImage}
-            className="rounded-full w-[148px] h-[148px]"
-            resizeMode="cover"
-          />
+          {userData?.avatar ? (
+            <Image
+              source={profileImage}
+              className="rounded-full w-[148px] h-[148px]"
+              resizeMode="cover"
+            />
+          ) : (
+            <Ionicons name="person-circle" size={148} />
+          )}
           <Text className="text-[24px] font-bold mt-[10px]">
             {userData?.firstName} {userData?.lastName}
           </Text>

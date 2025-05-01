@@ -321,6 +321,17 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
+          name="dashboard/taskDetails/viewMore/[taskId]"
+          options={{
+            header: () => <Header title="Task Details" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
           name="dashboard/taskDetails/activities"
           options={{
             header: () => <Header title="" />,
@@ -354,7 +365,18 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
-          name="tasks/disputes/[taskId]"
+          name="tasks/disputes/[disputeId]"
+          options={{
+            header: () => <Header title="Dispute Transaction" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="tasks/disputes/recieverEvidence/[disputeId]"
           options={{
             header: () => <Header title="Dispute Transaction" />,
             headerShadowVisible: false,

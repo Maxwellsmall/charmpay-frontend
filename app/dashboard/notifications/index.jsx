@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import useApi from "@/hooks/useApi";
+import useApi from "@/hooks/Api";
 import { router } from "expo-router";
 
 export default function Notifications() {
