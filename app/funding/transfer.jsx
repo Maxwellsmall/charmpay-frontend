@@ -228,8 +228,10 @@ export default function Page() {
                   onChangeText={(pin) => {
                     setValue(pin);
                     if (pin.length === CELL_COUNT) {
-                      transfer(id, amount, pin, setLoading); // Call transfer on full input
-                      setShowPinModal(false);
+                      setTimeout(() => {
+                        transfer(id, amount, pin, setLoading); // Call transfer on full input
+                        setShowPinModal(false);
+                      }, 2000);
                     }
                   }}
                   cellCount={CELL_COUNT}
@@ -243,7 +245,7 @@ export default function Page() {
                       onLayout={getCellOnLayoutHandler(index)}
                     >
                       <Text style={styles.cellText}>
-                        {symbol || (isFocused ? <Cursor /> : null)}
+                        {symbol ? "●" : isFocused ? <Cursor /> : null}
                       </Text>
                     </View>
                   )}

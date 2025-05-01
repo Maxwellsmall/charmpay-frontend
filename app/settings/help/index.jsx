@@ -46,7 +46,10 @@ export default function Page() {
         </TouchableOpacity>
       </View>
       <View className="flex-row justify-between items-center mx-4 mt-10">
-        <TouchableOpacity className="pl-3">
+        <TouchableOpacity
+          className="pl-3 "
+          onPress={() => router.navigate("/settings/help/report")}
+        >
           <View className="">
             <View className="flex-row items-center">
               <Ionicons name="alert-circle-outline" size={25} />
@@ -62,7 +65,10 @@ export default function Page() {
         </TouchableOpacity>
       </View>
       <View className="flex-row justify-between items-center mx-4 mt-10">
-        <TouchableOpacity className="pl-3">
+        <TouchableOpacity
+          className="pl-3"
+          onPress={() => router.navigate("/settings/help/error")}
+        >
           <View className="">
             <View className="flex-row items-center">
               <Feather name="arrow-up-right" size={25} />
@@ -80,7 +86,10 @@ export default function Page() {
         </TouchableOpacity>
       </View>
       <View className="flex-row justify-between items-center mx-4 mt-10">
-        <TouchableOpacity className="pl-3">
+        <TouchableOpacity
+          className="pl-3"
+          onPress={() => router.navigate("/settings/help/security")}
+        >
           <View className="">
             <View className="flex-row items-center">
               <Ionicons name="shield-checkmark-outline" size={25} />

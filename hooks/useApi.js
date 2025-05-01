@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
@@ -256,9 +257,10 @@ const getProfile = async (setLoading) => {
     setLoading(false);
   }
 };
-const logout = async () => {
+const logout = async (setUserData) => {
   try {
     await AsyncStorage.removeItem("token");
+    await setUserData(null);
     Alert.alert("", "Account Logged out successfully");
     router.dismissAll();
     router.push("/auth/");
@@ -565,7 +567,7 @@ const getOthersTask = async (setLoading) => {
     return response.data;
   } catch (error) {
     console.error("Task Fetch Error:", error);
-    Alert.alert(
+    console.log(
       "",
       error.response
         ? error.response.data.message || "Failed to fetch task."
@@ -939,7 +941,7 @@ const initializeWithdraw = async (
     const token = await AsyncStorage.getItem("token");
     setLoading(true);
 
-    if (!name || !type || !bankCode || !accountNumber) {
+    if (!name || !type || !accountNumber) {
       Alert.alert("", "Ensure all inputs are filled before submission");
       return;
     }
@@ -968,13 +970,59 @@ const initializeWithdraw = async (
 
     console.log(response.data);
     Alert.alert("", response.data.message);
+    console.log(response.data.recipient_code);
+    router.navigate(`/funding/${response.data.data.recipient_code}`);
     return response.data;
   } catch (error) {
     console.log(error);
     Alert.alert(
       "Error",
       error.response
-        ? error.response.data.message || "Failed to transfer."
+        ? error.response.data.message || "Failed to Withdraw."
+        : "Check your internet connection."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+const withdraw = async (amount, recipient, transactionPin, setLoading) => {
+  try {
+    console.log(amount, recipient, transactionPin);
+    const token = await AsyncStorage.getItem("token");
+    setLoading(true);
+
+    if (!amount) {
+      Alert.alert("", "Insert Your Amount of Withdrawal");
+      return;
+    }
+    if (!validateNumber(amount)) {
+      Alert.alert("", "Invalid amount");
+      return;
+    }
+    const response = await axios.post(
+      `${process.env.EXPO_PUBLIC_API_URL}/api/withdraw/`,
+      {
+        amount,
+        recipient,
+        transactionPin,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log(response.data);
+    Alert.alert("", response.data.message);
+    router.dismiss(2);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    Alert.alert(
+      "Error",
+      error.response
+        ? error.response.data.message || "Failed to Withdraw."
         : "Check your internet connection."
     );
   } finally {
@@ -1075,6 +1123,7 @@ export default {
   getAllNotifications,
   transfer,
   initializeWithdraw,
+  withdraw,
   getAllBanks,
   raiseDispute,
 };

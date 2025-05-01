@@ -33,7 +33,7 @@ export default function profile() {
         text: "LOGOUT",
         style: "destructive",
         onPress: () => {
-          logout();
+          logout(setUserData);
         },
       },
     ]);

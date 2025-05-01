@@ -265,6 +265,17 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
+          name="funding/[recipientId]"
+          options={{
+            header: () => <Header title="withdraw" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
           name="funding/success"
           options={{
             headerShadowVisible: false,
@@ -302,6 +313,17 @@ export default function Layout() {
           name="dashboard/taskDetails/[taskId]"
           options={{
             header: () => <Header title="Task Details" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="dashboard/taskDetails/activities"
+          options={{
+            header: () => <Header title="" />,
             headerShadowVisible: false,
             headerShown: true,
             contentStyle: {
@@ -380,6 +402,62 @@ export default function Layout() {
           options={{
             header: () => <Header title="Security Check`" />,
             headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/deposit"
+          options={{
+            header: () => <Header title="Payment" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/privacy"
+          options={{
+            header: () => <Header title="Security & Privacy" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/legal"
+          options={{
+            header: () => <Header title="Legal & Compliance" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="settings/preference"
+          options={{
+            header: () => <Header title="App Preference" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/support"
+          options={{
+            header: () => <Header title="Help & Support" />,
+            headerShaNdowVisible: false,
             headerShown: true,
             contentStyle: {
               backgroundColor: "white",

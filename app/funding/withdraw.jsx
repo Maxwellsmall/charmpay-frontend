@@ -88,7 +88,7 @@ export default function Page() {
         >
           {loading && <ActivityIndicator size={24} color={"white"} />}
           <Text className="text-white text-center font-semibold ml-2">
-            Withdraw
+            Continue
           </Text>
         </TouchableOpacity>
       </View>

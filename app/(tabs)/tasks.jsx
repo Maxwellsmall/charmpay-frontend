@@ -68,7 +68,7 @@ export default function Page() {
   return (
     <View className=" flex-1 self-center w-[90%] items-center">
       <TextInput
-        className="px-4 py-5 mb-5 placeholderTextColor-[#F5F5F5] bg-white w-[100%] rounded-full"
+        className="px-4 py-3 mb-5 placeholderTextColor-[#F5F5F5] bg-white w-[100%] rounded-full"
         placeholder="Search"
         returnKeyType="search"
         value={task}
