@@ -16,15 +16,7 @@ export default function Page() {
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
                   <Ionicons name="settings-outline" size={24} />
                 </View>
-                <Text className="text-[20px] font-bold">Term & Condition</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
-              <View className="flex-row items-center">
-                <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
-                  <Ionicons name="settings-outline" size={24} />
-                </View>
-                <Text className="text-[20px] font-bold">Privacy & Policy</Text>
+                <Text className="text-[20px] font-bold">Login Devices</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
@@ -33,7 +25,7 @@ export default function Page() {
                   <Ionicons name="settings-outline" size={24} />
                 </View>
                 <Text className="text-[20px] font-bold">
-                  AML/Compliance Info
+                  Password and Email
                 </Text>
               </View>
             </TouchableOpacity>
@@ -42,7 +34,17 @@ export default function Page() {
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
                   <Ionicons name="settings-outline" size={24} />
                 </View>
-                <Text className="text-[20px] font-bold">Report an issue</Text>
+                <Text className="text-[20px] font-bold">App Lock</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
+              <View className="flex-row items-center">
+                <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
+                  <Ionicons name="settings-outline" size={24} />
+                </View>
+                <Text className="text-[20px] font-bold">
+                  Data Sharing Preferences
+                </Text>
               </View>
             </TouchableOpacity>
           </View>

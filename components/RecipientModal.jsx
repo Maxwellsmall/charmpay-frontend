@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import profileImage from "@/assets/images/OIP.png";
 import { Ionicons } from "@expo/vector-icons";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 
 export default function RecipientModal({
   setIsVisible,
@@ -20,7 +20,7 @@ export default function RecipientModal({
   setRecipient,
   setIsBeneficiary,
 }) {
-  const { fetchAllBeneficiary, getUserByEmail } = useApi;
+  const { fetchAllBeneficiary, getUserByEmail } = useApi();
   const [beneficiaries, setBeneficiaries] = useState([]);
   const [searchResult, setSearchResult] = useState(null);
   const [loading, setLoading] = useState(false);

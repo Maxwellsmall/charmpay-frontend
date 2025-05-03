@@ -13,12 +13,7 @@ import {
   Alert,
   FlatList,
 } from "react-native";
-import {
-  getTaskById,
-  disapproveTask,
-  approveTask,
-  getAllDisputes,
-} from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 import {
   CodeField,
   Cursor,
@@ -32,6 +27,7 @@ import DisputeTransaction from "@/components/Disputes";
 const CELL_COUNT = 4;
 
 export default function Page() {
+  const { getTaskById, disapproveTask, approveTask, getDisputeById } = useApi();
   const { userData } = useContext(AuthContext);
   const { taskId } = useLocalSearchParams();
   const [toggle, setToggle] = useState(true);
@@ -42,6 +38,8 @@ export default function Page() {
   const [showPinModal, setShowPinModal] = useState(false);
   const [buttonAction, setButtonAction] = useState("");
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const [status, setStatus] = useState("Completed");
+  const [showStatusDropdown, setShowStatusDropdown] = useState(false);
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -54,28 +52,22 @@ export default function Page() {
     console.log(response?.transaction.senderId);
   };
   const fetchDisputes = async () => {
-    let response = await getAllDisputes(setLoading);
+    console.log("disputeId", task?.dispute.id);
+    if (task?.dispute == null) {
+      setDisputes(null);
+    }
+    let response = await getDisputeById(task?.dispute?.id, setLoading);
+    console.log("response", response);
     setDisputes(response);
   };
   useEffect(() => {
     fetchTask();
-    fetchDisputes();
+    // fetchDisputes();
   }, []);
-
-  // Status dropdown
-  const [status, setStatus] = useState("Completed");
-  const [showStatusDropdown, setShowStatusDropdown] = useState(false);
 
   // A sample, multiline description
 
   const statusOptions = ["Completed", "Ongoing", "Canceled"];
-
-  // A sample array of activity logs or notes
-  const activityLogs = [
-    { id: 1, text: "Status changed to Ongoing on Mar 2" },
-    { id: 2, text: "Assigned to John Doe on Feb 15" },
-    { id: 3, text: "Due date updated to Feb 20" },
-  ];
 
   if (loading) {
     return (
@@ -146,27 +138,13 @@ export default function Page() {
       },
     ]);
   };
-  useEffect(() => {
-    if (value.length === CELL_COUNT) {
-      setTimeout(() => {
-        if (buttonAction === "approve") {
-          approveTask(task?.transaction.taskId, value, setLoading);
-        } else if (buttonAction === "disapprove") {
-          disapproveTask(task?.transaction.taskId, value, setLoading);
-        }
-        setShowPinModal(false);
-        setValue(""); // Clear the pin
-      }, 2000);
-    }
-  }, [value]);
-
   return (
     <View className="flex-1 bg-white">
       {/* Top Container */}
-      <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
-        {/* Header / Task Title */}
-        <View className="p-2">
-          {/* Divider / Tabs */}
+      {/* Header / Task Title */}
+      {/* Divider / Tabs */}
+      <View className="p-2">
+        <ScrollView contentContainerStyle={{ paddingBottom: 0 }}>
           <View className=" px-4 w-full flex-row justify-center items-center">
             <View className="flex-row py-1 px-1 border-gray-200 border-b-[1px] rounded-md w-96 justify-center items-center">
               {/* Details Button */}
@@ -186,7 +164,10 @@ export default function Page() {
                 className={`w-[40%] py-1 rounded-md justify-center items-center ${
                   !toggle ? "bg-gray-400" : "bg-white"
                 }`}
-                onPress={() => setToggle(false)}
+                onPress={() => {
+                  setToggle(false);
+                  fetchDisputes();
+                }}
               >
                 <Text className={!toggle ? "text-white" : "text-black"}>
                   Activity
@@ -194,189 +175,181 @@ export default function Page() {
               </TouchableOpacity>
             </View>
           </View>
+        </ScrollView>
 
-          {/* Details or Activity Content */}
-          {toggle ? (
-            /* DETAILS VIEW */
-            <View className="px-4 py-4">
-              <Text className="text-xl font-bold mb-4 capitalize">
-                {task?.title}
+        {/* Details or Activity Content */}
+        {toggle ? (
+          /* DETAILS VIEW */
+          <View className="px-4 py-4">
+            <Text className="text-xl font-bold mb-4 capitalize">
+              {task?.title}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                router.navigate(`/dashboard/taskDetails/viewMore/${taskId}`);
+              }}
+            >
+              <Text className="text-xl text-blue-500 text-center  font-bold mb-4 capitalize">
+                View More
               </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  router.navigate(`/dashboard/taskDetails/viewMore/${taskId}`);
-                }}
-              >
-                <Text className="text-xl text-blue-500 text-center  font-bold mb-4 capitalize">
-                  View More
-                </Text>
-              </TouchableOpacity>
-              <View className="flex-row justify-between py-4 border-b border-gray-300">
-                <View className="flex-row items-center">
-                  <Ionicons name="checkbox-outline" size={20} />
-                  <View className="ml-2">
-                    <Text className="text-gray-500">Status</Text>
-                    <Text className=" text-black font-bold capitalize">
-                      {task?.status}
-                    </Text>
-                  </View>
+            </TouchableOpacity>
+            <View className="flex-row justify-between py-4 border-b border-gray-300">
+              <View className="flex-row items-center">
+                <Ionicons name="checkbox-outline" size={20} />
+                <View className="ml-2">
+                  <Text className="text-gray-500">Status</Text>
+                  <Text className=" text-black font-bold capitalize">
+                    {task?.status}
+                  </Text>
                 </View>
+              </View>
+            </View>
+            <View className="flex-row justify-between py-4 border-b border-gray-300">
+              <View className="flex-row items-center">
+                <Ionicons name="person-circle" size={20} />
+                <View className="ml-2">
+                  <Text className="text-gray-500">Assignee</Text>
+                  {task?.assignerId === userData?.id ? (
+                    <Text className="text-black font-bold capitalize">
+                      {task?.assignee.firstName} {task?.assignee.lastName}
+                    </Text>
+                  ) : (
+                    <Text className="text-black font-bold capitalize">
+                      {task?.assigner.firstName} {task?.assigner.lastName}
+                    </Text>
+                  )}
+                </View>
+              </View>
+            </View>
+            <View className="flex-row justify-between py-4 mb-4 border-b border-gray-300">
+              <View className="flex-row items-center">
+                <Ionicons name="calendar" size={20} />
+                <View className="ml-2">
+                  <Text className="text-gray-500">Due Date</Text>
+                  <Text className=" text-black font-bold capitalize">
+                    {task?.dueDate}
+                  </Text>
+                </View>
+              </View>
+            </View>
 
-                <View className="relative w-44">
-                  {/* Current Status Button */}
-                  {/* <Pressable
-                    onPress={() => setShowStatusDropdown(!showStatusDropdown)}
-                    className="flex-row justify-between items-center px-3 py-2 border border-gray-300 rounded-md bg-white"
+            <Text className="text-lg font-semibold mb-2">Description</Text>
+            <View className="h-40 text-base text-gray-800 border border-gray-300 rounded-md p-2">
+              <Text>{task?.description}</Text>
+            </View>
+            {task?.transaction?.status === "in-escrow" && (
+              <View>
+                {task?.assignerId == userData?.id ? (
+                  <TouchableOpacity
+                    className="bg-blue-900 w-96 p-3 rounded-lg self-center flex-row justify-center items-center mt-5"
+                    onPress={handleApprove}
                   >
-                    <Text className="text-base text-gray-700">
-                      {task?.status}
+                    {loading && <ActivityIndicator size={24} color={"white"} />}
+                    <Text className="text-white text-center font-semibold ml-2">
+                      APPROVE
                     </Text>
-                    <Text className="text-gray-700">
-                      {showStatusDropdown ? "▲" : "▼"}
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    className="bg-blue-900 w-96 p-3 rounded-lg self-center flex-row justify-center items-center mt-5"
+                    onPress={handleDisapprove}
+                  >
+                    {loading && <ActivityIndicator size={24} color={"white"} />}
+                    <Text className="text-white text-center font-semibold ml-2">
+                      DISAPPROVE
                     </Text>
-                  </Pressable> */}
-
-                  {/* Status Dropdown Options */}
-                  {/* {showStatusDropdown && (
-                    <View className="absolute top-12 left-0 w-full bg-white border border-gray-300 rounded-md z-10">
-                      {statusOptions.map((option) => (
-                        <TouchableOpacity
-                          key={option}
-                          onPress={() => {
-                            setStatus(option);
-                            setShowStatusDropdown(false);
-                          }}
-                          className="px-3 py-2 hover:bg-gray-100"
-                        >
-                          <Text
-                            className={`text-base ${
-                              status === option ? "font-bold" : "font-normal"
-                            }`}
-                          >
-                            {option}
-                          </Text>
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                  )} */}
-                </View>
-              </View>
-              <View className="flex-row justify-between py-4 border-b border-gray-300">
-                <View className="flex-row items-center">
-                  <Ionicons name="person-circle" size={20} />
-                  <View className="ml-2">
-                    <Text className="text-gray-500">Assignee</Text>
-                    {taskId == task?.assignerId ? (
-                      <Text className="text-black font-bold capitalize">
-                        {task?.assigner.firstName} {task?.assigner.lastName}
-                      </Text>
-                    ) : (
-                      <Text className="text-black font-bold capitalize">
-                        {task?.assignee.firstName} {task?.assignee.lastName}
-                      </Text>
-                    )}
-                  </View>
-                </View>
-              </View>
-              <View className="flex-row justify-between py-4 mb-4 border-b border-gray-300">
-                <View className="flex-row items-center">
-                  <Ionicons name="calendar" size={20} />
-                  <View className="ml-2">
-                    <Text className="text-gray-500">Due Date</Text>
-                    <Text className=" text-black font-bold capitalize">
-                      {task?.dueDate}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <Text className="text-lg font-semibold mb-2">Description</Text>
-              <View className="h-40 text-base text-gray-800 border border-gray-300 rounded-md p-2">
-                <Text>{task?.description}</Text>
-              </View>
-
-              {task?.assignerId == userData?.id ? (
-                <TouchableOpacity
-                  className="bg-blue-900 w-96 p-3 rounded-lg self-center flex-row justify-center items-center mt-5"
-                  onPress={handleApprove}
-                >
-                  {loading && <ActivityIndicator size={24} color={"white"} />}
-                  <Text className="text-white text-center font-semibold ml-2">
-                    APPROVE
-                  </Text>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  className="bg-blue-900 w-96 p-3 rounded-lg self-center flex-row justify-center items-center mt-5"
-                  onPress={handleDisapprove}
-                >
-                  {loading && <ActivityIndicator size={24} color={"white"} />}
-                  <Text className="text-white text-center font-semibold ml-2">
-                    DISAPPROVE
-                  </Text>
-                </TouchableOpacity>
-              )}
-              {showPinModal && (
-                <Modal transparent visible={showPinModal} animationType="fade">
-                  <View className="flex-1 items-center justify-center bg-black/30 px-5">
-                    <View className="bg-white w-full py-5 px-5 rounded-lg">
-                      <TouchableOpacity
-                        onPress={closePinModal}
-                        className="bg-[#f5f5f5] p-2 rounded-full w-10 self-end"
-                      >
-                        <Ionicons name={"close"} size={24} />
-                      </TouchableOpacity>
-                      <Text className="text-[16px] text-center font-bold mb-4">
-                        Enter Transaction PIN
-                      </Text>
-                      <CodeField
-                        ref={ref}
-                        {...props}
-                        value={value}
-                        onChangeText={(pin) => setValue(pin)}
-                        cellCount={CELL_COUNT}
-                        rootStyle={styles.codeFieldRoot}
-                        keyboardType="number-pad"
-                        textContentType="oneTimeCode"
-                        renderCell={({ index, symbol, isFocused }) => (
-                          <View
-                            key={index}
-                            style={[styles.cell, isFocused && styles.focusCell]}
-                            onLayout={getCellOnLayoutHandler(index)}
-                          >
-                            <Text style={styles.cellText}>
-                              {symbol ? "●" : isFocused ? <Cursor /> : null}
-                            </Text>
-                          </View>
-                        )}
-                      />
-                      {loading && (
-                        <ActivityIndicator
-                          size={24}
-                          color={"blue"}
-                          style={{ marginTop: 10 }}
-                        />
-                      )}
-                    </View>
-                  </View>
-                </Modal>
-              )}
-            </View>
-          ) : (
-            /* ACTIVITY VIEW */
-            <View className="px-4 py-4">
-              <FlatList
-                data={disputes}
-                renderItem={({ item }) => (
-                  <DisputeTransaction disputes={item} />
+                  </TouchableOpacity>
                 )}
-              />
-            </View>
-          )}
-        </View>
+                {showPinModal && (
+                  <Modal
+                    transparent
+                    visible={showPinModal}
+                    animationType="fade"
+                  >
+                    <View className="flex-1 items-center justify-center bg-black/30 px-5">
+                      <View className="bg-white w-full py-5 px-5 rounded-lg">
+                        <TouchableOpacity
+                          onPress={closePinModal}
+                          className="bg-[#f5f5f5] p-2 rounded-full w-10 self-end"
+                        >
+                          <Ionicons name={"close"} size={24} />
+                        </TouchableOpacity>
+                        <Text className="text-[16px] text-center font-bold mb-4">
+                          Enter Transaction PIN
+                        </Text>
+                        <CodeField
+                          ref={ref}
+                          {...props}
+                          value={value}
+                          onChangeText={(pin) => {
+                            setValue(pin); // still needed for UI
+                            if (pin.length === CELL_COUNT) {
+                              setTimeout(() => {
+                                if (buttonAction === "approve") {
+                                  approveTask(
+                                    task?.transaction.taskId,
+                                    pin,
+                                    setLoading
+                                  );
+                                } else if (buttonAction === "disapprove") {
+                                  disapproveTask(
+                                    task?.transaction.taskId,
+                                    pin,
+                                    setLoading
+                                  );
+                                }
+                                setShowPinModal(false);
+                              }, 2000);
+                            }
+                          }}
+                          cellCount={CELL_COUNT}
+                          rootStyle={styles.codeFieldRoot}
+                          keyboardType="number-pad"
+                          textContentType="oneTimeCode"
+                          renderCell={({ index, symbol, isFocused }) => (
+                            <View
+                              key={index}
+                              style={[
+                                styles.cell,
+                                isFocused && styles.focusCell,
+                              ]}
+                              onLayout={getCellOnLayoutHandler(index)}
+                            >
+                              <Text style={styles.cellText}>
+                                {symbol ? "●" : isFocused ? <Cursor /> : null}
+                              </Text>
+                            </View>
+                          )}
+                        />
+                        {loading && (
+                          <ActivityIndicator
+                            size={24}
+                            color={"blue"}
+                            style={{ marginTop: 10 }}
+                          />
+                        )}
+                      </View>
+                    </View>
+                  </Modal>
+                )}
+              </View>
+            )}
+          </View>
+        ) : (
+          /* ACTIVITY VIEW */
+          <View className="px-4 py-4">
+            <FlatList
+              data={disputes ? [disputes] : []}
+              renderItem={({ item }) => <DisputeTransaction disputes={item} />}
+              ListEmptyComponent={() => (
+                <Text className="text-center font-bold">No Activity found</Text>
+              )}
+            />
+          </View>
+        )}
+      </View>
 
-        {/* Status and Dropdown */}
-      </ScrollView>
+      {/* Status and Dropdown */}
     </View>
   );
 }

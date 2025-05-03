@@ -8,19 +8,19 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 
 const CELL_COUNT = 6; // Number of digits in the passcode
 
 const Page = () => {
-  const { storePasscode } = useApi;
+  const { storePasscode } = useApi();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passCode, setPassCode] = useState("");
   const [confirmPassCode, setConfirmPassCode] = useState("");
   return (
     <View className="flex-1 items-center bg-white pt-[20px]">
-      <Text className="w-[90%] font-medium mb-2 text-left text-[22px] font-semibold">
+      <Text className="w-[90%] mb-2 text-left text-[22px] font-semibold">
         Create a Strong Passcode
       </Text>
       <Text className="w-[90%] font-medium mb-10 text-left text-[12px] text-neutral-600">

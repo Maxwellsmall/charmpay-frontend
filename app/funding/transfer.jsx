@@ -16,7 +16,7 @@ import RecipientModal from "@/components/RecipientModal";
 import { router } from "expo-router";
 import Beneficiary from "@/components/Beneficiary";
 import User from "@/components/User";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 import {
   CodeField,
   Cursor,
@@ -42,7 +42,7 @@ export default function Page() {
     value,
     setValue,
   });
-  const { transfer } = useApi;
+  const { transfer } = useApi();
 
   const handleContinue = () => {
     if (!amount) {

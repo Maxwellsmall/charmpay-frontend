@@ -365,7 +365,7 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
-          name="tasks/disputes/[disputeId]"
+          name="tasks/disputes/viewMore/[disputeId]"
           options={{
             header: () => <Header title="Dispute Transaction" />,
             headerShadowVisible: false,
@@ -431,7 +431,7 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
-          name="settings/deposit"
+          name="settings/payment/deposit"
           options={{
             header: () => <Header title="Payment" />,
             headerShaNdowVisible: false,
@@ -442,7 +442,7 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
-          name="settings/privacy"
+          name="settings/security/privacy"
           options={{
             header: () => <Header title="Security & Privacy" />,
             headerShaNdowVisible: false,
@@ -452,20 +452,9 @@ export default function Layout() {
             },
           }}
         />
-        <Stack.Screen
-          name="settings/legal"
-          options={{
-            header: () => <Header title="Legal & Compliance" />,
-            headerShaNdowVisible: false,
-            headerShown: true,
-            contentStyle: {
-              backgroundColor: "white",
-            },
-          }}
-        />
 
         <Stack.Screen
-          name="settings/preference"
+          name="settings/perfer/preference"
           options={{
             header: () => <Header title="App Preference" />,
             headerShaNdowVisible: false,
@@ -479,6 +468,83 @@ export default function Layout() {
           name="settings/support"
           options={{
             header: () => <Header title="Help & Support" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/payment/auto"
+          options={{
+            header: () => <Header title="Auto Release Rules" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/notices/notification"
+          options={{
+            header: () => <Header title="Notifications" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/notices/email"
+          options={{
+            header: () => <Header title="Email Notifications" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/notices/push"
+          options={{
+            header: () => <Header title="Push Notifications" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/notices/sms"
+          options={{
+            header: () => <Header title="SMS Alerts" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/notices/transaction"
+          options={{
+            header: () => <Header title="Transaction Updates" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/notices/dispute"
+          options={{
+            header: () => <Header title="Dispute Notifications" />,
             headerShaNdowVisible: false,
             headerShown: true,
             contentStyle: {

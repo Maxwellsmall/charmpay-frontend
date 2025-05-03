@@ -14,12 +14,12 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
 import { router } from "expo-router";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 
 const CELL_COUNT = 4;
 
 const Page = () => {
-  const { signup } = useApi;
+  const { signup } = useApi();
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });

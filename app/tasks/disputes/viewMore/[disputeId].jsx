@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 import { router } from "expo-router";
 import { AuthContext } from "@/context/AuthProvider";
 
 const Page = () => {
-  const { getDisputeById } = useApi;
+  const { getDisputeById } = useApi();
   const { userData } = useContext(AuthContext);
   const { disputeId } = useLocalSearchParams();
   const [dispute, setDispute] = useState({});

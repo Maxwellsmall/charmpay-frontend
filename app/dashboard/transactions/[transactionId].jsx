@@ -8,7 +8,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 import * as SMS from "expo-sms";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 import { useLocalSearchParams } from "expo-router";
 import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 
@@ -18,7 +18,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const { transactionId } = useLocalSearchParams();
 
-  const { getTransactionById } = useApi;
+  const { getTransactionById } = useApi();
   const fetchTransaction = async () => {
     let response = await getTransactionById(transactionId, setLoading);
     setTransaction(response);

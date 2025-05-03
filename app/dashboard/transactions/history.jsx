@@ -9,10 +9,10 @@ import {
 } from "react-native";
 import { useState, useEffect, useCallback } from "react";
 import Transactions from "@/components/Transactions";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 
 export default function history() {
-  const { getAllTransactions } = useApi;
+  const { getAllTransactions } = useApi();
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [transactions, setTransactions] = useState([]);

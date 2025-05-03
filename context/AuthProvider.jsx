@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 import { router } from "expo-router";
 
 export const AuthContext = createContext();
@@ -11,7 +11,7 @@ export default function AuthProvider({ children }) {
   const [isFunding, setIsFunding] = useState(false);
   const [referenceId, setReferenceId] = useState("");
   const [userData, setUserData] = useState({});
-  const { getProfile } = useApi;
+  const { getProfile } = useApi();
 
   useEffect(() => {
     const getToken = async () => {

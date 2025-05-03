@@ -9,7 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { useContext, useState } from "react";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 import { WebView } from "react-native-webview";
 import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "@/context/AuthProvider";
@@ -32,7 +32,7 @@ export default function page() {
     value,
     setValue,
   });
-  const { withdraw } = useApi;
+  const { withdraw } = useApi();
   const { recipientId } = useLocalSearchParams();
 
   const closePinModal = () => {

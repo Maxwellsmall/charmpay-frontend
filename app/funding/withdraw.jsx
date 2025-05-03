@@ -13,7 +13,7 @@ import BanksModal from "@/components/BanksModal";
 import { router } from "expo-router";
 import Bank from "@/components/Bank";
 import User from "@/components/User";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 
 export default function Page() {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -23,7 +23,7 @@ export default function Page() {
   const [accountNumber, setAccountNumber] = useState(0);
   const [bankCode, setBankCode] = useState("");
   const [type, setType] = useState("");
-  const { initializeWithdraw } = useApi;
+  const { initializeWithdraw } = useApi();
 
   return (
     <SafeAreaView className="flex-1">

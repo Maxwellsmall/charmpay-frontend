@@ -7,14 +7,14 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 import { router } from "expo-router";
 
 export default function Notifications() {
   const [toggle, setToggle] = useState(true);
   const [notifications, setNotifications] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { getAllNotifications } = useApi;
+  const { getAllNotifications } = useApi();
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -41,27 +41,33 @@ export default function Notifications() {
             New Task assigned to you
           </Text>
           <Text numberOfLines={4} className="my-1">
-            {notification.sender.firstName} {notification.sender.lastName}{" "}
+            {notification?.sender?.firstName} {notification?.sender?.lastName}{" "}
             assigned a task to you.
           </Text>
           <Text numberOfLines={4}>{Date(notification.createdAt)}</Text>
         </View>
       </TouchableOpacity>
-    ) : notification.type === "-task" ? (
-      <View className="flex-row  border-b-[1px] border-gray-200 p-3 w-[95%] items-start self-center">
+    ) : notification.type === "account-deposit" ? (
+      <TouchableOpacity
+        className="flex-row  border-b-[1px] border-gray-200 p-3 w-[95%] items-start self-center"
+        onPress={() =>
+          router.push(`/dashboard/taskDetails/${notification.taskId}`)
+        }
+      >
         <View className="bg-[#f5f5f5] p-3 self-center justify-center items-center mr-2 rounded-full">
-          <Ionicons name="person-outline" size={20} />
+          <Ionicons name="add" size={20} />
         </View>
         <View className="w-[90%] ml-5">
           <Text numberOfLines={1} className="text-lg font-bold">
-            Personal Details
+            New Task assigned to you
           </Text>
-          <Text numberOfLines={4}>
-            You Have Only 2 days left to complete your task and earn.
+          <Text numberOfLines={4} className="my-1">
+            {notification.sender?.firstName} {notification.sender?.lastName}{" "}
+            assigned a task to you.
           </Text>
-          <Text numberOfLines={4}>2hrs</Text>
+          <Text numberOfLines={4}>{Date(notification.createdAt)}</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     ) : null;
   };
 

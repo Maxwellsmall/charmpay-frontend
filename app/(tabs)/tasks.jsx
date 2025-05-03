@@ -11,11 +11,11 @@ import {
 import { useState, useEffect, useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import TasksView from "@/components/TasksView";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 
 export default function Page() {
   const [toggle, setToggle] = useState(true);
-  const { getMyTask, getOthersTask, searchTask } = useApi;
+  const { getMyTask, getOthersTask, searchTask } = useApi();
   const [task, setTask] = useState("");
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -117,6 +117,7 @@ export default function Page() {
         <View className="w-full">
           <FlatList
             data={tasks}
+            keyExtractor={(item) => item.id}
             renderItem={({ item }) => <TasksView task={item} />}
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useContext, useState } from "react";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 import { WebView } from "react-native-webview";
 import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "@/context/AuthProvider";
@@ -16,7 +16,7 @@ export default function page() {
   const [amount, setAmount] = useState("");
   const [url, setUrl] = useState("");
   const { isFunding, setIsFunding, setReferenceId } = useContext(AuthContext);
-  const { addFunding } = useApi;
+  const { addFunding } = useApi();
 
   if (isFunding) {
     return <WebView source={{ uri: url }} />;

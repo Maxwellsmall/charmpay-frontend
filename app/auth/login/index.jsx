@@ -10,11 +10,11 @@ import {
 } from "react-native";
 
 import { router } from "expo-router";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 import { Ionicons } from "@expo/vector-icons";
 
 const Page = () => {
-  const { login } = useApi;
+  const { login } = useApi();
   const [email, setEmail] = useState("");
   const [passCode, setPassCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);

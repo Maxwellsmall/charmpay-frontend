@@ -10,12 +10,12 @@ import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 
 export default function CreateTask() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const { raiseDispute } = useApi;
+  const { raiseDispute } = useApi();
   const { taskId } = useLocalSearchParams();
 
   return (

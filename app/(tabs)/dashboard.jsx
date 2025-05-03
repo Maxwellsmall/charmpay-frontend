@@ -14,7 +14,7 @@ import * as SMS from "expo-sms";
 import Inbox from "@/components/Inbox";
 import Task from "@/components/Task";
 import Transactions from "@/components/Transactions";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { AuthContext } from "@/context/AuthProvider";
@@ -23,7 +23,7 @@ import Skeleton from "@/components/Skelectons/Skelecton";
 export default function Page() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const { getProfile, getAllTransactions } = useApi;
+  const { getProfile, getAllTransactions } = useApi();
   const [showBalance, setShowBalance] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const { userData, setUserData, isLoading, setIsLoading } =
@@ -88,7 +88,6 @@ export default function Page() {
               </TouchableOpacity>
             </View>
             <Text className="text-[35px] font-bold mt-[10px]">
-              {userData?.wallet?.currency}{" "}
               {showBalance
                 ? new Intl.NumberFormat("en-US", {
                     style: "currency",

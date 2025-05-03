@@ -9,11 +9,11 @@ import {
 import { useState } from "react";
 import { router } from "expo-router";
 import CountryPicker from "react-native-country-picker-modal";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Page() {
-  const { storeData } = useApi;
+  const { storeData } = useApi();
   const [countryCode, setCountryCode] = useState("NG"); // Default Nigeria
   const [callingCode, setCallingCode] = useState("234"); // Default country code
   const [phoneNumber, setPhoneNumber] = useState("");
