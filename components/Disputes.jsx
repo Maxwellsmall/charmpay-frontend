@@ -12,7 +12,9 @@ export default function DisputeTransaction({ disputes }) {
   return (
     <TouchableOpacity
       className="border-[#D9D9D9] border-b-[1px] p-4 my-[10px] rounded-[10px]"
-      onPress={() => router.navigate(`/tasks/disputes/${disputes.id}`)}
+      onPress={() =>
+        router.navigate(`/tasks/disputes/viewMore/${disputes?.id}`)
+      }
     >
       <View className="flex-row w-100 items-center">
         <Ionicons
@@ -25,13 +27,13 @@ export default function DisputeTransaction({ disputes }) {
           <View className="flex-row items-center justify-between">
             <Text className="text-[14px] font-bold">Dispute Raised</Text>
             <Text className="text-[14px] font-bold w-52" numberOfLines={1}>
-              {disputes.raiserEvidence.text}
+              {disputes?.raiserEvidence.text}
             </Text>
           </View>
 
           <View className="flex-row items-center justify-between">
             <Text className="text-[12px]">
-              {Date(disputes.updatedAt).split("G")[0]}
+              {new Date(disputes?.updatedAt).toLocaleString()}
             </Text>
             {/* <View className="bg-green-200 p-1 rounded-[10px]">
           <Text className="text-[12px] text-purple-700">blue</Text>

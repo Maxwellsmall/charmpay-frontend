@@ -13,7 +13,7 @@ import RecipientModal from "@/components/RecipientModal";
 import { router } from "expo-router";
 import Beneficiary from "@/components/Beneficiary";
 import User from "@/components/User";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 export default function CreateTask() {
@@ -25,7 +25,7 @@ export default function CreateTask() {
   const [discription, setDiscription] = useState("");
   const [amount, setAmount] = useState(0);
   const [id, setId] = useState("");
-  const { createTask } = useApi;
+  const { createTask } = useApi();
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);

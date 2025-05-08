@@ -10,16 +10,19 @@ import {
 } from "react-native";
 
 import { router } from "expo-router";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 import { Ionicons } from "@expo/vector-icons";
 
 const Page = () => {
-  const { login } = useApi;
+  const { login } = useApi();
   const [email, setEmail] = useState("");
   const [passCode, setPassCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const handleApis = async () => {
+    await login(email, passCode, setLoading);
+  };
   return (
     <View className="flex-1 justify-start pt-10 items-center bg-white">
       <Text className="w-[90%] font-bold mb-5 text-left text-[29px]">
@@ -59,7 +62,7 @@ const Page = () => {
       </View>
       <TouchableOpacity
         className="bg-blue-900 w-[90%] p-3 py-4 rounded-lg mt-8 flex-row justify-center items-center"
-        onPress={() => login(email, passCode, setLoading)}
+        onPress={handleApis}
         // onPress={() => router.navigate("/dashboard")}
       >
         {loading && <ActivityIndicator size={24} color={"white"} />}

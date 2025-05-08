@@ -10,14 +10,14 @@ import {
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import { FontAwesome } from "@expo/vector-icons";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 
 export default function RecipientModal({
   setIsVisible,
   isVisible,
   setRecipient,
 }) {
-  const { getAllBanks } = useApi;
+  const { getAllBanks } = useApi();
   const [banks, setBanks] = useState([]);
   const [filteredBanks, setFilteredBanks] = useState([]);
   const [loading, setLoading] = useState(false);

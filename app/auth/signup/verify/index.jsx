@@ -14,12 +14,12 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
 import { router } from "expo-router";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 
 const CELL_COUNT = 6; // Number of digits in the passcode
 
 const Page = () => {
-  const { verify, requestOtp } = useApi;
+  const { verify, requestOtp } = useApi();
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });

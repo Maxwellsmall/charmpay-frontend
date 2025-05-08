@@ -13,40 +13,28 @@ import BanksModal from "@/components/BanksModal";
 import { router } from "expo-router";
 import Bank from "@/components/Bank";
 import User from "@/components/User";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 
 export default function Page() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [recipient, setRecipient] = useState(null);
-  const [accountName, setAccountName] = useState("");
-  const [accountNumber, setAccountNumber] = useState(0);
+  const [accountNumber, setAccountNumber] = useState("");
   const [bankCode, setBankCode] = useState("");
   const [type, setType] = useState("");
-  const { initializeWithdraw } = useApi;
+  const { initializeWithdraw } = useApi();
 
   return (
     <SafeAreaView className="flex-1">
       <ScrollView className="px-5 mt-4">
-        <View className="mb-3">
-          <Text className="mb-[5px] text-[18px] font-semibold">Name</Text>
-          <TextInput
-            className="px-4 bg-[#F5F5F5] w-full h-[50px] rounded-md"
-            placeholder="Enter Account Name"
-            onChangeText={(text) => setAccountName(text)}
-          />
-        </View>
-
         <View className="mb-3">
           <Text className="mb-[5px] text-[18px] font-semibold">
             Account Number
           </Text>
           <TextInput
             className="px-4 bg-[#F5F5F5] w-full h-[50px] rounded-md"
-            placeholder="Enter Amount to be held in escrow"
-            keyboardType="number-pad"
+            placeholder="Enter Account Number"
             onChangeText={(text) => setAccountNumber(text)}
-            maxLength={10}
           />
         </View>
         <View className="mb-3">
@@ -77,13 +65,7 @@ export default function Page() {
         <TouchableOpacity
           className="bg-blue-900 w-96 p-3 rounded-lg self-center flex-row justify-center items-center"
           onPress={() =>
-            initializeWithdraw(
-              accountName,
-              type,
-              bankCode,
-              accountNumber,
-              setLoading
-            )
+            initializeWithdraw(accountNumber, type, bankCode, setLoading)
           }
         >
           {loading && <ActivityIndicator size={24} color={"white"} />}

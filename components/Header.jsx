@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { AuthContext } from "@/context/AuthProvider";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 
 export default function Header({
   title,

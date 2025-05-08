@@ -13,7 +13,7 @@ export default function Page() {
           <View>
             <TouchableOpacity
               className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
-              onPress={() => router.navigate("/settings/personalDetails")}
+              onPress={() => router.navigate("settings/account")}
             >
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
@@ -25,7 +25,7 @@ export default function Page() {
             </TouchableOpacity>
             <TouchableOpacity
               className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
-              onPress={() => router.navigate("/settings/deposit")}
+              onPress={() => router.navigate("/settings/payment/deposit")}
             >
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
@@ -37,9 +37,7 @@ export default function Page() {
             </TouchableOpacity>
             <TouchableOpacity
               className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
-              onPress={() =>
-                router.navigate("/dashboard/notifications/settings")
-              }
+              onPress={() => router.navigate("settings/notices/notification")}
             >
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
@@ -51,7 +49,7 @@ export default function Page() {
             </TouchableOpacity>
             <TouchableOpacity
               className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
-              onPress={() => router.navigate("/settings/privacy")}
+              onPress={() => router.navigate("/settings/security/privacy")}
             >
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
@@ -61,21 +59,10 @@ export default function Page() {
               </View>
               <Ionicons name="chevron-forward" size={24} />
             </TouchableOpacity>
+
             <TouchableOpacity
               className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
-              onPress={() => router.navigate("/settings/legal")}
-            >
-              <View className="flex-row items-center">
-                <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
-                  <Ionicons name="document-outline" size={24} />
-                </View>
-                <Text className="text-[20px]">Legal & Compliance</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={24} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
-              onPress={() => router.navigate("/settings/preference")}
+              onPress={() => router.navigate("/settings/perfer/preference")}
             >
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
@@ -87,7 +74,7 @@ export default function Page() {
             </TouchableOpacity>
             <TouchableOpacity
               className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
-              onPress={() => router.navigate("/settings/support")}
+              onPress={() => router.navigate("/settings/support/")}
             >
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
@@ -97,18 +84,8 @@ export default function Page() {
               </View>
               <Ionicons name="chevron-forward" size={24} />
             </TouchableOpacity>
-
-            <TouchableOpacity className="flex-row py-3 items-center">
-              <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
-                <Ionicons name="information-circle-outline" size={24} />
-              </View>
-              <Text className="text-[20px]">About Charmpay</Text>
-            </TouchableOpacity>
           </View>
         </View>
-        <Text className="text-center mt-10 font-bold text-[#1e1e1eaf]">
-          Version 2.0.0
-        </Text>
       </ScrollView>
     </SafeAreaView>
   );

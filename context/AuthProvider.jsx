@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 import { router } from "expo-router";
 
 export const AuthContext = createContext();
@@ -10,8 +10,9 @@ export default function AuthProvider({ children }) {
   const [isAuthenticated, setAuthenticated] = useState(false);
   const [isFunding, setIsFunding] = useState(false);
   const [referenceId, setReferenceId] = useState("");
+  const [userBankDetails, setUserBankDetails] = useState({});
   const [userData, setUserData] = useState({});
-  const { getProfile } = useApi;
+  const { getProfile } = useApi();
 
   useEffect(() => {
     const getToken = async () => {
@@ -48,6 +49,8 @@ export default function AuthProvider({ children }) {
         setReferenceId,
         userData,
         setUserData,
+        userBankDetails,
+        setUserBankDetails,
       }}
     >
       {children}

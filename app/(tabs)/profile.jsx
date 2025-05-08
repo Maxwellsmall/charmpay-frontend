@@ -12,11 +12,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import profileImage from "@/assets/images/OIP.png";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 import { AuthContext } from "@/context/AuthProvider";
 
 export default function profile() {
-  const { logout } = useApi;
+  const { logout } = useApi();
   const [loading, setLoading] = useState(false);
   const { userData, setUserData } = useContext(AuthContext);
 
@@ -78,12 +78,15 @@ export default function profile() {
             </View>
             <Ionicons name="chevron-forward" size={24} />
           </TouchableOpacity>
-          <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
+          <TouchableOpacity
+            className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
+            onPress={() => router.navigate("/dashboard/profile/about")}
+          >
             <View className="flex-row items-center">
               <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
                 <Ionicons name="lock-closed-outline" size={24} />
               </View>
-              <Text className="text-[20px]">Privacy and Security</Text>
+              <Text className="text-[20px]">About CharmPay</Text>
             </View>
             <Ionicons name="chevron-forward" size={24} />
           </TouchableOpacity>

@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-import useApi from "@/hooks/Api";
+import useApi from "@/hooks/useApi";
 import { useLocalSearchParams } from "expo-router";
 import * as SMS from "expo-sms";
 
@@ -17,7 +17,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const { taskId } = useLocalSearchParams();
 
-  const { getTaskById } = useApi;
+  const { getTaskById } = useApi();
 
   useEffect(() => {
     console.log(taskId);
@@ -77,7 +77,9 @@ export default function Page() {
         </View>
         <View className="flex-row justify-between items-center w-full mb-5">
           <Text className="text-[14px] text-neutral-400">Date Assigned</Text>
-          <Text className="font-semibold w-52">{Date(task.createdAt)}</Text>
+          <Text className="font-semibold w-52">
+            {Date(task.createdAt).toLocaleString()}
+          </Text>
         </View>
         <View className="flex-row justify-between items-center w-full mb-5">
           <Text className="text-[14px] text-neutral-400">Amount</Text>
