@@ -365,6 +365,28 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
+          name="dashboard/profile/about"
+          options={{
+            header: () => <Header title="About Us" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="tasks/disputes/[taskId]"
+          options={{
+            header: () => <Header title="Raise Dispute" />,
+            headerShadowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
           name="tasks/disputes/viewMore/[disputeId]"
           options={{
             header: () => <Header title="Dispute Transaction" />,
@@ -465,7 +487,18 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
-          name="settings/support"
+          name="settings/support/index"
+          options={{
+            header: () => <Header title="Help & Support" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/support/faq"
           options={{
             header: () => <Header title="Help & Support" />,
             headerShaNdowVisible: false,
@@ -545,6 +578,127 @@ export default function Layout() {
           name="settings/notices/dispute"
           options={{
             header: () => <Header title="Dispute Notifications" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/security/devi/devices"
+          options={{
+            header: () => <Header title="Login Devices" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/security/pass/password"
+          options={{
+            header: () => <Header title="Passcode and Email" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/security/pass/changepass"
+          options={{
+            header: () => <Header title="Change Passcode" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/security/pass/changetran"
+          options={{
+            header: () => <Header title="Change Transaction Pin" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/security/pass/forgot"
+          options={{
+            header: () => <Header title="Forgot Transaction Pin" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/security/pass/newtrans"
+          options={{
+            header: () => <Header title="Forgot ransaction Pin" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/security/applock/index"
+          options={{
+            header: () => <Header title="App Lock" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/security/data/index"
+          options={{
+            header: () => <Header title="Data Sharing Preferences" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/perfer/theme"
+          options={{
+            header: () => <Header title="Theme" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/perfer/version"
+          options={{
+            header: () => <Header title="App Version Info" />,
+            headerShaNdowVisible: false,
+            headerShown: true,
+            contentStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="settings/account"
+          options={{
+            header: () => <Header title="Account" />,
             headerShaNdowVisible: false,
             headerShown: true,
             contentStyle: {

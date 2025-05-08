@@ -66,6 +66,7 @@ const useApi = () => {
       );
       console.log(response.data);
       const token = response.data.token;
+      await registerForPushNotificationsAsync(response.data.token);
       console.log(token);
       AsyncStorage.setItem("token", token);
 
@@ -79,7 +80,6 @@ const useApi = () => {
         return response.data;
       }
       Alert.alert("", "Logged in successfully");
-
       router.dismissAll();
       router.push("/(tabs)/dashboard");
       return response.data;
@@ -231,6 +231,7 @@ const useApi = () => {
 
       // Handle 401 Unauthorized error explicitly
       if (response.status === 401) {
+        Alert.alert("", response.status);
         Alert.alert("Session Expired", "Please log in again.");
         await AsyncStorage.removeItem("token"); // Clear invalid token
         router.replace("/auth/login");
@@ -261,8 +262,10 @@ const useApi = () => {
   };
   const logout = async (setUserData) => {
     try {
-      await AsyncSNorage.removeItem("token");
-      await setUserData(null);
+      await unRegisterForPushNotificationsAsync();
+      await AsyncStorage.removeItem("token");
+      await AsyncStorage.multiRemove(["token", "expoTokenId"]);
+      await setUserData({});
       Alert.alert("", "Account Logged out successfully");
       router.dismissTo("/auth/");
     } catch (error) {
@@ -338,14 +341,6 @@ const useApi = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
-      if (response.status === 401) {
-        Alert.alert("Session Expired", "Please log in again.");
-        await AsyncStorage.removeItem("token"); // Clear invalid token
-        router.replace("/auth/login");
-        return;
-      }
-
       console.log("Transaction:", response.data);
       return response.data;
     } catch (error) {
@@ -431,17 +426,17 @@ const useApi = () => {
   };
   const createTask = async (
     title,
-    discription,
+    description,
     assignedTo,
     amount,
     dueDate,
     setLoading
   ) => {
-    console.log(title, discription, assignedTo, amount, dueDate);
+    console.log(title, description, assignedTo, amount, dueDate);
     try {
       const token = await AsyncStorage.getItem("token");
       setLoading(true);
-      if (!title || !discription || !amount || !dueDate) {
+      if (!title || !description || !amount || !dueDate) {
         Alert.alert("", "Ensure all inputs are filled before submission");
         return;
       }
@@ -457,7 +452,7 @@ const useApi = () => {
         `${process.env.EXPO_PUBLIC_API_URL}/api/task/create`,
         {
           title,
-          discription,
+          description,
           assignedTo,
           amount,
           dueDate,
@@ -697,17 +692,65 @@ const useApi = () => {
       setLoading(false);
     }
   };
-  const registerForPushNotificationsAsync = async () => {
-    let token = (await Notifications.getExpoPushTokenAsync()).data;
+  const registerForPushNotificationsAsync = async (authToken) => {
+    try {
+      let token = (await Notifications.getExpoPushTokenAsync()).data;
 
-    // Send token to your backend server
-    await fetch("https://your-backend.com/api/save-token", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token }),
-    });
+      console.log("expo-push-token", token);
+      console.log("jwt-token", authToken);
 
-    return token;
+      // Send token to your backend server
+      const response = await axios.post(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/user/registerPushToken`,
+        { token }, // Request body
+        {
+          headers: { Authorization: `Bearer ${authToken}` }, // Config with headers
+        }
+      );
+
+      Alert.alert("", response.data.message);
+      console.log(response.data);
+      await AsyncStorage.setItem("expoTokenId", response.data.expoPushToken);
+      return response;
+    } catch (error) {
+      if (error)
+        console.error("Post Token Error:", error.response.data.message);
+      Alert.alert(
+        "Error",
+        error.response
+          ? error.response.data.message || "Failed."
+          : "Check your internet connection."
+      );
+    }
+  };
+  const unRegisterForPushNotificationsAsync = async () => {
+    try {
+      const tokenId = await AsyncStorage.getItem("expoTokenId");
+      const token = await AsyncStorage.getItem("token");
+
+      console.log("expo-push-token-id", tokenId);
+
+      // Send token to your backend server
+      const response = await axios.post(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/user/registerPushToken`,
+        { tokenId }, // Request body
+        {
+          headers: { Authorization: `Bearer ${token}` }, // Config with headers
+        }
+      );
+
+      console.log(response.data);
+      return response;
+    } catch (error) {
+      if (error)
+        console.error("remove Token Error:", error.response.data.message);
+      Alert.alert(
+        "Error",
+        error.response
+          ? error.response.data.message || "Failed."
+          : "Check your internet connection."
+      );
+    }
   };
 
   const In_local_notification = () => {
@@ -750,163 +793,6 @@ const useApi = () => {
       requestNotificationsPermissions,
       schedulePushNotification,
     };
-  };
-
-  const push_notification = () => {
-    //   import { useState, useEffect, useRef } from 'react';
-    // import { Text, View, Button, Platform, Alert } from 'react-native';
-    // import * as Device from 'expo-device';
-
-    // Set notification handler
-    Notifications.setNotificationHandler({
-      handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: false,
-        shouldSetBadge: false,
-      }),
-    });
-
-    //export default
-
-    function App() {
-      const [expoPushToken, setExpoPushToken] = useState("");
-      const [channels, setChannels] = useState([]); // Fixed TypeScript syntax
-      const [notification, setNotification] = useState(null);
-      const notificationListener = useRef(null);
-      const responseListener = useRef(null);
-
-      useEffect(() => {
-        registerForPushNotificationsAsync().then((token) => {
-          if (token) setExpoPushToken(token);
-        });
-
-        if (Platform.OS === "android") {
-          Notifications.getNotificationChannelsAsync().then((value) =>
-            setChannels(value || [])
-          );
-        }
-
-        notificationListener.current =
-          Notifications.addNotificationReceivedListener((notification) => {
-            setNotification(notification);
-          });
-
-        responseListener.current =
-          Notifications.addNotificationResponseReceivedListener((response) => {
-            console.log(response);
-          });
-
-        return () => {
-          if (notificationListener.current) {
-            Notifications.removeNotificationSubscription(
-              notificationListener.current
-            );
-          }
-          if (responseListener.current) {
-            Notifications.removeNotificationSubscription(
-              responseListener.current
-            );
-          }
-        };
-      }, []);
-
-      return (
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "space-around",
-          }}
-        >
-          <Text>Your expo push token: {expoPushToken}</Text>
-          <Text>{`Channels: ${JSON.stringify(
-            channels.map((c) => c.id),
-            null,
-            2
-          )}`}</Text>
-          <View style={{ alignItems: "center", justifyContent: "center" }}>
-            <Text>
-              Title:{" "}
-              {notification?.request?.content?.title || "No Notification"}
-            </Text>
-            <Text>
-              Body: {notification?.request?.content?.body || "No Body"}
-            </Text>
-            <Text>
-              Data:{" "}
-              {notification
-                ? JSON.stringify(notification.request.content.data)
-                : "No Data"}
-            </Text>
-          </View>
-          <Button
-            title="Press to schedule a notification"
-            onPress={schedulePushNotification}
-          />
-        </View>
-      );
-    }
-
-    // ✅ Fixed Notification Scheduling
-    async function schedulePushNotification() {
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: "You've got mail! 📬",
-          body: "Here is the notification body",
-          data: { data: "goes here", test: { test1: "more data" } },
-        },
-        trigger: { seconds: 2 }, // Fixed incorrect trigger
-      });
-    }
-
-    // ✅ Fixed Push Notification Registration
-    async function registerForPushNotificationsAsync() {
-      let token;
-
-      if (Platform.OS === "android") {
-        await Notifications.setNotificationChannelAsync(
-          "myNotificationChannel",
-          {
-            name: "Default Channel",
-            importance: Notifications.AndroidImportance.MAX,
-            vibrationPattern: [0, 250, 250, 250],
-            lightColor: "#FF231F7C",
-          }
-        );
-      }
-
-      if (Device.isDevice) {
-        const { status: existingStatus } =
-          await Notifications.getPermissionsAsync();
-        let finalStatus = existingStatus;
-        if (existingStatus !== "granted") {
-          const { status } = await Notifications.requestPermissionsAsync();
-          finalStatus = status;
-        }
-        if (finalStatus !== "granted") {
-          Alert.alert("Permission Denied", "Enable notifications in settings.");
-          return;
-        }
-
-        try {
-          const projectId =
-            Constants?.expoConfig?.extra?.eas?.projectId ??
-            Constants?.easConfig?.projectId;
-          if (!projectId) throw new Error("Project ID not found");
-
-          token = (await Notifications.getExpoPushTokenAsync({ projectId }))
-            .data;
-          console.log("Expo Push Token:", token);
-        } catch (e) {
-          console.error(e);
-          token = `Error: ${e}`;
-        }
-      } else {
-        Alert.alert("Physical device required for push notifications.");
-      }
-
-      return token;
-    }
   };
 
   const transfer = async (recipientId, amount, transactionPin, setLoading) => {
@@ -958,18 +844,17 @@ const useApi = () => {
     }
   };
   const initializeWithdraw = async (
-    name,
+    accountNumber,
     type,
     bankCode,
-    accountNumber,
     setLoading
   ) => {
     try {
-      console.log(name, type, bankCode, accountNumber);
+      console.log(accountNumber, type, bankCode);
       const token = await AsyncStorage.getItem("token");
       setLoading(true);
 
-      if (!name || !type || !accountNumber) {
+      if (!accountNumber || !type) {
         Alert.alert("", "Ensure all inputs are filled before submission");
         return;
       }
@@ -981,14 +866,9 @@ const useApi = () => {
         Alert.alert("", "Invalid account number");
         return;
       }
-      const response = await axios.post(
-        `${process.env.EXPO_PUBLIC_API_URL}/api/withdraw/createRecipient`,
-        {
-          type,
-          bankCode,
-          name,
-          accountNumber,
-        },
+      const response = await axios.get(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/misc/bank/resolveAccount?accountNumber=${accountNumber}&bankCode=${bankCode}`,
+
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -999,7 +879,7 @@ const useApi = () => {
       console.log(response.data);
       Alert.alert("", response.data.message);
       console.log(response.data.recipient_code);
-      router.navigate(`/funding/${response.data.data.recipient_code}`);
+      router.navigate(`/funding/${response.data.data.account_name}`);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -1046,7 +926,7 @@ const useApi = () => {
       router.dismiss(2);
       return response.data;
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.message);
       Alert.alert(
         "Error",
         error.response
@@ -1062,7 +942,7 @@ const useApi = () => {
       setLoading(true);
       const token = await AsyncStorage.getItem("token");
       const response = await axios.get(
-        `${process.env.EXPO_PUBLIC_API_URL}/api/withdraw/banks`,
+        `${process.env.EXPO_PUBLIC_API_URL}/api/misc/banks`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -1308,6 +1188,58 @@ const useApi = () => {
       setLoading(false);
     }
   };
+  const enableTwoFactorAuth = async (value, setLoading) => {
+    try {
+      setLoading(true);
+      const token = await AsyncStorage.getItem("token");
+      const response = await axios.patch(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/settings/toggle2FA?twoFA=${value}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log("result:", response.data);
+      Alert.alert("", response.data.message);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      console.log(
+        error,
+        error.response
+          ? error.response.data.message || "Failed to fetch."
+          : "Check your internet connection."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+  const enableEmailNotification = async (email, setLoading) => {
+    try {
+      setLoading(true);
+      const token = await AsyncStorage.getItem("token");
+      const response = await axios.patch(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/settings/toggleEmailNotifications?emailNotifications=${email}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log("email:", response.data);
+      Alert.alert("", response.data.message);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      console.log(
+        error,
+        error.response
+          ? error.response.data.message || "Failed to fetch."
+          : "Check your internet connection."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
   return {
     signup,
     login,
@@ -1329,6 +1261,8 @@ const useApi = () => {
     getUserByEmail,
     getTaskById,
     getAllNotifications,
+    registerForPushNotificationsAsync,
+    unRegisterForPushNotificationsAsync,
     In_local_notification,
     transfer,
     initializeWithdraw,
@@ -1340,6 +1274,8 @@ const useApi = () => {
     approveTask,
     getAllDisputes,
     getDisputeById,
+    enableEmailNotification,
+    enableTwoFactorAuth,
   };
 };
 

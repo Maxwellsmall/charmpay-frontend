@@ -1,4 +1,11 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import profileImage from "@/assets/images/OIP.png";
@@ -11,7 +18,15 @@ export default function Page() {
       <ScrollView>
         <View className="px-5 mt-[20px]">
           <View>
-            <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
+            <TouchableOpacity
+              className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
+              onPress={() =>
+                Alert.alert(
+                  "Charmpay Inc",
+                  "This feature is not yet avaialble."
+                )
+              }
+            >
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
                   <Ionicons name="wallet-outline" size={24} />
@@ -20,7 +35,7 @@ export default function Page() {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
               onPress={() => router.navigate("/settings/payment/auto")}
             >
@@ -32,7 +47,7 @@ export default function Page() {
                   Auto-Release Rules
                 </Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </ScrollView>

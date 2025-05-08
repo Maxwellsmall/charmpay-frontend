@@ -8,7 +8,7 @@ import {
   Modal,
   StyleSheet,
 } from "react-native";
-import { useContext, useState } from "react";
+import { useState, useContext } from "react";
 import useApi from "@/hooks/useApi";
 import { WebView } from "react-native-webview";
 import { Ionicons } from "@expo/vector-icons";

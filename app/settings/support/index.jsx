@@ -20,28 +20,21 @@ export default function Page() {
           <View>
             <TouchableOpacity
               className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
-              onPress={() => {
-                // router.navigate("settings/security/devi/devices");
-                Alert.alert(
-                  "Charmpay Inc",
-                  "This feature is not yet avaialble."
-                );
-              }}
+              onPress={() => router.navigate("/settings/support/faq")}
             >
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
                   <Ionicons name="settings-outline" size={24} />
                 </View>
-                <Text className="text-[15px] font-bold">Login Devices</Text>
+                <Text className="text-[20px] font-bold">FAQs</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
               className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
               onPress={() =>
-                // router.navigate("/settings/security/pass/password")
                 Alert.alert(
                   "Charmpay Inc",
-                  "This feature is not yet avaialble."
+                  "This functionality is currently not avaialble. Please bear with us."
                 )
               }
             >
@@ -49,18 +42,15 @@ export default function Page() {
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
                   <Ionicons name="settings-outline" size={24} />
                 </View>
-                <Text className="text-[15px] font-bold">
-                  Password and Email
-                </Text>
+                <Text className="text-[20px] font-bold">Contact Support</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
               className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
               onPress={() =>
-                // router.navigate("/settings/security/applock/index")
                 Alert.alert(
                   "Charmpay Inc",
-                  "This feature is not yet avaialble."
+                  "This functionality is currently not avaialble. Please bear with us."
                 )
               }
             >
@@ -68,26 +58,23 @@ export default function Page() {
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
                   <Ionicons name="settings-outline" size={24} />
                 </View>
-                <Text className="text-[15px] font-bold">App Lock</Text>
+                <Text className="text-[20px] font-bold">Tutorials</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
               className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
-              onPress={() => {
-                // router.navigate("/settings/security/data/index");
+              onPress={() =>
                 Alert.alert(
                   "Charmpay Inc",
-                  "This feature is not yet avaialble."
-                );
-              }}
+                  "This functionality is currently not avaialble. Please bear with us."
+                )
+              }
             >
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
                   <Ionicons name="settings-outline" size={24} />
                 </View>
-                <Text className="text-[15px] font-bold">
-                  Data Sharing Preferences
-                </Text>
+                <Text className="text-[20px] font-bold">Feedback</Text>
               </View>
             </TouchableOpacity>
           </View>

@@ -1,17 +1,9 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-  Touchable,
-} from "react-native";
-import React from "react";
+import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import profileImage from "@/assets/images/OIP.png";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { useState } from "react";
 
 export default function Page() {
   const [toggle, setToggle] = useState(false);
@@ -23,31 +15,10 @@ export default function Page() {
             <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
-                  <Ionicons name="wallet-outline" size={24} />
+                  <Ionicons name="settings-outline" size={24} />
                 </View>
                 <Text className="text-[15px] font-bold">
-                  Auto Release After Task Completion:
-                </Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
-              <View className="flex-row items-center">
-                <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
-                  <Ionicons name="document-outline" size={24} />
-                </View>
-                <Text className="text-[15px] font-bold">
-                  Notify Before Release
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 p-[5px] border-gray-200">
-              <View className="flex-row items-center">
-                <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
-                  <Ionicons name="document-outline" size={24} />
-                </View>
-                <Text className="text-[15px] font-bold">
-                  Auto-Release If No Dispute Is Raised
+                  Allow Data Sharing With Third Parties
                 </Text>
               </View>
               {toggle ? (
@@ -63,10 +34,48 @@ export default function Page() {
             <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
               <View className="flex-row items-center">
                 <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
-                  <Ionicons name="document-outline" size={24} />
+                  <Ionicons name="settings-outline" size={24} />
                 </View>
                 <Text className="text-[15px] font-bold">
-                  Allow Tasker To Extend Auto-Release window
+                  Personalized Recommendations
+                </Text>
+              </View>
+              {toggle ? (
+                <TouchableOpacity onPress={() => setToggle(!toggle)}>
+                  <MaterialIcons name="toggle-on" size={30} color={"blue"} />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={() => setToggle(!toggle)}>
+                  <MaterialIcons name="toggle-off" size={30} color={"blue"} />
+                </TouchableOpacity>
+              )}
+            </TouchableOpacity>
+            <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
+              <View className="flex-row items-center">
+                <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
+                  <Ionicons name="settings-outline" size={24} />
+                </View>
+                <Text className="text-[15px] font-bold">
+                  Anonymous Usage Statistic
+                </Text>
+              </View>
+              {toggle ? (
+                <TouchableOpacity onPress={() => setToggle(!toggle)}>
+                  <MaterialIcons name="toggle-on" size={30} color={"blue"} />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={() => setToggle(!toggle)}>
+                  <MaterialIcons name="toggle-off" size={30} color={"blue"} />
+                </TouchableOpacity>
+              )}
+            </TouchableOpacity>
+            <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
+              <View className="flex-row items-center">
+                <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
+                  <Ionicons name="settings-outline" size={24} />
+                </View>
+                <Text className="text-[15px] font-bold">
+                  Opt-out of Promotional Emails
                 </Text>
               </View>
               {toggle ? (

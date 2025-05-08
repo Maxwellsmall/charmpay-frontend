@@ -18,11 +18,10 @@ export default function Page() {
         </View>
       </View>
       <View>
-        <TextInput
+        {/* <TextInput
           className="px-4 py-5 placeholderTextColor-[#F5F5F5] bg-[#F5F5F5] w-[90%] rounded-md self-center"
           placeholder="Search"
-          onChangeText={(text) => setFirstName(text)}
-        />
+        /> */}
       </View>
       <View className="flex-row justify-between items-center mx-4 mt-10">
         <TouchableOpacity

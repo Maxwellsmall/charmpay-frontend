@@ -10,6 +10,7 @@ export default function AuthProvider({ children }) {
   const [isAuthenticated, setAuthenticated] = useState(false);
   const [isFunding, setIsFunding] = useState(false);
   const [referenceId, setReferenceId] = useState("");
+  const [userBankDetails, setUserBankDetails] = useState({});
   const [userData, setUserData] = useState({});
   const { getProfile } = useApi();
 
@@ -48,6 +49,8 @@ export default function AuthProvider({ children }) {
         setReferenceId,
         userData,
         setUserData,
+        userBankDetails,
+        setUserBankDetails,
       }}
     >
       {children}

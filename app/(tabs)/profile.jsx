@@ -78,7 +78,10 @@ export default function profile() {
             </View>
             <Ionicons name="chevron-forward" size={24} />
           </TouchableOpacity>
-          <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
+          <TouchableOpacity
+            className="flex-row py-3 items-center justify-between border-b-2 border-gray-200"
+            onPress={() => router.navigate("/dashboard/profile/about")}
+          >
             <View className="flex-row items-center">
               <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
                 <Ionicons name="lock-closed-outline" size={24} />
