@@ -11,6 +11,10 @@ import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import profileImage from "@/assets/images/OIP.png";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import * as SMS from "expo-sms";
+
+import { LinearGradient } from "expo-linear-gradient";
+
 import { router } from "expo-router";
 import useApi from "@/hooks/useApi";
 
@@ -34,6 +38,20 @@ export default function Page() {
       </View>
     );
   }
+
+  const sendSMS = async () => {
+    const isAvailable = await SMS.isAvailableAsync();
+
+    if (isAvailable) {
+      const { result } = await SMS.sendSMSAsync(
+        [""], // Phone number(s) as an array
+        "This is an Invitation to download the charmpay app." // Your message
+      );
+      console.log("SMS Result:", result); // result = 'sent' | 'cancelled'
+    } else {
+      alert("SMS is not available on this device");
+    }
+  };
   return (
     <SafeAreaView>
       <ScrollView>
@@ -74,7 +92,7 @@ export default function Page() {
             <Text className="text-[14px] text-center font-semibold">Edit</Text>
           </TouchableOpacity>
         </View>
-        <View className="px-5">
+        {/* <View className="px-5">
           <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
             <View className="flex-row items-center">
               <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
@@ -91,7 +109,7 @@ export default function Page() {
                   enableTwoFactorAuth(true, setLoading);
                 }}
               >
-                <MaterialIcons name="toggle-on" size={45} color={"green"} />
+                <MaterialIcons name="toggle-off" size={45} color={"grey"} />
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
@@ -100,24 +118,33 @@ export default function Page() {
                   setToggle(!toggle);
                 }}
               >
-                <MaterialIcons name="toggle-off" size={45} color={"grey"} />
+                <MaterialIcons name="toggle-on" size={45} color={"green"} />
               </TouchableOpacity>
             )}
           </TouchableOpacity>
-          <TouchableOpacity className="flex-row py-3 items-center justify-between border-b-2 border-gray-200">
-            <View className="flex-row items-center">
-              <View className="bg-[#f5f5f5] p-3 rounded-full me-3">
-                <Ionicons name="settings-outline" size={24} />
-              </View>
-              <Text className="text-[15px] font-bold">KYC Verification</Text>
-            </View>
-            <View className=" flex-row items-center">
-              <Text className="text-[15px] text-green-500 font-semibold">
-                Verified
-              </Text>
-            </View>
+        </View> */}
+
+        <LinearGradient
+          colors={["#5A45FE", "#362998"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={{
+            width: "90%",
+            borderRadius: 20,
+            marginTop: 20,
+            alignSelf: "center",
+            paddingVertical: 20,
+            paddingHorizontal: 28,
+            justifyContent: "center",
+            alignItems: "flex-start",
+          }}
+        >
+          <Text className="text-white text-[20px]">Invite a friend and</Text>
+          <Text className="text-white text-[20px]">earn cash back</Text>
+          <TouchableOpacity onPress={sendSMS}>
+            <Text className="text-[16px] text-yellow-600">Invite friends</Text>
           </TouchableOpacity>
-        </View>
+        </LinearGradient>
       </ScrollView>
     </SafeAreaView>
   );

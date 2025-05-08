@@ -78,7 +78,7 @@ export default function Page() {
         <View className="flex-row justify-between items-center w-full mb-5">
           <Text className="text-[14px] text-neutral-400">Date Assigned</Text>
           <Text className="font-semibold w-52">
-            {Date(task.createdAt).toLocaleString()}
+            {Date(task.createdAt).split("G")[0]}
           </Text>
         </View>
         <View className="flex-row justify-between items-center w-full mb-5">

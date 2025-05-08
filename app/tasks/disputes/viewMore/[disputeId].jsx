@@ -34,8 +34,15 @@ const Page = () => {
     );
   }
   const renderItem = ({ item }) => {
-    const { task, raisedBy, createdAt, raiser, receiver, raiserEvidence } =
-      item;
+    const {
+      task,
+      raisedBy,
+      createdAt,
+      raiser,
+      receiver,
+      raiserEvidence,
+      receiverEvidence,
+    } = item;
 
     return (
       <View className="bg-white p-4 mb-4 rounded-2xl shadow">
@@ -60,29 +67,41 @@ const Page = () => {
         <View className="flex-row mt-1">
           <Text className="text-gray-500 w-24">Evidence:</Text>
           <Text className="text-gray-800 flex-1" numberOfLines={2}>
-            "{raiserEvidence?.text}"
+            {raiserEvidence?.text}
           </Text>
         </View>
+
+        {receiverEvidence && (
+          <View className="flex-row mt-1">
+            <Text className="text-gray-500 w-24">Reciever Evidence:</Text>
+            <Text className="text-gray-800 flex-1" numberOfLines={2}>
+              {receiverEvidence?.text}
+            </Text>
+          </View>
+        )}
 
         <Text className="text-right text-xs text-gray-400 mt-2">
           {new Date(createdAt).toLocaleDateString()}
         </Text>
-
-        <View className="p-4 mt-auto bg-white">
-          {userData?.id !== raiser?.id && (
-            <TouchableOpacity
-              className="bg-blue-900 w-96 p-3 rounded-lg self-center flex-row justify-center items-center"
-              onPress={() =>
-                router.navigate(`/tasks/disputes/recieverEvidence/${disputeId}`)
-              }
-            >
-              {loading && <ActivityIndicator size={24} color={"white"} />}
-              <Text className="text-white text-center font-semibold ml-2">
-                Provide Evidence
-              </Text>
-            </TouchableOpacity>
-          )}
-        </View>
+        {!receiverEvidence && (
+          <View className="p-4 mt-auto bg-white">
+            {userData?.id !== raiser?.id && (
+              <TouchableOpacity
+                className="bg-blue-900 w-96 p-3 rounded-lg self-center flex-row justify-center items-center"
+                onPress={() =>
+                  router.navigate(
+                    `/tasks/disputes/recieverEvidence/${disputeId}`
+                  )
+                }
+              >
+                {loading && <ActivityIndicator size={24} color={"white"} />}
+                <Text className="text-white text-center font-semibold ml-2">
+                  Provide Evidence
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
       </View>
     );
   };

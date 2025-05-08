@@ -34,6 +34,9 @@ export default function page() {
   });
   const { withdraw } = useApi();
   const { recipientId } = useLocalSearchParams();
+  const data = JSON.parse(recipientId);
+  console.log("data", data);
+  console.log("data2", recipientId);
 
   const closePinModal = () => {
     Alert.alert("", "Are you sure you want to cancel this transaction?", [
@@ -59,6 +62,9 @@ export default function page() {
       <View className="px-5 bg-white">
         <View className="mt-20">
           <Text className="font-semibold text-[#9D9D9D] mb-3 text-[20px]">
+            {data?.name}
+          </Text>
+          <Text className="font-semibold text-[#9D9D9D] mb-3 text-[20px]">
             Amount
           </Text>
           <View className="py-2 placeholderTextColor-[#F5F5F5] bg-[#F5F5F5] w-[100%] rounded-md flex-row justify-between items-center">
@@ -79,6 +85,7 @@ export default function page() {
               setShowPinModal(true);
             }}
           >
+            {loading && <ActivityIndicator size={24} color={"white"} />}
             <Text className="text-white text-center font-semibold">
               Continue
             </Text>
@@ -105,7 +112,7 @@ export default function page() {
                     setValue(pin);
                     if (pin.length === CELL_COUNT) {
                       setTimeout(() => {
-                        withdraw(amount, recipientId, pin, setLoading);
+                        withdraw(amount, data.recipient_code, pin, setLoading);
                         setShowPinModal(false);
                         setValue("");
                       }, 2000);

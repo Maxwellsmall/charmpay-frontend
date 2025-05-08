@@ -846,6 +846,62 @@ const useApi = () => {
   const initializeWithdraw = async (
     accountNumber,
     type,
+    name,
+    bankCode,
+    setLoading
+  ) => {
+    try {
+      console.log(accountNumber, type, name, bankCode);
+      const token = await AsyncStorage.getItem("token");
+      setLoading(true);
+
+      if (!accountNumber || !type) {
+        Alert.alert("", "Ensure all inputs are filled before submission");
+        return;
+      }
+      if (!bankCode) {
+        Alert.alert("", "Select Your recipiant");
+        return;
+      }
+      if (!validateNumber(accountNumber)) {
+        Alert.alert("", "Invalid account number");
+        return;
+      }
+      const response = await axios.post(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/withdraw/createRecipient`,
+        {
+          type,
+          bankCode,
+          name,
+          accountNumber,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log(response.data);
+
+      console.log(response.data.recipient_code);
+      router.navigate(`/funding/${JSON.stringify(response.data.data)}`);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      Alert.alert(
+        "Error",
+        error.response
+          ? error.response.data.message || "Failed to Withdraw."
+          : "Check your internet connection."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+  const fetchBankBeneficiary = async (
+    accountNumber,
+    type,
     bankCode,
     setLoading
   ) => {
@@ -854,7 +910,7 @@ const useApi = () => {
       const token = await AsyncStorage.getItem("token");
       setLoading(true);
 
-      if (!accountNumber || !type) {
+      if (!accountNumber) {
         Alert.alert("", "Ensure all inputs are filled before submission");
         return;
       }
@@ -877,9 +933,13 @@ const useApi = () => {
       );
 
       console.log(response.data);
-      Alert.alert("", response.data.message);
-      console.log(response.data.recipient_code);
-      router.navigate(`/funding/${response.data.data.account_name}`);
+      await initializeWithdraw(
+        accountNumber,
+        type,
+        response.data.data.account_name,
+        bankCode,
+        setLoading
+      );
       return response.data;
     } catch (error) {
       console.log(error);
@@ -1266,6 +1326,7 @@ const useApi = () => {
     In_local_notification,
     transfer,
     initializeWithdraw,
+    fetchBankBeneficiary,
     withdraw,
     getAllBanks,
     raiseDispute,
