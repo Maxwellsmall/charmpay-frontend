@@ -22,7 +22,7 @@ export default function Page() {
   const [accountNumber, setAccountNumber] = useState("");
   const [bankCode, setBankCode] = useState("");
   const [type, setType] = useState("");
-  const { initializeWithdraw } = useApi();
+  const { initializeWithdraw, fetchBankBeneficiary } = useApi();
 
   return (
     <SafeAreaView className="flex-1">
@@ -64,9 +64,9 @@ export default function Page() {
       <View className="p-4 mt-auto bg-white">
         <TouchableOpacity
           className="bg-blue-900 w-96 p-3 rounded-lg self-center flex-row justify-center items-center"
-          onPress={() =>
-            initializeWithdraw(accountNumber, type, bankCode, setLoading)
-          }
+          onPress={() => {
+            fetchBankBeneficiary(accountNumber, type, bankCode, setLoading);
+          }}
         >
           {loading && <ActivityIndicator size={24} color={"white"} />}
           <Text className="text-white text-center font-semibold ml-2">
