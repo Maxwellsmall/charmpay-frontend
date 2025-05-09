@@ -10,6 +10,7 @@ import {
 import { useState, useEffect, useCallback } from "react";
 import Transactions from "@/components/Transactions";
 import useApi from "@/hooks/useApi";
+import { FontAwesome } from "@expo/vector-icons";
 
 export default function history() {
   const { getAllTransactions } = useApi();
@@ -45,7 +46,19 @@ export default function history() {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        ListEmptyComponent={<Text>No beneficiaries found</Text>}
+        ListEmptyComponent={
+          <View className="flex-1 w-full justify-center items-center">
+            <Text className="text-center font-bold mt-52">
+              No Transactions found
+            </Text>
+            <FontAwesome
+              name="folder-open"
+              size={100}
+              color="#1e3a8a"
+              style={{ alignSelf: "center", marginTop: 20 }}
+            />
+          </View>
+        }
       />
     </TouchableOpacity>
   );
