@@ -326,7 +326,7 @@ const useApi = () => {
       console.log("Transactions:", response.data);
       return response.data;
     } catch (error) {
-      console.error("Transaction Fetch Error:", error);
+      console.log("Transaction Fetch Error:", error);
     } finally {
       setLoading(false);
     }
