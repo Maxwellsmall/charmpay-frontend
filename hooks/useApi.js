@@ -66,7 +66,6 @@ const useApi = () => {
       );
       console.log(response.data);
       const token = response.data.token;
-      await registerForPushNotificationsAsync(response.data.token);
       console.log(token);
       AsyncStorage.setItem("token", token);
 
@@ -82,6 +81,7 @@ const useApi = () => {
       Alert.alert("", "Logged in successfully");
       router.dismissAll();
       router.push("/(tabs)/dashboard");
+      await registerForPushNotificationsAsync(response.data.token);
       return response.data;
     } catch (error) {
       console.log(error.response.data);
