@@ -16,6 +16,140 @@ const validateNumber = (phoneNumber) => {
 };
 
 const useApi = () => {
+  const getAllNotifications = async (setLoading) => {
+    try {
+      setLoading(true);
+      const token = await AsyncStorage.getItem("token");
+      const response = await axios.get(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/notification/me`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.status === 401) {
+        Alert.alert("Session Expired", "Please log in again.");
+        await AsyncStorage.removeItem("token"); // Clear invalid token
+        router.replace("/auth/login");
+        return;
+      }
+
+      console.log("Notifications:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Task Fetch Error:", error);
+      setErrorMessage(
+        "Error",
+        error.response
+          ? error.response.data.message || "Failed to notifications."
+          : "Check your internet connection."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+  const registerForPushNotificationsAsync = async (authToken) => {
+    try {
+      let token = (await Notifications.getExpoPushTokenAsync()).data;
+
+      console.log("expo-push-token", token);
+      console.log("jwt-token", authToken);
+
+      // Send token to your backend server
+      const response = await axios.post(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/user/registerPushToken`,
+        { token }, // Request body
+        {
+          headers: { Authorization: `Bearer ${authToken}` }, // Config with headers
+        }
+      );
+
+      Alert.alert("", response.data.message);
+      console.log(response.data);
+      await AsyncStorage.setItem("expoTokenId", response.data.expoPushToken);
+      return response;
+    } catch (error) {
+      if (error)
+        console.error("Post Token Error:", error.response.data.message);
+      Alert.alert(
+        "Error",
+        error.response
+          ? error.response.data.message || "Failed."
+          : "Check your internet connection."
+      );
+    }
+  };
+  const unRegisterForPushNotificationsAsync = async () => {
+    try {
+      const tokenId = await AsyncStorage.getItem("expoTokenId");
+      const token = await AsyncStorage.getItem("token");
+
+      console.log("expo-push-token-id", tokenId);
+
+      // Send token to your backend server
+      const response = await axios.post(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/user/registerPushToken`,
+        { tokenId }, // Request body
+        {
+          headers: { Authorization: `Bearer ${token}` }, // Config with headers
+        }
+      );
+
+      console.log(response.data);
+      return response;
+    } catch (error) {
+      if (error)
+        console.error("remove Token Error:", error.response.data.message);
+      Alert.alert(
+        "Error",
+        error.response
+          ? error.response.data.message || "Failed."
+          : "Check your internet connection."
+      );
+    }
+  };
+
+  const In_local_notification = () => {
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: true,
+      }),
+    });
+
+    // Function to request permissions
+    async function requestNotificationsPermissions() {
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permission Required",
+          "Please enable notifications in settings."
+        );
+        return false;
+      }
+      return true;
+    }
+
+    // Function to schedule a notification
+    async function schedulePushNotification(title, body) {
+      const hasPermission = await requestNotificationsPermissions();
+      if (!hasPermission) return;
+
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title,
+          body,
+          // data: { data: "goes here", test: { test1: "more data" } },
+        },
+        trigger: { seconds: 2 }, // Corrected trigger type
+      });
+    }
+    return {
+      requestNotificationsPermissions,
+      schedulePushNotification,
+    };
+  };
   const signup = async (transactionPin, setLoading) => {
     try {
       setLoading(true);
@@ -658,141 +792,6 @@ const useApi = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const getAllNotifications = async (setLoading) => {
-    try {
-      setLoading(true);
-      const token = await AsyncStorage.getItem("token");
-      const response = await axios.get(
-        `${process.env.EXPO_PUBLIC_API_URL}/api/notification/me`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (response.status === 401) {
-        Alert.alert("Session Expired", "Please log in again.");
-        await AsyncStorage.removeItem("token"); // Clear invalid token
-        router.replace("/auth/login");
-        return;
-      }
-
-      console.log("Notifications:", response.data);
-      return response.data;
-    } catch (error) {
-      console.error("Task Fetch Error:", error);
-      setErrorMessage(
-        "Error",
-        error.response
-          ? error.response.data.message || "Failed to notifications."
-          : "Check your internet connection."
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-  const registerForPushNotificationsAsync = async (authToken) => {
-    try {
-      let token = (await Notifications.getExpoPushTokenAsync()).data;
-
-      console.log("expo-push-token", token);
-      console.log("jwt-token", authToken);
-
-      // Send token to your backend server
-      const response = await axios.post(
-        `${process.env.EXPO_PUBLIC_API_URL}/api/user/registerPushToken`,
-        { token }, // Request body
-        {
-          headers: { Authorization: `Bearer ${authToken}` }, // Config with headers
-        }
-      );
-
-      Alert.alert("", response.data.message);
-      console.log(response.data);
-      await AsyncStorage.setItem("expoTokenId", response.data.expoPushToken);
-      return response;
-    } catch (error) {
-      if (error)
-        console.error("Post Token Error:", error.response.data.message);
-      Alert.alert(
-        "Error",
-        error.response
-          ? error.response.data.message || "Failed."
-          : "Check your internet connection."
-      );
-    }
-  };
-  const unRegisterForPushNotificationsAsync = async () => {
-    try {
-      const tokenId = await AsyncStorage.getItem("expoTokenId");
-      const token = await AsyncStorage.getItem("token");
-
-      console.log("expo-push-token-id", tokenId);
-
-      // Send token to your backend server
-      const response = await axios.post(
-        `${process.env.EXPO_PUBLIC_API_URL}/api/user/registerPushToken`,
-        { tokenId }, // Request body
-        {
-          headers: { Authorization: `Bearer ${token}` }, // Config with headers
-        }
-      );
-
-      console.log(response.data);
-      return response;
-    } catch (error) {
-      if (error)
-        console.error("remove Token Error:", error.response.data.message);
-      Alert.alert(
-        "Error",
-        error.response
-          ? error.response.data.message || "Failed."
-          : "Check your internet connection."
-      );
-    }
-  };
-
-  const In_local_notification = () => {
-    Notifications.setNotificationHandler({
-      handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: true,
-        shouldSetBadge: true,
-      }),
-    });
-
-    // Function to request permissions
-    async function requestNotificationsPermissions() {
-      const { status } = await Notifications.requestPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert(
-          "Permission Required",
-          "Please enable notifications in settings."
-        );
-        return false;
-      }
-      return true;
-    }
-
-    // Function to schedule a notification
-    async function schedulePushNotification(title, body) {
-      const hasPermission = await requestNotificationsPermissions();
-      if (!hasPermission) return;
-
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title,
-          body,
-          // data: { data: "goes here", test: { test1: "more data" } },
-        },
-        trigger: { seconds: 2 }, // Corrected trigger type
-      });
-    }
-    return {
-      requestNotificationsPermissions,
-      schedulePushNotification,
-    };
   };
 
   const transfer = async (recipientId, amount, transactionPin, setLoading) => {
