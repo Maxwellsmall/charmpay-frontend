@@ -4,12 +4,28 @@ import "../global.css";
 import { ActivityIndicator, StatusBar } from "react-native";
 import { View, Image, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import * as Updates from "expo-updates";
 import Header from "@/components/Header";
 import AuthProvider from "@/context/AuthProvider";
 export default function Layout() {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState(null);
   const router = useRouter();
+  useEffect(() => {
+    async function checkForUpdate() {
+      try {
+        const update = await Updates.checkForUpdateAsync();
+        if (update.isAvailable) {
+          await Updates.fetchUpdateAsync();
+          await Updates.reloadAsync();
+        }
+      } catch (e) {
+        console.log("Update check failed:", e);
+      }
+    }
+
+    checkForUpdate();
+  }, []);
   return (
     <AuthProvider>
       <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />

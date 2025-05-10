@@ -17,7 +17,10 @@
         "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["android.permission.RECORD_AUDIO"]
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -44,7 +47,8 @@
     ],
     "updates": {
       "enabled": true,
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/ec37e80b-1960-4168-a26c-de11b7e73059"
     },
     "experiments": {
       "typedRoutes": true
@@ -56,6 +60,9 @@
       "eas": {
         "projectId": "ec37e80b-1960-4168-a26c-de11b7e73059"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     }
   }
 }
